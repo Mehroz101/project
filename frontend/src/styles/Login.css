@@ -1,0 +1,234 @@
+.login_page {
+  background-color: rgb(246, 245, 245);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.back_page_btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(180deg);
+  border-radius: 50px;
+  font-weight: 800;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 25px;
+  transition: all 0.1s ease;
+  color: var(--primary);
+}
+.back_page_btn:hover {
+  color: var(--secondary);
+}
+.login_container {
+  background-color: var(--text-white);
+  width: 100%;
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+  box-shadow: rgba(17, 12, 0, 0.15) 0 48px 100px 0;
+}
+.signup_container {
+  background-color: var(--text-white);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row-reverse;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: rgba(17, 12, 0, 0.15) 0 48px 100px 0;
+}
+.login_left {
+  background-color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 100px 30px;
+  flex: 2;
+  flex-direction: column;
+  position: relative;
+}
+.login_logo a {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+  color: var(--secondary);
+}
+.login_left h1 {
+  font-size: var(--font-size-extra-large);
+  color: var(--primary);
+  text-align: center;
+  width: 100%;
+  word-spacing: 2px;
+  margin-bottom: 10px;
+}
+.login_left h1 .brand_name {
+  color: var(--secondary);
+}
+
+.login_left .login_details form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  flex: 1;
+}
+.login_left .google_btn {
+  background-color: white;
+  border: 1px solid #ddd;
+  color: #939393;
+  border-radius: 4px;
+  width: 100%;
+  display: flex;
+  margin: 10px 0;
+  padding-left: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.login_left .google_btn span {
+  flex: 1;
+}
+.login_left .google_btn i {
+  justify-self: flex-start;
+  color: #db402b;
+}
+.login_left .google_btn:hover {
+  background-color: #fafafadd;
+}
+.bottom_line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  margin: 20px 0 10px;
+}
+.bottom_line .line {
+  width: 100%;
+  flex: 1;
+  height: 2px;
+  background-color: #ddd;
+}
+.login_left .short_text {
+  font-size: 13px;
+  color: #b7b7b7;
+  text-align: center;
+}
+.login_left .login_details form .box {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+  font-size: var(--font-size-small);
+  color: var(--text);
+}
+.login_left .login_details form .box label {
+  font-weight: 600;
+}
+.field {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  background-color: #f6f6f6;
+  border-radius: 4px;
+}
+.field i {
+  color: #b5b5b5;
+}
+.login_left .login_details form .box input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  width: 400px;
+  padding: 12px;
+  flex: 1;
+  font-size: 15px;
+}
+.login_left .login_details form .forget_pass {
+  width: 100%;
+  text-align: right;
+  margin-top: 2px;
+}
+.login_left .login_details form .forget_pass p a {
+  font-size: var(--font-size-small);
+  color: var(--secondary);
+}
+.login_left .login_details form .login_btn {
+  background-color: var(--secondary);
+  border-radius: 4px;
+  width: 100%;
+  margin: 20px 0;
+  font-size: 15px;
+  border: 1px solid var(--secondary);
+}
+
+.login_left .login_details .dont_account {
+  text-align: center;
+  font-size: var(--font-size-small);
+}
+.login_left .login_details .dont_account span a {
+  color: var(--secondary);
+}
+.login_right {
+  background: url("../assets/login.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex: 2;
+}
+
+
+
+.signup_page .login_container  {
+  flex-direction: row-reverse;
+}
+
+.signup_page .login_right {
+  background: url("../assets/signup.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex: 2;
+}
+.forgetpass_page .login_right {
+  background: url("../assets/forgetpng.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex: 2;
+}
+@media (max-width: 840px) {
+  .login_right {
+    display: none;
+  }
+}
+@media (max-width: 500px) {
+  .login_container {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  .login_left h1 {
+    font-size: 30px;
+  }
+  .login_left input {
+    width: 250px !important;
+  }
+  .login_logo {
+    color: var(--secondary);
+    font-weight: 800;
+
+    margin-bottom: 10px;
+  }
+}

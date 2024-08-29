@@ -1,0 +1,31 @@
+.listyouownspace_page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+}
+.dashboard_navigator {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
+  background-color: #cadbf6;
+  padding: var(--spacing-large);
+}
+.dashboard_navigator p {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+.dashboard_navigator button {
+  background-color: var(--primary);
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1px solid var(--primary);
+}

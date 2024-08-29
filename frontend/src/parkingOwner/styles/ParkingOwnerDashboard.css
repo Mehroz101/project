@@ -1,0 +1,52 @@
+.dashboard_page {
+  background-color: var(--background);
+  display: flex;
+}
+.dashboard_page .dashboard_left {
+  background-color: #eff4f4;
+  min-height: 90vh;
+  width: 320px;
+  padding: 4rem;
+}
+.dashboard_page .dashboard_left ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  font-weight: 500;
+}
+.dashboard_page .dashboard_left ul li a {
+  color: #999999;
+}
+.dashboard_page .dashboard_left ul li a.active {
+  color: #3e3e3e;
+  font-weight: 600;
+}
+.dashboard_page {
+  display: flex;
+  gap: 20px;
+  padding: var(--spacing-medium);
+}
+
+.dashboard_right {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .dashboard_page {
+    flex-direction: column;
+  }
+
+  .dashboard_left, .dashboard_left {
+    display: none;
+  }
+  .dashboard_left, .dashboard_right {
+    flex: none;
+    width: 100%;
+  }
+}
+.recharts-surface{
+  background-color: white;
+}

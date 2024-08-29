@@ -1,0 +1,42 @@
+.earnings_summary {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: var(--spacing-medium);
+  }
+  
+  .earnings_card {
+    flex: 1 1 calc(33.333% - 20px);
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-medium);
+    text-align: center;
+  }
+  
+  .earnings_card h3 {
+    font-size: var(--font-size-medium);
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  
+  .earnings_card .amount {
+    font-size: var(--font-size-large);
+    color: var(--secondary);
+    margin-bottom: 15px;
+  }
+  
+  .earnings_card button {
+    background-color: var(--secondary);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: var(--font-size-small);
+  }
+  
+  .earnings_card button:hover {
+    background-color: var(--primary);
+  }
+  

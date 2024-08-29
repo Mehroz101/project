@@ -1,0 +1,27 @@
+.support_help {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: var(--spacing-medium);
+  }
+  
+  .support_card {
+    flex: 1 1 calc(50% - 20px);
+    background-color: #e6f7ff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-medium);
+    text-align: center;
+  }
+  
+  .support_card h3 {
+    font-size: var(--font-size-medium);
+    color: #00aaff;
+    margin-bottom: 10px;
+  }
+  
+  .support_card p {
+    font-size: var(--font-size-small);
+    color: #333;
+  }
+  

@@ -1,0 +1,280 @@
+.earning_container {
+    width: 100%;
+}
+.earning_container h2{
+    align-self: flex-start;
+    
+
+}.earning_container .earning_container_top {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.earning_container_top .current_balance {
+  background-color: #f0f4fa; /* Lighter background for contrast */
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  color: var(--primary); /* Darker primary color for text */
+  min-width: 300px;
+  gap: 30px;
+  flex: 1;
+}
+
+.earning_container_top .current_balance button {
+  border-radius: 4px;
+  align-self: flex-end;
+  background-color: var(--secondary); /* Primary color for the button */
+  border: none;
+  color: #fff; /* White text for the button */
+  padding: var(--spacing-small) var(--spacing-medium); /* Padding for better spacing */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: background-color 0.3s ease;
+}
+
+.earning_container_top .current_balance button:hover {
+  background-color: var(--primary); /* Darker shade on hover */
+}
+
+.earning_container_top .current_balance span {
+  font-size: var(--font-size-small);
+  color: var(--primary); /* Darker secondary color for text */
+}
+
+.earning_container_top .current_balance h2 {
+
+  font-size: var(--font-size-extra-large);
+    color: var(--secondary);
+}
+
+.earning_container_top .balance_history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.earning_container_top .balance_history .last_month,
+.earning_container_top .balance_history .life_time {
+  background-color: #e0e7ff; /* Light blue background for differentiation */
+  color: var(--primary); /* Darker primary color for text */
+  padding: var(--spacing-medium) var(--spacing-large);
+  border-radius: 4px;
+  min-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.earning_container_top .balance_history span {
+  font-size: var(--font-size-small);
+  color: var(--secondary); /* Darker secondary color for text */
+}
+
+.earning_container_top .balance_history h2 {
+  font-size: var(--font-size-large);
+  color: var(--primary); /* Primary color for the amount */
+}
+
+.earning_list {
+    margin-top: 20px;
+    border: 1px solid #dddddd;
+    width: 100%;
+    overflow: auto;
+    max-height: 600px;
+  }
+  .earning_list .responsive_table thead {
+    font-size: var(--font-size-small);
+    position: sticky;
+    top: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  th,
+  td {
+    padding: 15px;
+    font-size: var(--font-size-small);
+  }
+  
+  td.title {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .status {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .status.active {
+    background-color: #b2ebf2; /* Light Teal */
+    color: #00796b; /* Darker Teal Text */
+  }
+  
+  .status.deactivated {
+    background-color: #e0e0e0; /* Light Grey */
+    color: #757575; /* Darker Grey Text */
+  }
+  td.actions {
+    display: flex;
+  }
+  
+  td.actions > a {
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #dddddd;
+  }
+  
+  td.actions > a:hover,
+  td.actions a:hover i {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+  
+  td.actions a i {
+    color: #bfbfbf;
+  }
+  
+  thead {
+    background-color: #f4f4f4;
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .responsive_table img {
+    width: 100px;
+    object-fit: cover;
+    height: 50px;
+  }
+  
+
+
+
+
+.withdraw_popup_container{
+    display: block;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: rgba(0, 0, 0, 0.2);
+
+}
+.popup_hide{
+    display: none;
+}
+.withdraw_popup_container .withdraw_popup{
+    background-color: white;
+    padding: var(--spacing-medium);
+    border-radius: 4px;
+    display: flex;
+    max-width: 450px;
+    flex-direction: column;
+
+}
+.withdraw_popup_container .withdraw_popup .cross_icon{
+    align-self: flex-end;
+    font-size: 20px;
+    cursor: pointer;
+}
+.withdraw_popup_container .withdraw_popup h2{
+    color: #64626a;
+}
+.withdraw_popup_container .withdraw_popup p{
+    font-size: var(--font-size-small);
+    margin-bottom: 20px;
+
+}
+.withdraw_popup_container .withdraw_popup .withdraw_detail_box{
+    border: 1px solid #dddddd;
+    padding: var(--spacing-small);
+    border-radius: 4px;
+    margin: 20px 0;
+
+}
+.withdraw_popup_container .withdraw_popup .input_box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom:1px solid #dddddd;
+    padding: 5px;
+}
+.withdraw_popup_container .withdraw_popup .input_box span{
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    color: #64626a;
+}
+.withdraw_popup_container .withdraw_popup .input_box input{
+    background-color: white;
+    max-width: 200px;
+    font-size: 14px;
+    text-align: right;
+}
+.withdraw_popup_container .withdraw_popup .input_box select{
+    padding: 10px;
+    font-size: 14px;
+    outline: none;
+    max-width: 200px;
+    border-radius: 4px;
+    border-color: #dddddd;
+}
+.withdraw_popup_container .withdraw_popup .input_box.amount{
+    padding: 10px;
+   border: none;
+}
+.withdraw_popup_container .withdraw_popup .btn_box{
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 20px;
+margin-bottom: 30px;
+
+    
+}
+.withdraw_popup_container .withdraw_popup .btn_box button{
+
+    border-radius: 4px;
+    background-color: var(--secondary);
+    color: var(--text-white);
+    border: 1px solid var(--secondary);
+    gap: 5px;
+    font-weight: 600;
+    font: 12px;
+    padding: 7px 10px;
+}
+.withdraw_popup_container .withdraw_popup .btn_box .cancel{
+    background-color: transparent;
+    color: #64626a;
+    border-color: #64626a;
+}
+.withdraw_popup_container .withdraw_popup .note{
+    font-size: 12px;
+    color: #64626a;
+}

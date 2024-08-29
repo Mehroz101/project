@@ -1,0 +1,91 @@
+.dashboard_container_nav {
+  background: var(--primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-shadow: rgba(17, 12, 46, 0, 0.15) 0 48px 100px 0;
+  z-index: 100;
+  width: 100vw;
+  padding: var(--spacing-medium) var(--spacing-large);
+}
+
+.dashboard_container_nav .nav_items {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  z-index: 100;
+  width: 100vw;
+}
+.dashboard_container_nav .menu_icon {
+  display: none;
+}
+.dashboard_container_nav .nav_left {
+  flex: 1;
+}
+.dashboard_container_nav .nav_left h1 a {
+  color: var(--text-white);
+}
+.dashboard_container_nav .nav_right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 2;
+  min-width: 300px;
+}
+.dashboard_container_nav .nav_right .nav_right_list {
+  flex: 1;
+}
+.dashboard_container_nav .nav_right .nav_right_list ul {
+  display: flex;
+  justify-content: flex-end;
+  gap: 50px;
+}
+.dashboard_container_nav .nav_right .nav_right_list ul li a {
+  color: var(--text-white);
+}
+.dashboard_container_nav .nav_right .nav_right_list ul li a:hover {
+  color: var(--secondary);
+}
+.dashboard_container_nav .nav_right_btn a {
+  color: var(--text-white);
+}
+.dashboard_container_nav .nav_right_btn a:hover {
+  color: var(--text-white) !important ;
+}
+@media (max-width: 996px) {
+  .dashboard_container_nav .nav {
+    justify-content: space-between;
+  }
+  .dashboard_container_nav .nav_items {
+    flex-direction: column;
+    gap: 50px;
+    flex: 1;
+  }
+  .dashboard_container_nav .menu_icon {
+    display: inline;
+    cursor: pointer;
+    color: var(--text-white);
+    font-size: var(--font-size-large);
+  }
+  .dashboard_container_nav .nav_right {
+    flex-direction: column;
+    justify-content: center;
+    display: none;
+    position: absolute;
+    top: 70px;
+    background-color: var(--primary);
+    width: 100%;
+    left: 0;
+    padding: 10px;
+  }
+  .dashboard_container_nav .nav_right.nav_show {
+    display: flex;
+  }
+ 
+  .dashboard_container_nav .nav_right .nav_right_list ul {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+}

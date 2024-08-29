@@ -1,0 +1,73 @@
+.recent_activities {
+    padding: var(--spacing-medium);
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin-top: 30px;
+}
+
+.recent_activities h3 {
+    font-size: var(--font-size-large);
+    color: var(--primary);
+    margin-bottom: var(--spacing-small);
+}
+
+.activities_list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity_item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-bottom: 1px solid #dddddd;
+    align-items: center;
+}
+
+.activity_item:last-child {
+    border-bottom: none;
+}
+
+.activity_item.booking .activity_type {
+    color: #007bff;
+}
+
+.activity_item.payment .activity_type {
+    color: #28a745;
+}
+
+.activity_item.slot.released .activity_type {
+    color: #ffc107;
+}
+
+.activity_type {
+    font-weight: bold;
+    flex: 1;
+}
+
+.activity_description {
+    flex: 3;
+    color: #333;
+    font-size: var(--font-size-medium);
+}
+
+.activity_time {
+    flex: 1;
+    text-align: right;
+    color: #999;
+    font-size: var(--font-size-small);
+}
+
+/* Responsive Design */
+@media (max-width: 460px) {
+    .activity_item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .activity_time {
+        text-align: left;
+        margin-top: var(--spacing-small);
+    }
+}

@@ -1,0 +1,35 @@
+:root {
+  font-family: "DM Sans", sans-serif !important;
+
+  --text:#212121;
+  --text-white:#f7f7f7;
+  --background:#fefefe;
+  --primary:#050232;
+  --secondary:#23c579;
+  --accent:#050232;
+
+
+  --font-size-base:1rem;
+  --font-size-small:0.875rem;
+  --font-size-large:1.5rem;
+  --font-size-extra-large:2.5rem;
+  --line-height:1.6;
+
+
+
+  --spacing-small:0.5rem;
+  --spacing-medium:1rem;
+  --spacing-large:2rem;
+
+  --border-radius:0.25rem
+
+
+}
+
+body{
+  background: var(--background);
+  color: var(--text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+
+}

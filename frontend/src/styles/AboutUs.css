@@ -1,0 +1,49 @@
+.about_us_section {
+  display: flex;
+  align-items: center;
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+.about_us_image {
+  max-width: 500px;
+}
+.about_us_image img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about_us_content {
+  padding-left: 40px;
+  flex: 1;
+  max-width: 600px;
+  min-width: 230px;
+}
+
+.about_us_content h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about_us_content p {
+  font-size: 1.125rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.contact_us_button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.contact_us_button:hover {
+  background-color: #0056b3;
+}

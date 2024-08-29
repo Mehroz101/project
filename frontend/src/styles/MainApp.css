@@ -1,0 +1,671 @@
+.app_container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.app_container .app_left {
+  padding: var(--spacing-medium);
+  box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  background-color: white;
+  max-height: 100vh !important;
+}
+
+.app_container .app_left .parking_finder_card {
+  border: none;
+  border-radius: 4px;
+  box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.parkingFinderDetail {
+  display: none;
+}
+/* Container for listings and controls */
+.app_container .app_left .app_listings {
+  width: 100%;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+/* Filter and Sort Controls */
+.app_container .app_left .listing_filter_sort {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row; /* Stack controls vertically on smaller screens */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.app_container .app_left .listing_filter_sort select {
+  padding: 10px 15px;
+  border: 2px solid var(--border); /* Use border color variable */
+  border-radius: 4px; /* Slightly rounded corners */
+  font-size: 15px;
+  color: var(--text); /* Use text color variable */
+  background-color: var(--background); /* Background color for select */
+  outline: none;
+  text-align: center;
+}
+
+.app_container .app_left .listing_filter_sort button.toggle_btn {
+  background-color: var(--secondary);
+  color: var(--text-white);
+  border: 2px solid var(--secondary);
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.app_container .app_left .listing_filter_sort button.toggle_btn:hover {
+  background-color: var(--text-white);
+  color: var(--secondary);
+}
+
+.app_container .app_left .Listing_container {
+  margin-top: 10px;
+  overflow-y: scroll;
+  height: 390px;
+  background-color: white;
+}
+.app_container .app_left .Listing_container .listing {
+  display: flex;
+  gap: 15px; /* Increased gap for better spacing */
+  border: 1px solid var(--background); /* Use background color for border */
+  margin-top: 15px; /* Increased margin for separation */
+  padding: var(--spacing-medium);
+  background-color: var(--text-white); /* Background color for each listing */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.app_container .app_left .Listing_container .listing .listing_left {
+  flex: 1;
+  width: 150px; /* Increased width for better visuals */
+  min-height: 120px;
+  background-color: var(--primary); /* Primary color for image container */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.app_container .app_left .Listing_container .listing .listing_left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover to fit the container */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.app_container .app_left .Listing_container .listing .listing_right {
+  flex: 2;
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_title
+  h3 {
+    text-wrap: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+  font-size: var(--font-size-base);
+  color: var(--primary); /* Use primary color for title */
+  margin-bottom: 5px; /* Added space below title */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Space below rating */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_rating
+  .rating {
+  font-size: var(--font-size-medium);
+  color: var(--secondary); /* Secondary color for rating */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_rating
+  .total_booking {
+  font-size: var(--font-size-small);
+  color: var(--text); /* Use text color for total booking */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Space below details */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_detail
+  a {
+  color: var(--secondary); /* Secondary color for details link */
+  border-bottom: 1px solid var(--secondary); /* Underline for link */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_btn
+  button {
+  background-color: var(--secondary);
+  width: 100%;
+  border-radius: 4px;
+  border: none; /* Removed border for button */
+  color: var(--text-white);
+  padding: 10px;
+  font-size: var(--font-size-small);
+  margin-top: 10px; /* Increased space above button */
+}
+
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_right
+  .listing_btn
+  button
+  a {
+  color: var(--text-white) !important;
+}
+.app_container
+  .app_left
+  .Listing_container
+  .listing
+  .listing_detail
+  .listing_features
+  span {
+  background-color: var(--primary);
+  color: var(--text-white);
+  padding: 5px 8px;
+  border-radius: 4px;
+  margin: 0 3px;
+  font-size: var(--font-size-small);
+}
+
+.app_container .app_left .toggle_btn {
+  display: none;
+}
+
+.app_container .listing_detail_container {
+  position: absolute;
+  right: -460px;
+  top: 0px;
+  max-width: 460px;
+  background-color: var(--text-white);
+  padding: var(--spacing-medium);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: scroll;
+  max-height: 120vh;
+}
+
+.listing_detail_container .back_btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: var(--font-size-large);
+  background-color: var(--secondary);
+  color: var(--text-white);
+  cursor: pointer;
+  border: 1px solid var(--secondary);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.listing_detail_container .listing_detail_image_box {
+  width: 100%;
+  height: 250px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.listing_detail_container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.listing_detail_image_box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listing_image {
+  max-width: 100%;
+  max-height: 400px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.prev_btn,
+.next_btn {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.prev_btn {
+  left: 10px;
+}
+
+.next_btn {
+  right: 10px;
+}
+
+.listing_detail_container .listing_detail_section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.listing_detail_container .listing_detail_section p.address{ 
+  font-size: 14px;
+  color: var(--secondary);
+}
+.listing_detail_container .listing_detail_section .listing_detail_title {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.listing_detail_container .listing_detail_section .badge_shortdesc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.listing_detail_container .listing_detail_section .badge_shortdesc .badge {
+  background-color: var(--primary);
+  color: var(--text-white);
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: var(--font-size-small);
+}
+
+.listing_detail_container
+  .listing_detail_section
+  .badge_shortdesc
+  .short_description {
+  font-size: var(--font-size-small);
+  color: var(--text);
+}
+
+.listing_detail_container .listing_detail_section .listing_rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listing_detail_container
+  .listing_detail_section
+  .listing_rating
+  .total_booking {
+  font-size: var(--font-size-small);
+  color: var(--text);
+}
+
+.listing_detail_container .listing_booking_details {
+  background-color: #ddd;
+  display: flex;
+  justify-content: space-evenly;
+  padding: var(--spacing-small) 0;
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+}
+
+.listing_detail_container .listing_booking_details > div {
+  font-weight: 600;
+  text-align: center;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--primary);
+  padding: var(--spacing-medium);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
+}
+
+.listing_detail_container .listing_booking_details > div:not(:last-child) {
+  border-right: 2px solid #d0cfcf;
+}
+
+.listing_detail_container
+  .listing_booking_details
+  > div
+  > span:not(:first-child) {
+  font-size: var(--font-size-small);
+  font-weight: 400;
+  color: var(--text);
+}
+
+.listing_detail_container .listing_detail_features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.listing_detail_container .listing_detail_features .feature {
+  background-color: var(--primary);
+  color: var(--text-white);
+  font-size: var(--font-size-small);
+  padding: 6px 12px;
+  border-radius: 15px;
+}
+
+.listing_detail_container .listing_detail_description h3 {
+  color: var(--primary);
+  font-size: var(--font-size-medium);
+  margin-bottom: 10px;}
+
+.listing_detail_container .listing_detail_description .description {
+  font-size: var(--font-size-small);
+  color: var(--text);
+}
+
+.listing_detail_container .listing_detail_btn {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.listing_detail_container .listing_detail_btn button {
+  background-color: var(--secondary);
+  color: var(--text-white);
+  padding: 10px;
+  font-size: var(--font-size-medium);
+  border-radius: 10px;
+  flex: 1;
+  border: none;
+  cursor: pointer;
+}
+.listing_detail_container .listing_detail_btn button.all_day_book_btn {
+  background-color: var(--secondary);
+}
+
+.listing_detail_container .listing_detail_btn button.book_btn {
+  background-color: var(--secondary);
+}
+.app_right {
+  background-color: rgb(132, 94, 46);
+  width: 100%;
+  height: 120vh;
+}
+
+.app_right .listing {
+  display: none;
+}
+
+.listing_detail_container_hide {
+  display: none;
+}
+
+@media (max-width: 890px) {
+  .app_container .app_left {
+    width: 100%;
+  }
+
+  .listing_detail_container {
+    right: -410px;
+    padding: var(--spacing-small);
+    max-width: 400px;
+  }
+
+  .listing_detail_container .listing_detail_section {
+    gap: 5px;
+  }
+
+  .listing_detail_container .listing_detail_section .listing_detail_title {
+    font-size: 20px;
+  }
+
+  .listing_detail_container .listing_detail_section .badge_shortdesc {
+    gap: 5px;
+  }
+
+  .listing_detail_container .listing_detail_section .badge_shortdesc .badge {
+    padding: 3px 5px;
+  }
+
+  .listing_detail_container .listing_booking_details > div {
+    font-size: var(--font-size-small);
+    font-weight: 600;
+  }
+
+  .listing_detail_container
+    .listing_booking_details
+    > div
+    > span:not(:first-child) {
+    font-size: var(--font-size-small);
+  }
+}
+
+@media (max-width: 840px) {
+  .app_container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app_container .app_left {
+    width: 100vw;
+    background-color: white;
+    max-height: 130vh;
+  }
+
+  .app_left .parking_finder_card {
+    width: 100vw !important;
+  }
+
+  .app_left .parking_finder_card form {
+    height: 100%;
+  }
+
+  .listing_filter_sort #filter {
+    display: none;
+  }
+
+  .app_container .app_left .toggle_btn {
+    display: block;
+    background-color: white;
+    color: var(--secondary);
+    font-weight: 600;
+    border-radius: 4px;
+    border: 2px solid var(--secondary);
+    padding: 4px 15px;
+  }
+
+  .parkingFinderDetail {
+    background-color: rgba(39, 93, 173, 0.2);
+    color: var(--text);
+    font-weight: 500;
+    width: 100%;
+    padding: var(--spacing-medium);
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  .parkingFinderDetail .datetime {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .app_right {
+    background-color: aqua;
+  }
+
+  .Listing_container_hide {
+    display: none;
+  }
+
+  .app_right_hide {
+    display: none;
+  }
+
+  .ParkingFinderCard_hide {
+    display: none !important;
+  }
+
+  .ParkingFinderCard {
+    height: 290px;
+    width: 100%;
+    display: block;
+  }
+
+  .parkingFinderDetail {
+    display: block;
+  }
+
+  .parkingFinderDetail_hide {
+    display: none;
+  }
+  .app_container .app_right .listing {
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    position: sticky;
+    top: 75%;
+    gap: 15px;
+    width: 95%;
+    padding: var(--spacing-medium);
+    background-color: var(
+      --primary
+    ); /* Light background to distinguish each listing */
+    border-radius: 12px; /* Rounded corners for a more modern look */
+    box-shadow: rgba(17, 12, 46, 0.1) 0 4px 8px; /* Subtle shadow for depth */
+  }
+
+  .app_container .app_right .listing .listing_left {
+    flex: 1;
+    min-height: 120px;
+    background-color: var(
+      --primary
+    ); /* Background color for the image container */
+    border-radius: 12px; /* Matching border radius */
+    overflow: hidden; /* Ensure image fits within rounded corners */
+  }
+
+  .app_container .app_right .listing .listing_left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure image covers the container */
+  }
+
+  .app_container .app_right .listing .listing_right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Space out title, details, and button */
+  }
+
+  .app_container .app_right .listing .listing_right .listing_title h3 {
+    font-size: var(--font-size-base);
+    color: var(--text-white); /* Changed to primary color for heading */
+    margin: 0;
+    font-weight: bold; /* Emphasize the title */
+  }
+
+  .app_container .app_right .listing .listing_rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+  }
+
+  .app_container .app_right .listing .listing_rating .rating {
+    color: var(--secondary); /* Star color */
+    font-size: var(--font-size-small);
+  }
+
+  .app_container .app_right .listing .listing_rating .total_booking {
+    color: var(--text-white);
+    font-size: var(--font-size-small);
+  }
+
+  .app_container .app_right .listing .listing_detail {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .app_container .app_right .listing .listing_detail .listing_features span {
+    background-color: var(--secondary);
+    color: var(--text-white);
+    padding: 5px 8px;
+    border-radius: 4px;
+    margin: 0 3px;
+    font-size: var(--font-size-small);
+  }
+
+  .app_container .app_right .listing .listing_detail a {
+    color: var(--secondary);
+    font-size: var(--font-size-small);
+  }
+
+  .app_container .app_right .listing .listing_btn button {
+    background-color: var(--secondary);
+    width: 100%;
+    border-radius: 6px;
+    border: none;
+    color: var(--text-white);
+    padding: 12px;
+    margin-top: 10px;
+    font-size: var(--font-size-small);
+  }
+
+  .app_container .listing_detail_container {
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: 100vw;
+  }
+}

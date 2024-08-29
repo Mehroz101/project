@@ -1,0 +1,205 @@
+.manage_space_container {
+  width: 100%;
+}
+.manage_space_container .create_space {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin: var(--spacing-medium) 0;
+}
+
+.manage_space_container .create_space button {
+  background-color: var(--secondary);
+  border: none;
+  font-size: var(--font-size-small);
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+.manage_space_container .space_numbers {
+  display: flex;
+  justify-content: space-evenly;
+  border-radius: 4px;
+  background-color: rgb(243, 245, 245);
+  margin: var(--spacing-medium) 0;
+}
+.manage_space_container .space_numbers > div {
+  border-right: 1px solid;
+  flex: 1;
+  padding: 10px;
+}
+.manage_space_container .space_numbers > div:last-child {
+  border-right: none;
+}
+.manage_space_container h2 {
+  color: var(--primary);
+}
+
+.manage_space_container > div p {
+  font-size: var(--font-size-small);
+  color: #3e3e3e;
+  font-size: 14px;
+}
+
+.manage_space_container .filter_navbar {
+  margin: var(--spacing-large) 0;
+  border-bottom: 1px solid #dddddd;
+  overflow-x: scroll;
+}
+.manage_space_container .filter_navbar ul {
+  display: flex;
+  gap: 20px;
+  color: #3e3e3e;
+  font-size: var(--font-size-small);
+}
+.manage_space_container .filter_navbar ul .active {
+  font-weight: 700;
+}
+.manage_space_container .filter_navbar ul li.active {
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+}
+
+.manage_space_container .search_filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--spacing-medium) 0;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 20px;
+}
+.manage_space_container .search_filter .search_box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: var(--font-size-small);
+}
+.manage_space_container .search_filter .search_box .search_input {
+  font-size: var(--font-size-small);
+  color: var(--text);
+  display: flex;
+  gap: 2px;
+}
+.manage_space_container .search_filter .search_box .search_input input {
+  border: 1px solid #dddddd;
+  outline: none;
+  font-size: var(--font-size-small);
+  border-radius:4px;
+  padding: 4px 12px;
+  flex: 1;
+}
+.manage_space_container .search_filter .search_box .search_input button {
+  background-color: var(--secondary);
+  border: none;
+  font-size: var(--font-size-small);
+  border-radius: 4px;
+  padding: 3px 12px;
+}
+
+.manage_space_list {
+  margin-top: 20px;
+  border: 1px solid #dddddd;
+  width: 100%;
+  overflow: auto;
+  max-height: 600px;
+}
+.responsive_table thead {
+  font-size: var(--font-size-small);
+  position: sticky;
+  top: 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 15px;
+  font-size: var(--font-size-small);
+}
+
+td.title {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  display: inline-block;
+  text-align: center;
+}
+
+.status.active {
+  background-color: #b2ebf2; /* Light Teal */
+  color: #00796b; /* Darker Teal Text */
+}
+
+.status.deactivated {
+  background-color: #e0e0e0; /* Light Grey */
+  color: #757575; /* Darker Grey Text */
+}
+td.actions {
+  display: flex;
+}
+
+td.actions > a {
+  margin: 5px;
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid #dddddd;
+}
+
+td.actions > a:hover,
+td.actions a:hover i {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+td.actions a i {
+  color: #bfbfbf;
+}
+
+thead {
+  background-color: #f4f4f4;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.responsive_table img {
+  width: 100px;
+  object-fit: cover;
+  height: 50px;
+}
+
+@media (max-width: 400px) {
+  .space_numbers_hide {
+    display: none !important;
+  }
+  .status {
+    padding: 5px 3px;
+    font-size: 12px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+  }
+  .search_filter .search_box {
+    display: none !important;
+  }
+}

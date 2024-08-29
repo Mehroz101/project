@@ -1,0 +1,227 @@
+.create_request_container {
+  display: flex;
+  /* justify-content: space-evenly; */
+  flex-direction: column;
+  width: 100%;
+  /* background-color: #f3f7f9; */
+  gap: 20px;
+  padding: var(--spacing-large);
+}
+
+.create_request_container > div {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: white;
+  padding: var(--spacing-large) var(--spacing-medium);
+
+  box-shadow: #e4e4e4 0 48px 100px 0;
+}
+
+.create_request_container label {
+  color: #3e3e3e;
+  font-size: 14px;
+  font-weight: 700;
+}
+.create_request_container h2 {
+  font-weight: 600;
+}
+.create_request_container .booking_detail_top {
+  display: flex;
+  justify-content: space-between;
+}
+.create_request_container .booking_detail_top a {
+  color: var(--secondary);
+  text-decoration: underline;
+}
+.create_request_container .booking_detail_top h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.create_request_container .select_space {
+  position: relative;
+  
+}
+.create_request_container .input_field {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dddddd;
+  background-color: #f6f6f6;
+}
+
+.create_request_container .input_field i {
+  padding: 15px;
+  margin: 0;
+
+}
+.create_request_container .search_results {
+  background-color: rgb(253, 253, 253);
+  position: absolute;
+  box-shadow: #e4e4e4 0 48px 100px 0;
+  top: 60px;
+  left: 0;
+  width: 100%;
+}
+.create_request_container .search_results p {
+  padding: 10px;
+  cursor: pointer;
+}
+.create_request_container .search_results p:hover {
+  background-color: rgb(236, 233, 233);
+}
+.create_request_container .booking_detail_bottom {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.selected_space {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #dddddd;
+  gap: 20px;
+}
+.selected_space .space_detail {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.selected_space .space_detail p {
+  font-weight: 600;
+}
+.selected_space i {
+  font-weight: 600;
+  cursor: pointer;
+}
+.create_request_container .booking_detail_bottom {
+  display: flex;
+  justify-content: center;
+}
+.create_request_container .booking_detail_bottom > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.create_request_container .booking_detail_bottom > div  input{
+  padding: 10px;
+  flex: 1;
+}
+
+.create_request_container .booking_detail_bottom .input_combo_box > div {
+  flex: 1;
+  min-width: none;
+}
+
+.create_request_container .customer_information h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.create_request_container .customer_information .input_combo_box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.create_request_container .customer_information .input_box {
+  min-width: none;
+  flex: 1;
+}
+
+.create_request_container .vehicle_information h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.create_request_container .vehicle_information .input_box {
+  margin-bottom: 20px;
+}
+
+
+.create_request_container .payment_information {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.create_request_container .payment_information h2 {
+  color: var(--primary);
+}
+.create_request_container .payment_information p {
+  font-weight: 400;
+  color: #3e3e3e;
+  font-size: 14px;
+}
+.create_request_container .payment_information .payment_form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.create_request_container .payment_information .payment_form .input_combo_box {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.create_request_container
+  .payment_information
+  .payment_form
+  .input_combo_box
+  > div {
+  flex: 1;
+}
+.create_request_container .payment_information .payment_form .input_select_box {
+  display: flex;
+  flex-direction: column;
+}
+.create_request_container
+  .payment_information
+  .payment_form
+  .input_select_box
+  select {
+  padding: 10px;
+  border-color: #e5e5e5;
+  font-size: 16px;
+}
+
+.create_request_container .paynow_reserve {
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 18px;
+  padding: 12px 5px;
+  background-color: var(--secondary);
+  border: none;
+}
+.reservation_detail_right {
+  position: relative;
+  flex: 1;
+}
+
+@media (max-width: 530px) {
+  .create_request_container h2 {
+    font-size: 20px;
+  }
+  .create_request_container label {
+    font-size: 14px;
+  }
+ 
+}
+
+@media (max-width: 500px) {
+  .create_request_container {
+    padding: 0;
+  }
+  .create_request_container > div {
+    border: none;
+    border-radius:4px;
+    background-color: white;
+    padding: var(--spacing-large) var(--spacing-medium);
+
+    box-shadow: #e4e4e4 0 48px 100px 0;
+  }
+  .dashboard_right {
+    width: 100%;
+    padding: 0;
+  }
+}

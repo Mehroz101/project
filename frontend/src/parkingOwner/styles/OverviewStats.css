@@ -1,0 +1,57 @@
+.overview_stats {
+    padding: var(--spacing-medium);
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.stats_container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat_item {
+    background-color: #ffffff;
+    padding: var(--spacing-large);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow-light);
+    flex: 1;
+    min-width: 220px;
+    text-align: center;
+}
+
+.stat_header span {
+    font-size: var(--font-size-medium);
+    color: var(--primary);
+}
+
+.stat_value h2 {
+    font-size: var(--font-size-extra-large);
+    color: var(--secondary);
+}
+
+.graph_container {
+    margin-top: 30px;
+    background-color: #ffffff;
+    padding: var(--spacing-large);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow-light);
+}
+
+.graph_container h3 {
+    font-size: var(--font-size-large);
+    color: var(--primary);
+    margin-bottom: var(--spacing-small);
+}
+
+.earnings_graph {
+    height: 300px;
+    background-color: #e5e5e5;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999999;
+}

@@ -1,0 +1,27 @@
+.user_feedback_reviews {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: var(--spacing-medium);
+  }
+  
+  .review_card {
+    flex: 1 1 calc(50% - 20px);
+    background-color: #e6ffe6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-medium);
+    text-align: center;
+  }
+  
+  .review_card h3 {
+    font-size: var(--font-size-medium);
+    color: #28a745;
+    margin-bottom: 10px;
+  }
+  
+  .review_card p {
+    font-size: var(--font-size-small);
+    color: #333;
+  }
+  

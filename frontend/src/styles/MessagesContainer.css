@@ -1,0 +1,118 @@
+.messages_container {
+    padding: var(--spacing-medium);
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.messages_box {
+    margin-top: 20px;
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.message_box_left {
+    flex: 1;
+    background-color: #eef3ff;
+    overflow-y: auto;
+    padding: var(--spacing-medium);
+    transition: all 0.3s ease;
+}
+
+.message_box_left .user_chat {
+    font-size: 15px;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: background-color 0.2s;
+}
+
+.message_box_left .user_chat:hover {
+    background-color: #d0e0ff;
+}
+
+.message_box_left .user_chat .username span {
+    font-weight: 700;
+    color: #333;
+}
+
+.message_box_left .user_chat .user_lastmessage {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #666;
+}
+
+.message_box_right {
+    flex: 2;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: var(--spacing-medium);
+    height: 400px;
+    transition: all 0.3s ease;
+    border-left: 1px solid #e0e0e0;
+}
+
+.message_box_right.hide_right {
+    visibility: hidden;
+}
+
+.message_box_right .back_btn {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    align-self: flex-start;
+    transition: background-color 0.3s;
+}
+
+.message_box_right .back_btn:hover {
+    background-color: #0056b3;
+}
+
+.message {
+    text-align: left;
+    max-width: 90%;
+    white-space: pre-wrap;
+    margin-top: 10px;
+    background-color: #e8f0fe;
+    padding: var(--spacing-small);
+    border-radius: 12px;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: #333;
+}
+
+@media (max-width: 460px) {
+    .message_box_left {
+        padding: var(--spacing-small);
+    }
+    .message_box_right.hide_right {
+        display: none;
+    }
+    .message_box_right {
+        padding: var(--spacing-small);
+    }
+
+    .message_box_right .back_btn {
+        display: block;
+    }
+
+    .message_box_left.hide_left {
+        display: none;
+    }
+
+    .message_box_right.hide_right {
+        flex: 1;
+    }
+}

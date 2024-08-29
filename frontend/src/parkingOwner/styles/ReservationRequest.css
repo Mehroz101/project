@@ -1,0 +1,233 @@
+.reservation_request_container {
+  width: 100%;
+}
+.reservation_request_container .create_request {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin: var(--spacing-medium) 0;
+}
+
+.reservation_request_container .create_request button {
+  background-color: var(--secondary);
+  border: none;
+  font-size: var(--font-size-small);
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+.reservation_request_container .requests_numbers {
+  display: flex;
+  justify-content: space-evenly;
+  border-radius: 4px;
+  background-color: rgb(243, 245, 245);
+  margin: var(--spacing-medium) 0;
+}
+.reservation_request_container .requests_numbers > div {
+  border-right: 1px solid;
+  flex: 1;
+  padding: 10px;
+}
+.reservation_request_container .requests_numbers > div:last-child {
+  border-right: none;
+}
+.reservation_request_container h2 {
+  color: var(--primary);
+}
+.reservation_request_container .request_day h2 {
+  margin-top: 12px;
+}
+.reservation_request_container > div p {
+  font-size: var(--font-size-small);
+  color: #3e3e3e;
+  font-size: 14px;
+}
+
+.reservation_request_container .filter_navbar {
+  margin: var(--spacing-large) 0;
+  border-bottom: 1px solid #dddddd;
+  overflow-x: scroll;
+}
+.reservation_request_container .filter_navbar ul {
+  display: flex;
+  gap: 20px;
+  color: #3e3e3e;
+  font-size: var(--font-size-small);
+}
+.reservation_request_container .filter_navbar ul .active {
+  font-weight: 700;
+}
+.reservation_request_container .filter_navbar ul li.active {
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
+}
+
+.reservation_request_container .search_filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--spacing-medium) 0;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 20px;
+}
+.reservation_request_container .search_filter .search_box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: var(--font-size-small);
+}
+.reservation_request_container .search_filter .search_box .search_input {
+  font-size: var(--font-size-small);
+  color: var(--text);
+  display: flex;
+  gap: 2px;
+}
+.reservation_request_container .search_filter .search_box select {
+  border: 1px solid #dddddd;
+  outline: none;
+  font-size: var(--font-size-small);
+  border-radius: 0;
+  padding: 4px 12px;
+  flex: 1;
+}
+.reservation_request_container .search_filter .search_box .search_input input {
+  border: 1px solid #dddddd;
+  outline: none;
+  font-size: var(--font-size-small);
+  border-radius: 0;
+  padding: 4px 12px;
+  flex: 1;
+}
+.reservation_request_container .search_filter .search_box .search_input button {
+  background-color: var(--secondary);
+  border: none;
+  font-size: var(--font-size-small);
+  border-radius: 4px;
+  padding: 3px 12px;
+}
+.reservation_request_container .search_filter select {
+  border: 1px solid #dddddd;
+  outline: none;
+  font-size: var(--font-size-small);
+  border-radius: 0;
+  padding: 4px 12px;
+}
+
+.reservation_request_list {
+  margin-top: 20px;
+  border: 1px solid #dddddd;
+  width: 100%;
+  overflow: auto;
+  max-height: 600px;
+}
+.responsive_table thead {
+  font-size: var(--font-size-small);
+  position: sticky;
+  top: 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th,
+td {
+  padding: 15px;
+  font-size: var(--font-size-small);
+}
+
+td.title {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  display: inline-block;
+  text-align: center;
+}
+
+.responsive_table .status.pending {
+  background-color: #fff9c4;
+  color: #f9a825;
+}
+
+.responsive_table .status.complete {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+.responsive_table .status.canceled {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+.responsive_table .status.running {
+  background-color: #b3e5fc;
+  color: #0277bd;
+}
+
+td.actions {
+  display: flex;
+}
+
+td.actions > a {
+  margin: 5px;
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid #dddddd;
+}
+
+td.actions > a:hover,
+td.actions a:hover i {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+td.actions a i {
+  color: #bfbfbf;
+}
+
+thead {
+  background-color: #f4f4f4;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.responsive_table img {
+  width: 100px;
+  object-fit: cover;
+  height: 50px;
+}
+
+@media (max-width: 400px) {
+  .requests_numbers_hide {
+    display: none !important;
+  }
+  .status {
+    padding: 5px 3px;
+    font-size: 12px;
+    border-radius: 4px;
+    display: inline-block;
+    text-align: center;
+  }
+  .search_filter .search_box {
+    display: none !important;
+  }
+}

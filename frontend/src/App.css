@@ -1,0 +1,37 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  overflow-x: hidden; 
+}
+
+
+.status {
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  display: inline-block;
+  text-align: center;
+}
+
+ .status.pending {
+  background-color: #fff9c4;
+  color: #f9a825;
+}
+
+ .status.complete {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+
+ .status.canceled {
+  background-color: #ffcdd2;
+  color: #c62828;
+}
+
+ .status.running {
+  background-color: #b3e5fc;
+  color: #0277bd;
+}
