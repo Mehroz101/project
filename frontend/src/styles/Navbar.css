@@ -53,6 +53,9 @@ nav {
   flex: 2;
   min-width: 300px;
 }
+.nav_right .arrow_down{
+  border: none !important;
+}
 .nav_right .nav_right_list {
   flex: 1;
 }

@@ -1,6 +1,6 @@
 .app_container {
   display: flex;
-  height: 100vh;
+  height: 90vh;
   width: 100vw;
 }
 
@@ -14,7 +14,25 @@
   background-color: white;
   max-height: 100vh !important;
 }
-
+.ParkingFinderCard {
+  position: relative;
+}
+.droparrow {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  width: 30px;
+  font-size: 20px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
 .app_container .app_left .parking_finder_card {
   border: none;
   border-radius: 4px;
@@ -27,6 +45,30 @@
 .parkingFinderDetail {
   display: none;
 }
+.parkingFinderDetail {
+  background-color: rgba(39, 93, 173, 0.2);
+  color: var(--text);
+  font-weight: 500;
+  width: 100%;
+  padding: var(--spacing-medium);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.parkingFinderDetail .datetime {
+  display: flex;
+  justify-content: space-between;
+}
+.parkingFinderDetail {
+  display: block;
+}
+.parkingFinderDetail_hide {
+  display: none;
+}
+.ParkingFinderCard_hide {
+  display: none !important;
+}
+
 /* Container for listings and controls */
 .app_container .app_left .app_listings {
   width: 100%;
@@ -74,9 +116,15 @@
 .app_container .app_left .Listing_container {
   margin-top: 10px;
   overflow-y: scroll;
-  height: 390px;
+  min-height: 255px;
+  max-height: 400px;
   background-color: white;
 }
+.listing_container_full{
+  max-height: 200px !important;
+  min-height:150px !important ;
+}
+
 .app_container .app_left .Listing_container .listing {
   display: flex;
   gap: 15px; /* Increased gap for better spacing */
@@ -113,9 +161,9 @@
   .listing_right
   .listing_title
   h3 {
-    text-wrap: nowrap;
-    overflow: hidden;
-    max-width: 200px;
+  text-wrap: nowrap;
+  overflow: hidden;
+  max-width: 200px;
   font-size: var(--font-size-base);
   color: var(--primary); /* Use primary color for title */
   margin-bottom: 5px; /* Added space below title */
@@ -235,8 +283,8 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  z-index: 99999;
   overflow-y: scroll;
-  max-height: 120vh;
 }
 
 .listing_detail_container .back_btn {
@@ -259,7 +307,6 @@
 
 .listing_detail_container .listing_detail_image_box {
   width: 100%;
-  height: 250px;
   height: 200px;
   overflow: hidden;
   border-radius: 15px;
@@ -308,7 +355,7 @@
   flex-direction: column;
   gap: 10px;
 }
-.listing_detail_container .listing_detail_section p.address{ 
+.listing_detail_container .listing_detail_section p.address {
   font-size: 14px;
   color: var(--secondary);
 }
@@ -406,7 +453,8 @@
 .listing_detail_container .listing_detail_description h3 {
   color: var(--primary);
   font-size: var(--font-size-medium);
-  margin-bottom: 10px;}
+  margin-bottom: 10px;
+}
 
 .listing_detail_container .listing_detail_description .description {
   font-size: var(--font-size-small);
@@ -437,9 +485,11 @@
   background-color: var(--secondary);
 }
 .app_right {
-  background-color: rgb(132, 94, 46);
+  background-color: #EEE9E7;
   width: 100%;
-  height: 120vh;
+  min-height: 70vh;
+  z-index: 1;
+  position: relative;
 }
 
 .app_right .listing {
@@ -453,6 +503,15 @@
 @media (max-width: 890px) {
   .app_container .app_left {
     width: 100%;
+  }
+  .app_container .app_left .Listing_container {
+    min-height: 255px;
+    max-height: 100%;
+    background-color: white;
+  }
+  .listing_container_full{
+    max-height: 270px !important;
+    min-height:150px !important ;
   }
 
   .listing_detail_container {
@@ -524,23 +583,10 @@
     padding: 4px 15px;
   }
 
-  .parkingFinderDetail {
-    background-color: rgba(39, 93, 173, 0.2);
-    color: var(--text);
-    font-weight: 500;
-    width: 100%;
-    padding: var(--spacing-medium);
-    cursor: pointer;
-    border-radius: 2px;
-  }
-
-  .parkingFinderDetail .datetime {
-    display: flex;
-    justify-content: space-between;
-  }
+  
 
   .app_right {
-    background-color: aqua;
+    background-color: #EEE9E7;
   }
 
   .Listing_container_hide {
@@ -551,9 +597,7 @@
     display: none;
   }
 
-  .ParkingFinderCard_hide {
-    display: none !important;
-  }
+
 
   .ParkingFinderCard {
     height: 290px;
@@ -561,18 +605,19 @@
     display: block;
   }
 
-  .parkingFinderDetail {
-    display: block;
+  .listing_detail_container {
+    max-width: 880px !important;
+  }
+  .Listing_container {
+    height: 490px !important;
   }
 
-  .parkingFinderDetail_hide {
-    display: none;
-  }
   .app_container .app_right .listing {
     display: flex;
     flex-direction: row;
     margin: 0 auto;
     position: sticky;
+    z-index: 1000;
     top: 75%;
     gap: 15px;
     width: 95%;
@@ -666,6 +711,9 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
+    width: 100vw;
+  }
+  .app_container .app_right .map_container {
     width: 100vw;
   }
 }

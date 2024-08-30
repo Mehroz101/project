@@ -5,6 +5,7 @@ import "../styles/MainApp.css";
 
 import ListingContainer from "../components/ListingContainer";
 import ListingDetail from "../components/ListingDetail";
+import MapBox from "../components/MapBox";
 const MainApp = () => {
   const [togglebtn, setToggelbtn] = useState(false);
   const [parkingInput, setParkingInput] = useState(false);
@@ -32,6 +33,12 @@ const MainApp = () => {
               }
             >
               <ParkingFinderCard />
+              <div
+                className="droparrow"
+                onClick={() => setParkingInput(!parkingInput)}
+              >
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
             </div>
             <div
               className={
@@ -67,16 +74,16 @@ const MainApp = () => {
                 </button>
               </div>
               <div
-                className={
+                className={`${
                   togglebtn
-                    ? "Listing_container Listing_container_hide "
+                    ? "Listing_container Listing_container_hide"
                     : "Listing_container"
-                }
+                } ${parkingInput ? "listing_container_full" : ""}`}
               >
-                <ListingContainer onShowDetail={handleShowDetail}/>
-                <ListingContainer onShowDetail={handleShowDetail}/>
-                <ListingContainer onShowDetail={handleShowDetail}/>
-                <ListingContainer onShowDetail={handleShowDetail}/>
+                <ListingContainer onShowDetail={handleShowDetail} />
+                <ListingContainer onShowDetail={handleShowDetail} />
+                <ListingContainer onShowDetail={handleShowDetail} />
+                <ListingContainer onShowDetail={handleShowDetail} />
               </div>
             </div>
             {showListingDetail && (
@@ -89,7 +96,8 @@ const MainApp = () => {
             className={togglebtn ? "app_right" : "app_right app_right_hide"}
             onClick={() => setParkingInput(false)}
           >
-            <ListingContainer onShowDetail={handleShowDetail}/>
+            <ListingContainer onShowDetail={handleShowDetail} />
+            <MapBox />
           </div>
         </div>
       </div>

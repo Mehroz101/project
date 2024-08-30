@@ -4,7 +4,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-
 // Import the database connection module
 const { connectDB, checkDatabaseConnection } = require("./config/db");
 
@@ -18,11 +17,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 // Enable CORS for the specified client URL
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-  })
-);
+app.use(cors());
 
 // Enable JSON request parsing
 app.use(express.json());
@@ -37,6 +32,9 @@ app.use(checkDatabaseConnection);
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
+
+// Use the authentication routes
+// app.use("/auth", authRoutes);
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {

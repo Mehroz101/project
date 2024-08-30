@@ -29,6 +29,7 @@ const checkDatabaseConnection = (req, res, next) => {
       "Service unavailable: Database connection is not established yet. Please try again later."
     );
   }
+ 
   next();
 };
 

@@ -54,6 +54,7 @@ const Navbar = () => {
                 >
                   <i className="fa-solid fa-user"></i>
                   <span>mehroz farooq</span>
+                  <i class="fa-solid fa-chevron-down arrow_down"></i>
                 </Link>
               </li>
               {profileNav && (
