@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../styles/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useSigninForm } from "../services/useSigninForm";
-import { ToastContainer } from "react-toastify";
 const Login = () => {
   const { userDetail, handleChange, handleSubmit } = useSigninForm();
 
@@ -11,9 +10,20 @@ const Login = () => {
   const goBack = () => {
     navigate(-1); // This will navigate to the previous page
   };
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const promise = handleSubmit(e); // Assuming handleSubmit returns a promise
+
+    notifyPromise(promise, {
+      pending: "Rest Password...",
+      success: "Password Reset Successfully",
+      error: "Failed to reset password!",
+    });
+   
+  };
   return (
     <>
-    <ToastContainer/>
       <div className="login_page">
         <div className="back_page_btn">
           <span onClick={() => goBack()}>
@@ -26,7 +36,7 @@ const Login = () => {
               <Link to="/">Parkify</Link>
             </div>
             <div className="login_details">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleFormSubmit}>
                 <h1>
                   Login to <span className="brand_name">Parkify</span>
                 </h1>

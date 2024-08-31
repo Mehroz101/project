@@ -2,14 +2,23 @@ import React from "react";
 import "../styles/Login.css";
 import { Link } from "react-router-dom";
 import { useSignupForm } from "../services/useSignupForm";
-import { ToastContainer } from "react-toastify";
 
 const Signup = () => {
   const { userDetail, handleChange, handleSubmit } = useSignupForm();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
+    const promise = handleSubmit(e); // Assuming handleSubmit returns a promise
+
+    notifyPromise(promise, {
+      pending: "Rest Password...",
+      success: "Password Reset Successfully",
+      error: "Failed to reset password!",
+    });
+   
+  };
   return (
     <>
-      <ToastContainer />
 
       <div className="login_page signup_page">
         <div className="back_page_btn">
@@ -23,7 +32,7 @@ const Signup = () => {
               <Link to="/">Parkify</Link>
             </div>
             <div className="login_details">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleFormSubmit}>
                 <h1>
                   Create an <span className="brand_name">Account</span>
                 </h1>

@@ -21,6 +21,7 @@ import Dashboard from "./parkingOwner/components/Dashboard";
 import AboutUs from "./pages/AboutUs";
 import Signup from "./pages/Signup";
 import ForgetPass from "./pages/ForgetPass";
+import ResetPass from "./pages/ResetPass";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgetpassword" element={<ForgetPass />} />
+      <Route path="/resetpassword/:token" element={<ResetPass/>} />
       <Route path="/searchResult" element={<MainApp />} />
       <Route path="/aboutus" element={<AboutUs />} />
 

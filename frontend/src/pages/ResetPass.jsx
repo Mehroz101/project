@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useForgetForm } from "../services/useForgetForm";
+import { useResetForm } from "../services/useResetForm";
 import { notifyPromise } from "../services/errorHandlerService";
-const ForgetPass = () => {
+const ResetPass = () => {
   const navigate = useNavigate();
 
-  const { handleSubmit, handleChange, userDetail } = useForgetForm();
+  const { handleSubmit, handleChange, userDetail } =
+    useResetForm();
   const goBack = () => {
     navigate(-1); // This will navigate to the previous page
   };
@@ -16,9 +17,9 @@ const ForgetPass = () => {
     const promise = handleSubmit(e); // Assuming handleSubmit returns a promise
 
     notifyPromise(promise, {
-      pending: "Sending mail...",
-      success: "Check your email!",
-      error: "Failed to send mail!",
+      pending: "Rest Password...",
+      success: "Password Reset Successfully",
+      error: "Failed to reset password!",
     });
    
   };
@@ -37,30 +38,29 @@ const ForgetPass = () => {
               <Link to="/">Parkify</Link>
             </div>
             <div className="login_details">
-            
-                  <form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleFormSubmit}>
                     <h1>
-                      Forget <span className="brand_name">Password</span>
+                      Reset <span className="brand_name">Password</span>
                     </h1>
 
-                    <p className="short_text">Enter email to forget password</p>
+                    <p className="short_text">Enter new password</p>
                     <div className="email_box box">
-                      <label htmlFor="email">Email</label>
+                      <label htmlFor="password">Password</label>
                       <div className="field">
                         <i class="fa-solid fa-envelope"></i>
                         <input
-                          type="email"
+                          type="password"
                           onChange={handleChange}
-                          value={userDetail.email}
-                          name="email"
-                          placeholder="Email"
+                          value={userDetail.password}
+                          name="password"
+                          placeholder="Password"
                         />
                       </div>
                     </div>
 
-                    <button className="login_btn">Forget Password</button>
+                    <button className="login_btn">Reset Password</button>
                   </form>
-              
+
               <div className="dont_account">
                 <p>
                   Do you have an account
@@ -78,4 +78,4 @@ const ForgetPass = () => {
   );
 };
 
-export default ForgetPass;
+export default ResetPass;

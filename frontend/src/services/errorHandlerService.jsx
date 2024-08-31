@@ -1,6 +1,15 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+export const notifyPromise = (promise, messages) => {
+  toast.promise(promise, {
+    pending: messages.pending || "Loading...",
+    success: messages.success || "Success!",
+    error: messages.error || "Error occurred!",
+  });
+};
+
+// Existing notify function
 export const notify = (type, message) => {
   const options = {
     position: "top-right",

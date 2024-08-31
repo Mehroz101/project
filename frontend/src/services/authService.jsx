@@ -23,4 +23,25 @@ export const signinUser = async (userData) => {
     return error.response;
   }
 };
+export const forgetPass = async (userData) => {
+  console.log("forgetPass call");
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/forget`, userData);
+    console.log(response);
+    return response; // Return the response if successful
+  } catch (error) {
+    return Promise.reject(error.response || error); // Return a rejected promise in case of error
+  }
+};
+export const resetPass =async (userData) =>{
+  console.log("resetPass call");
+  console.log(userData);
+  try {
+    const response = await axios.put(`${API_URL}/api/auth/resetpassword`, userData);
+    console.log(response);
+    return response; // Return the response if successful
+  } catch (error) {
+    return Promise.reject(error.response || error); // Return a rejected promise in case of error
+  }
+}
 // Add more functions as needed (login, etc.)

@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcryptjs = require("bcryptjs");
-// Signup function
+const crypto = require("crypto"); // Signup function
+const sendEmail = require("../utils/sendEmail");
+
 const signup = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
@@ -70,8 +72,91 @@ const login = async (req, res) => {
     });
   }
 };
+const forget = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Email not found",
+      });
+    }
+
+    const resetToken = crypto.randomBytes(20).toString("hex");
+    const resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = resetPasswordExpires;
+    await user.save();
+
+    const resetUrl = `${process.env.CLIENT_URL}/resetpassword/${resetToken}`;
+    const message = `You are receiving this email because you (or someone else) has requested a password reset. Please make a PUT request to the following link to complete the process: \n\n${resetUrl}`;
+    console.log("BASE_URL:", process.env.BASE_URL); // This should print "http://localhost:5000"
+
+    const isSend = await sendEmail(email, "Password Reset", message);
+
+    if (200) {
+      return res.status(200).json({
+        success: true,
+        message: "Check your email",
+        user: user, // Fixed: Return the actual user object
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to send email",
+      });
+    }
+  } catch (error) {
+    console.error("Error in forget password:", error); // Log the error
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+const resetpass = async (req, res) => {
+  const { token, password } = req.body; // Extract the new password from the request body
+  console.log("Token:", token);
+  console.log("Password:", password);
+  console.log("Request Body:", req.body);
+  // console.log("Request Body:", req);
+  try {
+    // Find the user by the reset token and ensure the token hasn't expired
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }, // Check if the token is still valid
+    });
+
+    // If no user is found, respond with an error
+    if (!user) {
+      return res
+        .status(400)
+        .json({ msg: "Password reset token is invalid or has expired" });
+    }
+    const hashPassowrd = await bcryptjs.hash(password, 10);
+
+    // Update the user's password and clear the reset token and expiration
+    user.password = hashPassowrd;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    // Save the updated user information
+    await user.save();
+
+    // Send a success response
+    res.json({ msg: "Password has been reset" });
+  } catch (err) {
+    // If an error occurs, log it and send a server error response
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
 
 module.exports = {
   signup,
   login,
+  forget,
+  resetpass,
 };
