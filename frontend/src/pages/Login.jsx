@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useSigninForm } from "../services/useSigninForm";
+import { ToastContainer } from "react-toastify";
 const Login = () => {
+  const { userDetail, handleChange, handleSubmit } = useSigninForm();
+
   const navigate = useNavigate();
 
   const goBack = () => {
     navigate(-1); // This will navigate to the previous page
-  }
+  };
   return (
     <>
+    <ToastContainer/>
       <div className="login_page">
         <div className="back_page_btn">
-          <span onClick={()=>goBack()}>
+          <span onClick={() => goBack()}>
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
           </span>
         </div>
@@ -21,7 +26,7 @@ const Login = () => {
               <Link to="/">Parkify</Link>
             </div>
             <div className="login_details">
-              <form action="">
+              <form onSubmit={handleSubmit}>
                 <h1>
                   Login to <span className="brand_name">Parkify</span>
                 </h1>
@@ -41,14 +46,26 @@ const Login = () => {
                   <label htmlFor="email">Email</label>
                   <div className="field">
                     <i class="fa-solid fa-envelope"></i>
-                    <input type="email" placeholder="Email" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={userDetail.email}
+                      onChange={handleChange}
+                      placeholder="Email"
+                    />
                   </div>
                 </div>
                 <div className="password_box box">
                   <label htmlFor="password">Password</label>
                   <div className="field">
                     <i class="fa-solid fa-key"></i>
-                    <input type="password" placeholder="Password" />
+                    <input
+                      type="password"
+                      name="password"
+                      value={userDetail.password}
+                      onChange={handleChange}
+                      placeholder="Password"
+                    />
                   </div>
                 </div>
 

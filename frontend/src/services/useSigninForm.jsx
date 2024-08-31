@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signupUser } from "../services/authService"; // Import the signup service
+import { signinUser } from "../services/authService"; // Import the signin service
 import { notify } from "./errorHandlerService"; // Import notify function
 
-export const useSignupForm = () => {
+export const useSigninForm = () => {
   const [userDetail, setUserDetail] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const navigate = useNavigate();
@@ -24,17 +23,17 @@ export const useSignupForm = () => {
     e.preventDefault();
 
     try {
-      const response = await signupUser({
+      const response = await signinUser({
         email: userDetail.email,
         password: userDetail.password,
-        confirmPassword: userDetail.confirmPassword,
       });
 
-      if (response.status === 201) {
-        notify("success", "Account created successfully!");
-        // Navigate to login page or any other page
-        navigate("/login");
-      } else {
+      if (response.status === 200) {
+        notify("success", "Login successful!");
+        // Optionally, navigate to a different route
+        // navigate("/dashboard");
+      } 
+      else {
         // Handle different response status codes
         switch (response.status) {
           case 400:
@@ -43,11 +42,14 @@ export const useSignupForm = () => {
           case 401:
             notify("error", `Unauthorized: ${response.data.message || "Please log in again."}`);
             break;
+          case 404:
+            notify("error", `Not Found: ${response.data.message || "Resource not found."}`);
+            break;
           case 409:
             notify("error", `Conflict: ${response.data.message || "Email already exists."}`);
             break;
           case 422:
-            notify("error", `Unprocessable Entity: ${response.data.message || "Passwords do not match."}`);
+            notify("error", `Unprocessable Entity: ${response.data.message || "Password does not match."}`);
             break;
           default:
             notify("error", `Error: ${response.data.message || "Something went wrong."}`);
@@ -65,11 +67,14 @@ export const useSignupForm = () => {
           case 401:
             notify("error", `Unauthorized: ${error.response.data.message || "Please log in again."}`);
             break;
+          case 404:
+            notify("error", `Not Found: ${error.response.data.message || "Resource not found."}`);
+            break;
           case 409:
-            notify("error", `${error.response.data.message || "Email already exists."}`);
+            notify("error", `Conflict: ${error.response.data.message || "Email already exists."}`);
             break;
           case 422:
-            notify("error", `${error.response.data.message || "Passwords do not match."}`);
+            notify("error", `Unprocessable Entity: ${error.response.data.message || "Password does not match."}`);
             break;
           default:
             notify("error", `Error: ${error.response.data.message || "Something went wrong."}`);

@@ -9,7 +9,7 @@ const Signup = () => {
 
   return (
     <>
-          <ToastContainer />
+      <ToastContainer />
 
       <div className="login_page signup_page">
         <div className="back_page_btn">

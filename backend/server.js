@@ -1,42 +1,22 @@
-// backend/server.js
-
-// Import necessary modules
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-// Import the database connection module
+const authRoutes = require("./routes/authRoutes"); // Ensure this is correct
 const { connectDB, checkDatabaseConnection } = require("./config/db");
 
-// Initialize the Express application
 const app = express();
 
-// Load environment variables from .env file
 dotenv.config();
-
-// Set the port from environment variables or default to 5000
 const PORT = process.env.PORT || 5000;
 
-// Enable CORS for the specified client URL
 app.use(cors());
-
-// Enable JSON request parsing
 app.use(express.json());
 
-// Establish the database connection
 connectDB();
+app.use(checkDatabaseConnection);  // This should work fine as it is a function
 
-// Use the middleware to verify database connectivity for all routes
-app.use(checkDatabaseConnection);
+app.use("/api/auth", authRoutes);  // This should also work fine if `authRoutes` is correctly imported
 
-// Define a simple route
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
-
-// Use the authentication routes
-// app.use("/auth", authRoutes);
-
-// Start the server and listen on the specified port
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
