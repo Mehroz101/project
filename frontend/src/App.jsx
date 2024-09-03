@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import "./styles/HomePage.css";
@@ -22,19 +22,25 @@ import AboutUs from "./pages/AboutUs";
 import Signup from "./pages/Signup";
 import ForgetPass from "./pages/ForgetPass";
 import ResetPass from "./pages/ResetPass";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-function App() {
+const AppRoutes = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgetpassword" element={<ForgetPass />} />
-      <Route path="/resetpassword/:token" element={<ResetPass/>} />
+      <Route path="/resetpassword/:token" element={<ResetPass />} />
       <Route path="/searchResult" element={<MainApp />} />
       <Route path="/aboutus" element={<AboutUs />} />
 
-      <Route path="/profile" element={<Profile />}>
+      <Route
+        path="/profile"
+        element={isAuthenticated ? <Profile /> : <Login />}
+      >
         <Route index element={<AccountInformation />} />
         <Route path="booking" element={<ReservationHistory />} />
         <Route path="listyourspace" element={<ListyourSpace />} />
@@ -45,15 +51,29 @@ function App() {
       <Route path="/listyourspace" element={<ListyourSpace />} />
 
       {/* Dashboard Route */}
-      <Route path="/dashboard" element={<ParkingOwnerDashboard />}>
-        <Route index element={<Dashboard />} /> {/* Default Dashboard Container */}
+      <Route path="/dashboard" element={isAuthenticated ?<ParkingOwnerDashboard />:<Login/>}>
+        <Route index element={<Dashboard />} />
+        {/* Default Dashboard Container */}
         <Route path="reservation-request" element={<ReservationRequest />} />
-        <Route path="reservation-request/create-request" element={<CreateRequest />} />
+        <Route
+          path="reservation-request/create-request"
+          element={<CreateRequest />}
+        />
         <Route path="earning" element={<Earning />} />
         <Route path="manage-space" element={<ManageSpace />} />
         <Route path="manage-space/create-space" element={<CreateSpace />} />
       </Route>
     </Routes>
+  );
+};
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </Router>
   );
 }
 

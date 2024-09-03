@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import "../styles/Profile.css";
 import Navbar from "../components/Navbar";
+import { useAuth } from "../context/AuthContext";
+
 import { Link , Outlet} from "react-router-dom";
 const Profile = () => {
+  const {logout} = useAuth()
+
+  const logoutFun = () =>{
+    logout()
+  }
   return (
     <>
       <Navbar />
@@ -22,7 +29,7 @@ const Profile = () => {
               <Link to="listyourspace">List Your Space</Link>
             </li>
             <li>
-              <Link>Logout</Link>
+              <Link onClick={()=>logoutFun()}>Logout</Link>
             </li>
           </ul>
         </div>

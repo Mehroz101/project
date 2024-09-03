@@ -6,14 +6,18 @@ import { BrowserRouter } from "react-router-dom";
 import { SearchProvider } from "./context/SearchContext.jsx";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./context/AuthContext.jsx";
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <SearchProvider>
-    <AuthProvider>
-      <BrowserRouter>
+    {/* <AuthProvider> */}
+      {/* <QueryClientProvider client={queryClient}> */}
+      {/* <BrowserRouter> */}
         <App />
         <ToastContainer />
-      </BrowserRouter>
-    </AuthProvider>
+      {/* </BrowserRouter> */}
+    {/* </AuthProvider> */}
+    {/* </QueryClientProvider> */}
   </SearchProvider>
 );

@@ -1,11 +1,16 @@
 .create_space {
   display: flex;
-  /* justify-content: space-evenly; */
   flex-direction: column;
   width: 100%;
-  /* background-color: #f3f7f9; */
   gap: 20px;
   padding: var(--spacing-large);
+}
+
+.create_space form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
 }
 .space_detail_text {
   display: flex;
@@ -18,12 +23,12 @@
   flex-direction: column;
   width: 100%;
 }
-.space_detail_text > div textarea {
+.create_space form textarea {
   border: 1px solid #dddddd;
   border-radius: 4px;
   padding: var(--spacing-medium);
 }
-.create_space > div {
+.create_space form > div {
   border: 1px solid #dddddd;
   border-radius: 4px;
 
@@ -152,6 +157,20 @@
   padding: 10px;
 }
 
+.create_space .location h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+.create_space .location .input_combo_box {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.create_space .location .input_box input {
+  padding: 10px;
+}
 .create_space .pricing h2 {
   color: var(--primary);
   margin-bottom: 20px;
@@ -166,8 +185,6 @@
 .create_space .pricing .input_box input {
   padding: 10px;
 }
-
-
 
 .create_space .list_space {
   border-radius: 4px;

@@ -1,49 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import img from "../../assets/hero_img.png";
-
-const SpaceRow = () => {
+import { toggleSpaceStatus } from "../../services/spaceService";;
+const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
+  const [pause,setPause] = useState(false)
+  const toggleStatus = async () => {
+    try {
+      const spaceId =spaceInfo._id
+      console.log("row: "+spaceId)
+      const newState = await toggleSpaceStatus(spaceId);
+      if(newState.message === "Space status updated"){
+        setPause(!pause)
+      }
+      handleToggleStatus(spaceInfo._id, newState); // Notify parent component about the state change
+    } catch (error) {
+      console.error("Failed to toggle space status:", error);
+    }
+  };
   return (
     <>
       <tr>
         <td>
-          <span className="id">1</span>
+          <span className="id">{spaceIndex}</span>
         </td>
         <td>
           <img
-            src={img}
+            src={`http://localhost:5000/${spaceInfo.images[0]}`}
             alt="Product Image"
             className="responsive_img"
             width="50"
           />
         </td>
-        <td className="title">
-          Product 1 Lorem ipsum dolor sit aSDSDSDSDSDSSDSSDmet.
-        </td>
+        <td className="title">{spaceInfo.title}</td>
         <td>
-
-          <span className="badge">secure</span>
+          <span className="badge">{spaceInfo.badge}</span>
         </td>
-        <td>
-          <span className="request_id">12345</span>
+        <td className="request_id_td">
+          <span className="request_id">{spaceInfo._id}</span>
         </td>
-        <td className="total_booking">123</td>
-        <td className="price">$10.00</td>
+        <td className="total_booking">{spaceInfo.totalBooking}</td>
+        <td className="price">{spaceInfo.per_hour}</td>
         <td>
           {/* active 
           deactivated
              */}
-          <span className="status active">active</span>
+          <span className={`status ${spaceInfo.state}`}>{spaceInfo.state}</span>
         </td>
         <td className="actions">
           <Link title="view space">
             <i className="fa-regular fa-eye"></i>
+            <p>
+             
+            </p>
           </Link>
           <Link title="edit">
             <i class="fa-solid fa-pen"></i>
           </Link>
-          <Link title="pause">
-            <i class="fa-solid fa-pause"></i>
+          <Link title="pause" onClick={toggleStatus}>
+          {pause?<i class="fa-solid fa-play"></i>:<i class="fa-solid fa-pause"></i>}
+            {/* <i class="fa-solid fa-play"></i> */}
           </Link>
           <Link title="delete">
             <i class="fa-solid fa-trash"></i>

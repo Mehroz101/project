@@ -4,24 +4,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSigninForm } from "../services/useSigninForm";
 const Login = () => {
   const { userDetail, handleChange, handleSubmit } = useSigninForm();
-
   const navigate = useNavigate();
 
   const goBack = () => {
     navigate(-1); // This will navigate to the previous page
   };
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+  // const handleFormSubmit = async (e) => {
+  //   e.preventDefault();
 
-    const promise = handleSubmit(e); // Assuming handleSubmit returns a promise
+  //   const promise = handleSubmit(e); // Assuming handleSubmit returns a promise
 
-    notifyPromise(promise, {
-      pending: "Rest Password...",
-      success: "Password Reset Successfully",
-      error: "Failed to reset password!",
-    });
+  //   notifyPromise(promise, {
+  //     pending: "Rest Password...",
+  //     success: "Password Reset Successfully",
+  //     error: "Failed to reset password!",
+  //   });
    
-  };
+  // };
   return (
     <>
       <div className="login_page">
@@ -36,7 +35,7 @@ const Login = () => {
               <Link to="/">Parkify</Link>
             </div>
             <div className="login_details">
-              <form onSubmit={handleFormSubmit}>
+              <form onSubmit={handleSubmit}>
                 <h1>
                   Login to <span className="brand_name">Parkify</span>
                 </h1>

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { forgetPass } from "../services/authService";
 import { notify } from "./errorHandlerService";
-import { toast } from "react-toastify";
 
 export const useForgetForm = () => {
   const [userDetail, setUserDetail] = useState({ email: "" });
@@ -17,7 +16,7 @@ export const useForgetForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    const promise =await forgetPass({
+    const promise = forgetPass({
         email: userDetail.email,
       });
     

@@ -9,7 +9,6 @@ export const useResetForm = () => {
     token: "",
   });
   const { token } = useParams(); // Get the token from the URL
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

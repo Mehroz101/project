@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcryptjs = require("bcryptjs");
 const crypto = require("crypto"); // Signup function
 const sendEmail = require("../utils/sendEmail");
-
+const { generateToken } = require("../utils/generateToken");
 const signup = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
@@ -59,10 +59,13 @@ const login = async (req, res) => {
         message: "Incorrect password",
       });
     } else {
+      const token = generateToken(isUserExist); // Generate JWT token
+      console.log(token);
       res.status(200).json({
         success: true,
         message: "Login successful",
         user: isUserExist,
+        token,
       });
     }
   } catch (error) {
@@ -118,9 +121,9 @@ const forget = async (req, res) => {
 };
 const resetpass = async (req, res) => {
   const { token, password } = req.body; // Extract the new password from the request body
-  console.log("Token:", token);
-  console.log("Password:", password);
-  console.log("Request Body:", req.body);
+  // console.log("Token:", token);
+  // console.log("Password:", password);
+  // console.log("Request Body:", req.body);
   // console.log("Request Body:", req);
   try {
     // Find the user by the reset token and ensure the token hasn't expired
@@ -153,6 +156,7 @@ const resetpass = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
 
 module.exports = {
   signup,

@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signinUser } from "../services/authService"; // Import the signin service
 import { notify } from "./errorHandlerService"; // Import notify function
-
+import { useAuth } from "../context/AuthContext";
 export const useSigninForm = () => {
   const [userDetail, setUserDetail] = useState({
     email: "",
     password: "",
   });
+  const {login} = useAuth()
 
   const navigate = useNavigate();
 
@@ -30,8 +31,7 @@ export const useSigninForm = () => {
 
       if (response.status === 200) {
         notify("success", "Login successful!");
-        // Optionally, navigate to a different route
-        // navigate("/dashboard");
+        login()        // Optionally, navigate to a different route
       } 
       else {
         // Handle different response status codes

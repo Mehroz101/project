@@ -18,7 +18,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    name: {
+    fName: {
+      type: String,
+    },
+    lName: {
       type: String,
     },
     phone: {

@@ -119,6 +119,16 @@ td {
   padding: 15px;
   font-size: var(--font-size-small);
 }
+td .request_id_td .request_id{
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+td.request_id_td{
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 td.title {
   max-width: 150px;
