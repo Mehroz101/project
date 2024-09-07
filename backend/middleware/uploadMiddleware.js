@@ -1,17 +1,5 @@
 const multer = require('multer');
-
-// const upload = multer({ dest: 'uploads/' })
-
-
-
 const path = require('path');
-// const fs = require('fs');
-
-// // Ensure the uploads directory exists
-// const uploadsDir = path.join(__dirname, 'uploads');
-// if (!fs.existsSync(uploadsDir)) {
-//   fs.mkdirSync(uploadsDir);
-// }
 
 // Multer storage configuration
 const storage = multer.diskStorage({
@@ -60,6 +48,7 @@ const uploadMiddleware = (req, res, next) => {
         return res.status(500).json({ message: 'An error occurred while uploading files.' });
       }
     }
+    // console.log("uploaded")
     next();
   });
 }

@@ -1,32 +1,35 @@
-// src/components/CreateSpace.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import "../styles/CreateSpace.css";
 import { useCreateSpaceForm } from "../../services/useCreateSpaceForm";
 import FileUpload from "./FileUpload";
 
 const CreateSpace = () => {
-  const { spaceDetails, handleChange, handleSubmit } = useCreateSpaceForm();
+   const {spaceDetails,handleChange, handleSubmit} = useCreateSpaceForm();
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const handleFilesChange = (files) => {
     setUploadedFiles(files);
-    console.log('Files received from FileUpload:', files); // Log the files to the console
+    console.log("Files received from FileUpload:", files); // Log the files to the console
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
-    handleSubmit(uploadedFiles);
+    console.log(spaceDetails)
+    console.log("uploadedFiles")
+    console.log(uploadedFiles)
+      handleSubmit(uploadedFiles);
+    
   };
-  // useEffect(() => {
-  //   console.log('Uploaded files:', uploadedFiles);
-  // }, [uploadedFiles]);
 
+
+  
   return (
     <div className="create_space">
       <h2>Create New Space</h2>
       <form onSubmit={handleFormSubmit}>
+        {/* Space Details Inputs */}
         <div className="space_detail_text">
+          {/* Title Input */}
           <div className="input_box">
             <label htmlFor="title">Title</label>
             <input
@@ -37,6 +40,7 @@ const CreateSpace = () => {
               onChange={handleChange}
             />
           </div>
+          {/* Short Description Input */}
           <div className="input_box">
             <label htmlFor="short_description">Short Description</label>
             <input
@@ -47,6 +51,7 @@ const CreateSpace = () => {
               onChange={handleChange}
             />
           </div>
+          {/* Description Input */}
           <div className="input_box">
             <label htmlFor="description">Description</label>
             <textarea
@@ -59,13 +64,19 @@ const CreateSpace = () => {
             ></textarea>
           </div>
         </div>
+        {/* File Upload Section */}
         <div className="file_upload">
-          <FileUpload onFilesChange={handleFilesChange} />
+          <FileUpload
+            onFilesChange={handleFilesChange}
+            initialFiles={spaceDetails.images} // Pass existing images to FileUpload
+          />
         </div>
+        {/* Features Section */}
         <div className="features">
           <h2>Features</h2>
           <div className="features_container">
             <div className="input_combo_box">
+              {/* CCTV Feature */}
               <div className="input_box">
                 <label htmlFor="cctv">CCTV</label>
                 <input
@@ -75,6 +86,7 @@ const CreateSpace = () => {
                   onChange={handleChange}
                 />
               </div>
+              {/* Underground Feature */}
               <div className="input_box">
                 <label htmlFor="underground">Underground</label>
                 <input
@@ -84,6 +96,7 @@ const CreateSpace = () => {
                   onChange={handleChange}
                 />
               </div>
+              {/* Secure Feature */}
               <div className="input_box">
                 <label htmlFor="secure">Secure</label>
                 <input
@@ -96,9 +109,11 @@ const CreateSpace = () => {
             </div>
           </div>
         </div>
+        {/* Location Section */}
         <div className="location">
           <h2>Location</h2>
           <div className="input_combo_box">
+            {/* Longitude Input */}
             <div className="input_box">
               <label htmlFor="longitude">Longitude</label>
               <input
@@ -109,6 +124,7 @@ const CreateSpace = () => {
                 onChange={handleChange}
               />
             </div>
+            {/* Latitude Input */}
             <div className="input_box">
               <label htmlFor="latitude">Latitude</label>
               <input
@@ -121,9 +137,11 @@ const CreateSpace = () => {
             </div>
           </div>
         </div>
+        {/* Pricing Section */}
         <div className="pricing">
           <h2>Pricing</h2>
           <div className="input_combo_box">
+            {/* Per Hour Pricing */}
             <div className="input_box">
               <label htmlFor="per_hour">Per Hour</label>
               <input
@@ -134,6 +152,7 @@ const CreateSpace = () => {
                 onChange={handleChange}
               />
             </div>
+            {/* Per Day Pricing */}
             <div className="input_box">
               <label htmlFor="per_day">Per Day</label>
               <input
@@ -146,7 +165,10 @@ const CreateSpace = () => {
             </div>
           </div>
         </div>
-        <button type="submit" className="list_space">List New Space</button>
+        {/* Submit Button */}
+        <button type="submit" className="list_space">
+        List Your Space
+        </button>
       </form>
     </div>
   );

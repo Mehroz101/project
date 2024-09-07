@@ -13,7 +13,7 @@ const ManageSpace = () => {
     try {
       const response = await getSpace(); // Fetch data from backend
       const spacesArray = response.data.data;
-
+console.log(spacesArray)
       setSpaces(spacesArray); // Set the state with the array
       setUpdateSpaces(spacesArray);
     } catch (error) {
@@ -40,10 +40,11 @@ const ManageSpace = () => {
         space._id === spaceId ? { ...space, state: newState } : space
       )
     );
+    spaceRequest()
   };
   useEffect(() => {
     spaceRequest();
-  }, [spaces]);
+  }, []);
 
   return (
     <>

@@ -23,7 +23,6 @@ import Signup from "./pages/Signup";
 import ForgetPass from "./pages/ForgetPass";
 import ResetPass from "./pages/ResetPass";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import UpdateSpace from "./parkingOwner/components/UpdateSpace";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -63,7 +62,6 @@ const AppRoutes = () => {
         <Route path="earning" element={<Earning />} />
         <Route path="manage-space" element={<ManageSpace />} />
         <Route path="manage-space/create-space" element={<CreateSpace />} />
-        <Route path="edit-space/:spaceId" element={<UpdateSpace />} />
       </Route>
     </Routes>
   );

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toggleSpaceStatus } from "../../services/spaceService";;
 const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
   const [pause,setPause] = useState(false)
   const toggleStatus = async () => {
     try {
+      console.log(spaceInfo)
       const spaceId =spaceInfo._id
       console.log("row: "+spaceId)
       const newState = await toggleSpaceStatus(spaceId);
@@ -16,6 +17,7 @@ const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
       console.error("Failed to toggle space status:", error);
     }
   };
+ 
   return (
     <>
       <tr>
@@ -52,7 +54,7 @@ const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
              
             </p>
           </Link>
-          <Link title="edit">
+          <Link title="edit" to={`/dashboard/edit-space/${spaceInfo._id}`}>
             <i class="fa-solid fa-pen"></i>
           </Link>
           <Link title="pause" onClick={toggleStatus}>

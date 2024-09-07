@@ -1,9 +1,9 @@
-// src/services/useCreateSpaceForm.js
+// src/services/useUpdateSpaceForm.js
 import { useState } from "react";
-import { createSpace } from "../services/spaceService";
+import { createSpace, updateSpaceDetails } from "../services/spaceService";
 import { notify } from "./errorHandlerService";
 
-export const useCreateSpaceForm = () => {
+export const useUpdateSpaceForm = () => {
   const [spaceDetails, setSpaceDetails] = useState({
     title: "",
     short_description: "",
@@ -31,14 +31,31 @@ export const useCreateSpaceForm = () => {
         [name]: value,
       }));
     }
+    console.log("handle change function")
+    console.log(JSON.stringify(spaceDetails.features))
+    console.log(spaceDetails.features)
   };
 
-  const handleSubmit = async (files) => {
+  const handleSubmit = async ( newFiles, removeImages,fetchedImg, spaceId) => {
     try {
-      console.log(" recieved")
-      console.log(files)
+        console.log("handle submit function")
+      console.log(" new images files");
+      console.log(newFiles);
+      console.log(" removeImg");
+      console.log(removeImages);
+      console.log(" Fetched images");
+      console.log(fetchedImg);
+      console.log("form data");
+      console.log(spaceDetails);
+      const commonElements = fetchedImg.filter((value) =>
+      removeImages.includes(value)
+    );
+    console.log("common images to remove")
+    console.log(commonElements)
+    // console.log("features")
+    // console.log(spaceDetails.features)
       const formData = new FormData();
-      
+
       formData.append("title", spaceDetails.title);
       formData.append("short_description", spaceDetails.short_description);
       formData.append("description", spaceDetails.description);
@@ -48,22 +65,31 @@ export const useCreateSpaceForm = () => {
       formData.append("per_hour", spaceDetails.per_hour);
       formData.append("per_day", spaceDetails.per_day);
 
-      files.forEach((file, index) => {
-        // console.log(`File ${index + 1}:`);
-        // console.log('File Name:', file.name);
-        // console.log('File Size:', file.size);
-        // console.log('File Type:', file.type);
-        // console.log('Last Modified Date:', new Date(file.lastModified).toLocaleDateString());
-        // console.log('Last Modified Timestamp:', file.lastModified);
-        console.log(file.file)
-        formData.append("files", file.file);
-      });
+      //   files.forEach((file, index) => {
+      //     // console.log(`File ${index + 1}:`);
+      //     // console.log('File Name:', file.name);
+      //     // console.log('File Size:', file.size);
+      //     // console.log('File Type:', file.type);
+      //     // console.log('Last Modified Date:', new Date(file.lastModified).toLocaleDateString());
+      //     // console.log('Last Modified Timestamp:', file.lastModified);
+      //     formData.append("files", file.file);
+      //   });
+     
+    //   previousImg.forEach((image) => formData.append("previousImg", image));
+     
+    newFiles.forEach((image) => 
+      formData.append("files", image)
+      );
 
-      // Debugging FormData
-      
+      commonElements.forEach((image) => formData.append("removeImg", image));
 
-      const response = await createSpace(formData);
+      // // Debugging FormData
+      console.log("spaceId");
+      console.log(spaceId);
 
+      const response = await updateSpaceDetails(formData, spaceId);
+      console.log("status");
+      console.log(response);
       if (response.status === 200) {
         notify("success", "Space created successfully!");
       } else {
@@ -130,5 +156,5 @@ export const useCreateSpaceForm = () => {
     }
   };
 
-  return { spaceDetails,setSpaceDetails, handleChange, handleSubmit };
+  return { spaceDetails, setSpaceDetails, handleChange, handleSubmit };
 };

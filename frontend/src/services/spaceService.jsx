@@ -8,8 +8,10 @@ export const createSpace = async (formData) => {
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   console.log("token:", token);
   
-  console.log("FormData to be sent:", formData);
-  try {
+// for (let pair of formData.entries()) {
+//         console.log(pair[0] + ', ' + pair[1]);
+//       }  
+      try {
     const response = await axios.post(`${API_URL}/create`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -51,14 +53,15 @@ export const createSpace = async (formData) => {
   }
 };
 
-export const getSpace = async () => {
+export const getSpace = async (spaceId =null) => {
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   const config = {
     headers: {
       Authorization: `Bearer ${token}`, // Add the token to the Authorization header
     },
   };
-
+  if(spaceId == null){
+    console.log("service page: "+spaceId)
   try {
     const response = await axios.get(`${API_URL}/show`, config);
 
@@ -95,6 +98,19 @@ export const getSpace = async () => {
     }
     throw error.response; // Still throw the error to handle it in the component if needed
   }
+}
+else{
+  try {
+    
+    console.log("req page:=> "+spaceId)
+    const response = await axios.get(`${API_URL}/getspacedetail/${spaceId}`, config);
+    return response
+
+  } catch (error) {
+    console.log(error.message)
+    notify("error"+error.message)
+  }
+}
 };
 
 export const toggleSpaceStatus = async (spaceId)  =>{
@@ -144,3 +160,45 @@ export const toggleSpaceStatus = async (spaceId)  =>{
   
 
 }
+export const updateSpaceDetails = async (formData,spaceId) => {
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+// console.log("files:" )
+// console.log(uploadedFiles)
+  // Create FormData to handle file uploads
+  // const formData = new FormData();
+  
+  // // Append space details to FormData
+  // for (const [key, value] of Object.entries(spaceDetails)) {
+  //   formData.append(key, value);
+  // }
+
+  // Append each file to FormData
+  // uploadedFiles.forEach(file => {
+  //   formData.append('images', file);
+  // });
+  // Append files
+  // uploadedFiles.forEach((file, index) => {
+  //   formData.append(`images[${index}]`, file); // Use unique keys for each file
+  // });
+
+
+
+console.log("formData")
+console.log(formData)
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`, // Add the token to the Authorization header
+      'Content-Type': 'multipart/form-data', // Set the content type for FormData
+    },
+  };
+
+  try {
+    const response = await axios.put(`${API_URL}/updatespacedetail/${spaceId}`, formData, config);
+    console.log(response)
+    if(response.status)
+    notify("success","update successfully")
+    return response.data;
+  } catch (error) {
+    console.error("Error updating space details:", error);
+  }
+};

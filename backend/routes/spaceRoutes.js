@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const uploadMiddleware = require('../middleware/uploadMiddleware');
-const {createSpace,showSpace,toggleSpaceStatus} = require('../controllers/spaceController');
 const multer = require('multer');
+const {createSpace,showSpace,toggleSpaceStatus,getspacedetail, updateSpaceDetails} = require('../controllers/spaceController');
 const authenticateToken = require('../middleware/authMiddleware');
 
 const upload = multer({ dest: 'uploads/' })
@@ -11,5 +11,7 @@ const upload = multer({ dest: 'uploads/' })
 router.post('/create', authenticateToken, uploadMiddleware, createSpace);
 router.get('/show',authenticateToken ,showSpace);
 router.patch("/update", authenticateToken, toggleSpaceStatus);
+router.get("/getspacedetail/:spaceId", authenticateToken, getspacedetail);
+router.put("/updatespacedetail/:spaceId", authenticateToken,uploadMiddleware, updateSpaceDetails);
 
 module.exports = router;
