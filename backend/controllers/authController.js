@@ -75,6 +75,7 @@ const login = async (req, res) => {
     });
   }
 };
+
 const forget = async (req, res) => {
   const { email } = req.body;
   try {
@@ -121,10 +122,7 @@ const forget = async (req, res) => {
 };
 const resetpass = async (req, res) => {
   const { token, password } = req.body; // Extract the new password from the request body
-  // console.log("Token:", token);
-  // console.log("Password:", password);
-  // console.log("Request Body:", req.body);
-  // console.log("Request Body:", req);
+  
   try {
     // Find the user by the reset token and ensure the token hasn't expired
     const user = await User.findOne({

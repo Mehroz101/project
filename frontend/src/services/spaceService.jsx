@@ -7,11 +7,11 @@ const API_URL = "http://localhost:5000/api/spaces"; // Adjust to your API endpoi
 export const createSpace = async (formData) => {
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   console.log("token:", token);
-  
-// for (let pair of formData.entries()) {
-//         console.log(pair[0] + ', ' + pair[1]);
-//       }  
-      try {
+
+  // for (let pair of formData.entries()) {
+  //         console.log(pair[0] + ', ' + pair[1]);
+  //       }
+  try {
     const response = await axios.post(`${API_URL}/create`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -20,100 +20,109 @@ export const createSpace = async (formData) => {
     });
     // Check the status code and notify accordingly
     if (response.status === 201) {
-      notify("success","Space created successfully!");
+      notify("success", "Space created successfully!");
     } else {
-      notify("warning","Space creation completed with some issues.");
+      notify("warning", "Space creation completed with some issues.");
     }
     // return response;
-  }
-  
-   catch (error) {
+  } catch (error) {
     // console.log(error)
     // Handle specific status codes or default to general error
     if (error.response) {
       switch (error.response.status) {
         case 400:
-         notify("error","Please check your input data.");
+          notify("error", "Please check your input data.");
           break;
         case 401:
-         notify("error","Please log in again.");
+          notify("error", "Please log in again.");
           break;
         case 403:
-         notify("error","You don't have permission to perform this action.");
+          notify("error", "You don't have permission to perform this action.");
           break;
         case 500:
-         notify("error","Please try again later.");
+          notify("error", "Please try again later.");
           break;
         default:
-         notify("error","Error creating space: " + (error.response?.data?.message || error.message));
+          notify(
+            "error",
+            "Error creating space: " +
+              (error.response?.data?.message || error.message)
+          );
       }
     } else {
-      notify("error","Network error. Please check your connection.");
+      notify("error", "Network error. Please check your connection.");
     }
   }
 };
 
-export const getSpace = async (spaceId =null) => {
+export const getSpace = async (spaceId = null) => {
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   const config = {
     headers: {
       Authorization: `Bearer ${token}`, // Add the token to the Authorization header
     },
   };
-  if(spaceId == null){
-    console.log("service page: "+spaceId)
-  try {
-    const response = await axios.get(`${API_URL}/show`, config);
+  if (spaceId == null) {
+    console.log("service page: " + spaceId);
+    try {
+      const response = await axios.get(`${API_URL}/show`, config);
 
-    // Check the status code and notify accordingly
-    if (response.status === 200) {
-      return response;
-    } else if (response.status === 204) {
-    notify("info","No spaces found.");
-      return response;
-    } else {
-    notify("error","Fetched spaces with some issues.");
-    }
-  } catch (error) {
-    // Handle specific status codes or default to general error
-    if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          notify("error","Unauthorized. Please log in again.");
-          break;
-        case 403:
-          notify("error","Forbidden. You don't have permission to perform this action.");
-          break;
-        case 404:
-          // notify("info","to space list yet");
-          break;
-        case 500:
-          notify("error","Server error. Please try again later.");
-          break;
-        default:
-          notify("error","Error fetching spaces: " + (error.response?.data?.message || error.message));
+      // Check the status code and notify accordingly
+      if (response.status === 200) {
+        return response;
+      } else if (response.status === 204) {
+        notify("info", "No spaces found.");
+        return response;
+      } else {
+        notify("error", "Fetched spaces with some issues.");
       }
-    } else {
-      notify("error","Network error. Please check your connection.");
+    } catch (error) {
+      // Handle specific status codes or default to general error
+      if (error.response) {
+        switch (error.response.status) {
+          case 401:
+            notify("error", "Unauthorized. Please log in again.");
+            break;
+          case 403:
+            notify(
+              "error",
+              "Forbidden. You don't have permission to perform this action."
+            );
+            break;
+          case 404:
+            // notify("info","to space list yet");
+            break;
+          case 500:
+            notify("error", "Server error. Please try again later.");
+            break;
+          default:
+            notify(
+              "error",
+              "Error fetching spaces: " +
+                (error.response?.data?.message || error.message)
+            );
+        }
+      } else {
+        notify("error", "Network error. Please check your connection.");
+      }
+      throw error.response; // Still throw the error to handle it in the component if needed
     }
-    throw error.response; // Still throw the error to handle it in the component if needed
+  } else {
+    try {
+      console.log("req page:=> " + spaceId);
+      const response = await axios.get(
+        `${API_URL}/getspacedetail/${spaceId}`,
+        config
+      );
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      notify("error" + error.message);
+    }
   }
-}
-else{
-  try {
-    
-    console.log("req page:=> "+spaceId)
-    const response = await axios.get(`${API_URL}/getspacedetail/${spaceId}`, config);
-    return response
-
-  } catch (error) {
-    console.log(error.message)
-    notify("error"+error.message)
-  }
-}
 };
 
-export const toggleSpaceStatus = async (spaceId)  =>{
+export const toggleSpaceStatus = async (spaceId) => {
   console.log("service:", spaceId);
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   const config = {
@@ -133,40 +142,42 @@ export const toggleSpaceStatus = async (spaceId)  =>{
       config // Pass the config with headers
     );
     if (response.status === 200) {
-      notify("success","Space status updated successfully!");
-      return response;
-    }  else {
-    notify("error","Fetched spaces with some issues.");
+      console.log(response.data.message)
+      notify("success", "Space status updated successfully!");
+      return response.data.message;
+    } else {
+      notify("error", "Fetched spaces with some issues.");
     }
   } catch (error) {
     // Handle specific status codes or default to general error
     if (error.response) {
       switch (error.response.status) {
-       
         case 404:
-          notify("info","space not found");
+          notify("info", "space not found");
           break;
         case 500:
-          notify("error","Server error. Please try again later.");
+          notify("error", "Server error. Please try again later.");
           break;
         default:
-          notify("error","Error fetching spaces: " + (error.response?.data?.message || error.message));
+          notify(
+            "error",
+            "Error fetching spaces: " +
+              (error.response?.data?.message || error.message)
+          );
       }
     } else {
-      notify("error","Network error. Please check your connection.");
+      notify("error", "Network error. Please check your connection.");
     }
     throw error.response; // Still throw the error to handle it in the component if needed
   }
-  
-
-}
-export const updateSpaceDetails = async (formData,spaceId) => {
+};
+export const updateSpaceDetails = async (formData, spaceId) => {
   const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-// console.log("files:" )
-// console.log(uploadedFiles)
+  // console.log("files:" )
+  // console.log(uploadedFiles)
   // Create FormData to handle file uploads
   // const formData = new FormData();
-  
+
   // // Append space details to FormData
   // for (const [key, value] of Object.entries(spaceDetails)) {
   //   formData.append(key, value);
@@ -181,24 +192,47 @@ export const updateSpaceDetails = async (formData,spaceId) => {
   //   formData.append(`images[${index}]`, file); // Use unique keys for each file
   // });
 
-
-
-console.log("formData")
-console.log(formData)
+  console.log("formData");
+  console.log(formData);
   const config = {
     headers: {
-      'Authorization': `Bearer ${token}`, // Add the token to the Authorization header
-      'Content-Type': 'multipart/form-data', // Set the content type for FormData
+      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+      "Content-Type": "multipart/form-data", // Set the content type for FormData
     },
   };
 
   try {
-    const response = await axios.put(`${API_URL}/updatespacedetail/${spaceId}`, formData, config);
-    console.log(response)
-    if(response.status)
-    notify("success","update successfully")
+    const response = await axios.put(
+      `${API_URL}/updatespacedetail/${spaceId}`,
+      formData,
+      config
+    );
+    console.log(response);
+    if (response.status) notify("success", "update successfully");
     return response.data;
   } catch (error) {
     console.error("Error updating space details:", error);
+  }
+};
+
+export const handleDelete = async (spaceId) => {
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+    },
+  };
+  try {
+    const response = await axios.delete(
+      `${API_URL}/deletespace/${spaceId}`,
+      config
+    );
+    if(response.status == 200){
+      notify("success", "Space deleted successfully!");
+    }
+    return response.data
+  } catch (error) {
+    console.log(error.message);
+    notify("error" + error.message);
   }
 };

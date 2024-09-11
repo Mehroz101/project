@@ -6,29 +6,7 @@ import { useParams } from "react-router-dom";
 // import UpdateFile from "./UpdateFile";
 
 const UpdateSpace = () => {
-  //   const { spaceDetails, setSpaceDetails, handleChange, handleSubmit } =
-  //     useUpdateSpaceForm();
-  //   const [uploadedFiles, setUploadedFiles] = useState([]);
-
-  //   const { spaceId } = useParams();
-  //   const handleFilesChange = (files) => {
-  //     setUploadedFiles(files);
-  //     console.log("Files received from FileUpload:", uploadedFiles); // Log the files to the console
-  //   };
-
-  //   const handleFormSubmit = (e) => {
-  //     e.preventDefault();
-  //     // console.log("submit");
-  //   };
-  //   useEffect(() => {
-  //     const fetchListing = async () => {
-  //       const { data } = await getSpace(spaceId);
-  //       setSpaceDetails(data.space)
-  //       console.log(data.space);
-  //     };
-
-  //     fetchListing();
-  //   }, [spaceId]);
+  
 
   const { spaceDetails, setSpaceDetails, handleChange, handleSubmit } =
     useUpdateSpaceForm();

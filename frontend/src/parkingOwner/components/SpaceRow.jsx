@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { toggleSpaceStatus } from "../../services/spaceService";;
-const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
-  const [pause,setPause] = useState(false)
+import { toggleSpaceStatus } from "../../services/spaceService";
+const SpaceRow = ({
+  spaceInfo,
+  spaceIndex,
+  handleToggleStatus,
+  handleDeleteSpace,
+}) => {
+  const [pause, setPause] = useState(false);
   const toggleStatus = async () => {
     try {
-      console.log(spaceInfo)
-      const spaceId =spaceInfo._id
-      console.log("row: "+spaceId)
+      console.log(spaceInfo);
+      const spaceId = spaceInfo._id;
+      console.log("row: " + spaceId);
       const newState = await toggleSpaceStatus(spaceId);
-      if(newState.message === "Space status updated"){
-        setPause(!pause)
+      if (newState === "Space status updated") {
+        setPause(!pause);
       }
       handleToggleStatus(spaceInfo._id, newState); // Notify parent component about the state change
     } catch (error) {
       console.error("Failed to toggle space status:", error);
     }
   };
- 
+  const deleteSpace = () => {
+    const spaceId = spaceInfo._id;
+    console.log("row: " + spaceId);
+    handleDeleteSpace(spaceId);
+  };
+  const REACT_APP_API_URL = "http://localhost:5000/";
+
+
   return (
     <>
       <tr>
@@ -26,7 +38,7 @@ const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
         </td>
         <td>
           <img
-            src={`http://localhost:5000/${spaceInfo.images[0]}`}
+            src={`${REACT_APP_API_URL}${spaceInfo.images[0]}`}
             alt="Product Image"
             className="responsive_img"
             width="50"
@@ -48,20 +60,22 @@ const SpaceRow = ({ spaceInfo, spaceIndex,handleToggleStatus }) => {
           <span className={`status ${spaceInfo.state}`}>{spaceInfo.state}</span>
         </td>
         <td className="actions">
-          <Link title="view space">
+          <Link title="view space" to={`view-space/${spaceInfo._id}`}>
             <i className="fa-regular fa-eye"></i>
-            <p>
-             
-            </p>
+            <p></p>
           </Link>
           <Link title="edit" to={`/dashboard/edit-space/${spaceInfo._id}`}>
             <i class="fa-solid fa-pen"></i>
           </Link>
           <Link title="pause" onClick={toggleStatus}>
-          {pause?<i class="fa-solid fa-play"></i>:<i class="fa-solid fa-pause"></i>}
+            {pause ? (
+              <i class="fa-solid fa-play"></i>
+            ) : (
+              <i class="fa-solid fa-pause"></i>
+            )}
             {/* <i class="fa-solid fa-play"></i> */}
           </Link>
-          <Link title="delete">
+          <Link title="delete" onClick={deleteSpace}>
             <i class="fa-solid fa-trash"></i>
           </Link>
         </td>

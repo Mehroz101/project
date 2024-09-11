@@ -24,6 +24,7 @@ import ForgetPass from "./pages/ForgetPass";
 import ResetPass from "./pages/ResetPass";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import UpdateSpace from "./parkingOwner/components/UpdateSpace";
+import ViewSpace from "./parkingOwner/components/ViewSpace";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -64,6 +65,7 @@ const AppRoutes = () => {
         <Route path="manage-space" element={<ManageSpace />} />
         <Route path="manage-space/create-space" element={<CreateSpace />} />
         <Route path="edit-space/:spaceId" element={<UpdateSpace />} />
+        <Route path="manage-space/view-space/:spaceId" element={<ViewSpace/>}/>
       </Route>
     </Routes>
   );

@@ -1,6 +1,7 @@
 .profile_page {
   background-color: var(--background);
   display: flex;
+  position: relative;
 }
 .profile_page .profile_left {
   background-color: #eff4f4;

@@ -197,6 +197,23 @@ tbody tr:hover {
   object-fit: cover;
   height: 50px;
 }
+/* .space_view_popup{
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 114%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.space_view_popup >div{
+  padding: 20px;
+  max-width: 500px;
+  background-color: #fff;
+
+} */
 
 @media (max-width: 400px) {
   .space_numbers_hide {

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/CustomReservationRequest.css";
+import { getSpace } from "../../services/spaceService";
 const CreateRequest = () => {
+
   return (
     <>
       <div className="create_request_container">
@@ -69,7 +71,7 @@ const CreateRequest = () => {
             </div>
           </div>
         </div>
-        <div className="payment_information">
+        {/* <div className="payment_information">
           <h2>Payment information</h2>
           <p>All payment are secure and encrypted</p>
           <div className="payment_form">
@@ -106,7 +108,7 @@ const CreateRequest = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <button className="paynow_reserve">Reserve</button>
       </div>
     </>

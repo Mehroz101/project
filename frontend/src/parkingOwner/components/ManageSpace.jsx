@@ -2,49 +2,64 @@ import React, { useEffect, useState } from "react";
 import "../styles/ManageSpace.css";
 import { Link } from "react-router-dom";
 import SpaceRow from "./SpaceRow";
-import { getSpace } from "../../services/spaceService";
+import { getSpace, handleDelete } from "../../services/spaceService";
+import { SearchFunctionality } from "../../services/SearchService";
 
 const ManageSpace = () => {
-  const [spaces, setSpaces] = useState([]); // Renamed to 'spaces' for clarity
-  const [updateSpaces, setUpdateSpaces] = useState([]); // Renamed to 'spaces' for clarity
+  const [spaces, setSpaces] = useState([]); // Original data from backend
   const [activeFilter, setActiveFilter] = useState("all"); // State to keep track of active filter
+  const { handleSearchChange, setData, setFilteredData, filteredData } =
+    SearchFunctionality(); // Initialize search functionality from service
 
+  // Fetch data from backend
   const spaceRequest = async () => {
     try {
-      const response = await getSpace(); // Fetch data from backend
+      const response = await getSpace();
       const spacesArray = response.data.data;
-console.log(spacesArray)
-      setSpaces(spacesArray); // Set the state with the array
-      setUpdateSpaces(spacesArray);
+      setSpaces(spacesArray); // Save the fetched data
+      setFilteredData(spacesArray); // Initialize filteredData with all spaces
     } catch (error) {
       console.error("Error fetching spaces:", error);
     }
   };
+
+  // Filter based on status or badge
   const updateListView = (state) => {
     setActiveFilter(state);
     if (state === "all") {
-      setUpdateSpaces(spaces);
+      setFilteredData(spaces); // Reset filtered data to show all
       return;
     }
     if (state === "badge") {
-      setUpdateSpaces(spaces.filter((space) => space.badge));
+      setFilteredData(spaces.filter((space) => space.badge)); // Filter by badge
       return;
     }
     const status = state;
-
-    setUpdateSpaces(spaces.filter((space) => space.state === status));
+    setFilteredData(spaces.filter((space) => space.state === status)); // Filter by status
   };
-  const handleToggleStatus = (spaceId, newState) => {
+
+  const handleDeleteSpace = async (spaceId) => {
+    await handleDelete(spaceId); // Call delete function
+    spaceRequest(); // Refresh space data after deletion
+  };
+
+  const handleToggleStatus = async (spaceId, newState) => {
     setSpaces((prevSpaces) =>
       prevSpaces.map((space) =>
         space._id === spaceId ? { ...space, state: newState } : space
       )
     );
-    spaceRequest()
+    await spaceRequest(); // Refresh space data after status change
   };
+
   useEffect(() => {
-    spaceRequest();
+    spaceRequest(); // Initial data fetch
   }, []);
+
+  // Call setData with filtered data to update based on search term
+  useEffect(() => {
+    setData(spaces);
+  }, [spaces, setData]);
 
   return (
     <>
@@ -55,22 +70,8 @@ console.log(spacesArray)
             <button>List New Space</button>
           </Link>
         </div>
-        <div className="space_numbers space_numbers_hide">
-          <div className="total_space">
-            <p>Total listing</p>
-            <h2>{spaces.length}</h2>
-          </div>
-          <div className="active_space">
-            <p>Active listing</p>
-            <h2>{spaces.filter((space) => space.state === "active").length}</h2>
-          </div>
-          <div className="deactived_space">
-            <p>Deactivated listing</p>
-            <h2>
-              {spaces.filter((space) => space.state === "deactivated").length}
-            </h2>
-          </div>
-        </div>
+
+        {/* Filter Navbar */}
         <div className="filter_navbar">
           <ul>
             <li className={`${activeFilter === "all" ? "active" : ""}`}>
@@ -80,27 +81,29 @@ console.log(spacesArray)
               <Link onClick={() => updateListView("active")}>Active</Link>
             </li>
             <li className={`${activeFilter === "deactivated" ? "active" : ""}`}>
-              <Link onClick={() => updateListView("deactivated")}>
-                Deactive
-              </Link>
+              <Link onClick={() => updateListView("deactivated")}>Deactive</Link>
             </li>
             <li className={`${activeFilter === "badge" ? "active" : ""}`}>
               <Link onClick={() => updateListView("badge")}>Badge</Link>
             </li>
           </ul>
         </div>
+
+        {/* Search Box */}
         <div className="search_filter">
           <div className="search_box">
-            <select name="search_option">
-              <option value="id">Id</option>
-              <option value="title">Title</option>
-            </select>
             <div className="search_input">
-              <input type="text" placeholder="Search..." />
+              <input
+                type="text"
+                placeholder="Search..."
+                onChange={handleSearchChange} // Update search term
+              />
               <button>Search</button>
             </div>
           </div>
         </div>
+
+        {/* Manage Spaces List */}
         <div className="manage_space_list">
           <table className="highlight responsive_table">
             <thead>
@@ -117,14 +120,21 @@ console.log(spacesArray)
               </tr>
             </thead>
             <tbody>
-              {updateSpaces.map((space, index) => (
-                <SpaceRow
-                  key={index}
-                  spaceInfo={space}
-                  spaceIndex={index}
-                  handleToggleStatus={handleToggleStatus}
-                />
-              ))}
+              {filteredData.length > 0 ? (
+                filteredData.map((item, index) => (
+                  <SpaceRow
+                    key={index}
+                    spaceInfo={item}
+                    spaceIndex={index}
+                    handleToggleStatus={handleToggleStatus}
+                    handleDeleteSpace={handleDeleteSpace}
+                  />
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9">No results found</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

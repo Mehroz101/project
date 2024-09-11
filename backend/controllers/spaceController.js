@@ -184,6 +184,21 @@ const updateSpaceDetails = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+const deleteSpace = async (req,res) => {
+  const {spaceId} = req.params;
+  try {
+    const space = await Space.findByIdAndDelete(spaceId);
+    if (!space) {
+      return res.status(404).json({ message: "Space not found" });
+    }
+    
+    res.status(200).json({ message: "Space deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting space:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+
+}
 
 module.exports = {
   createSpace,
@@ -191,4 +206,5 @@ module.exports = {
   toggleSpaceStatus,
   getspacedetail,
   updateSpaceDetails,
+  deleteSpace
 };
