@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { signupUser } from "../services/authService"; // Import the signup service
 import { notify } from "./errorHandlerService";
 
@@ -10,7 +9,6 @@ export const useSignupForm = () => {
     confirmPassword: "",
   });
 
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

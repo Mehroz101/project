@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { updateAccountInformation } from "../services/userService";
 import { notify } from "./errorHandlerService";
 
@@ -10,7 +9,6 @@ export const useAccountInformationForm = () => {
     email: "",
     phone: "",
   });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -35,6 +35,7 @@ const createSpace = async (req, res) => {
     ) {
       return res.status(400).json();
     }
+    
 
     const newSpace = new Space({
       userId,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { resetPass } from "./authService"; // Import the signin service
 import { notify } from "./errorHandlerService"; // Import notify function
 

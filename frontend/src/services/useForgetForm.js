@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { forgetPass } from "../services/authService";
 import { notify } from "./errorHandlerService";
 
 export const useForgetForm = () => {
   const [userDetail, setUserDetail] = useState({ email: "" });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

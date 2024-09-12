@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { signinUser } from "../services/authService"; // Import the signin service
 import { notify } from "./errorHandlerService"; // Import notify function
 import { useAuth } from "../context/AuthContext";
@@ -10,7 +9,6 @@ export const useSigninForm = () => {
   });
   const {login} = useAuth()
 
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

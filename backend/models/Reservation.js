@@ -1,0 +1,56 @@
+const mongoose = require("mongoose");
+const reservationSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    spaceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Space",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    phoneNo: {
+      type: String,
+      required: true,
+    },
+    vehicleNo: {
+      type: String,
+      required: true,
+    },
+    arrivalTime: {
+      type: String,
+      required: true,
+    },
+    leaveTime: {
+      type: String,
+      required: true,
+    },
+    arrivalDate: {
+      type: String,
+      required: true,
+    },
+    leaveDate: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      default: "pending",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+const reservation = mongoose.model("reservation", reservationSchema);
+module.exports = reservation;

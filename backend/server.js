@@ -3,6 +3,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes"); // Ensure this is correct
 const userRoutes = require("./routes/userRoutes"); // Ensure this is correct
 const spaceRoutes = require("./routes/spaceRoutes"); // Ensure this is correct
+const reservationRoutes = require("./routes/reservationRoutes"); // Ensure this is correct
 const { connectDB, checkDatabaseConnection } = require("./config/db");
 const path = require('path');
 require('dotenv').config();
@@ -21,6 +22,7 @@ app.use(checkDatabaseConnection);  // This should work fine as it is a function
 app.use("/api/auth", authRoutes);  
 app.use("/api/user", userRoutes); 
 app.use('/api/spaces', spaceRoutes);
+app.use('/api/reservation', reservationRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -58,6 +58,8 @@
   position: absolute;
   box-shadow: #e4e4e4 0 48px 100px 0;
   top: 60px;
+  max-height: 150px;
+  overflow: scroll;
   left: 0;
   width: 100%;
 }
@@ -89,6 +91,13 @@
 }
 .selected_space .space_detail p {
   font-weight: 600;
+  min-width: max-content;
+}
+.selected_space .space_detail span {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .selected_space i {
   font-weight: 600;
