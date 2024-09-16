@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/CustomReservationRequest.css";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { getSpace } from "../../services/spaceService";
 import { SearchFunctionality } from "../../services/SearchService";
 import { customReservationRequest } from "../../services/CreateReservationForm";
@@ -11,7 +11,8 @@ const CreateRequest = () => {
   const { handleSearchChange, setData, filteredData } = SearchFunctionality();
   const { customRequest, handleChange, handleSumbit } =
     customReservationRequest();
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const setSelectedSpaceFun = (space) => {
     setSelectedSpace(space);
     customRequest.spaceId = space._id;
@@ -19,21 +20,26 @@ const CreateRequest = () => {
     setIsSpaceSelect(true);
   };
   useEffect(() => {
+    //get today date
+
     const getSpaces = async () => {
       const response = await getSpace();
-      setData(response.data.data); // Initialize the full data in the search service
+      console.log(response.data.data)
+      const activeListing = response.data.data.filter((state)=>state.state === "active");
+      console.log(activeListing)
+
+      setData(activeListing); // Initialize the full data in the search service
     };
     getSpaces();
   }, []);
-const handleSubmitFun =async () =>{
-  const response =await handleSumbit();
-  console.log("response",response)
-  if(response ==="Reservation created successfully")
-  {
-    navigate(-1)
-  }
-
-}
+  const handleSubmitFun = async () => {
+    
+    const response = await handleSumbit();
+    console.log("response", response);
+    if (response === "Reservation created successfully") {
+      navigate(-1);
+    }
+  };
   return (
     <>
       <div className="create_request_container">

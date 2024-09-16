@@ -3,39 +3,70 @@ import "../styles/ManageSpace.css";
 import { Link } from "react-router-dom";
 import SpaceRow from "./SpaceRow";
 import { getSpace, handleDelete } from "../../services/spaceService";
-import { SearchFunctionality } from "../../services/SearchService";
+import { getReservation } from "../../services/reservationService";
 
 const ManageSpace = () => {
   const [spaces, setSpaces] = useState([]); // Original data from backend
+  const [filteredData, setFilteredData] = useState([]); // Filtered data for search
   const [activeFilter, setActiveFilter] = useState("all"); // State to keep track of active filter
-  const { handleSearchChange, setData, setFilteredData, filteredData } =
-    SearchFunctionality(); // Initialize search functionality from service
+  const [searchTerm, setSearchTerm] = useState(""); // Search term for filtering
+  const [reservations, setReservations] = useState([]); // Reservations data
 
   // Fetch data from backend
   const spaceRequest = async () => {
     try {
-      const response = await getSpace();
-      const spacesArray = response.data.data;
-      setSpaces(spacesArray); // Save the fetched data
+      const [reservationsResponse,spacesResponse] = await Promise.all([
+        getReservation(),
+        getSpace(),
+      ]);
+
+      const spacesArray = spacesResponse.data.data;
+      setSpaces(spacesArray); // Save the fetched spaces data
       setFilteredData(spacesArray); // Initialize filteredData with all spaces
+const reservationcount =reservationsResponse.map((reservation)=>reservation)
+      setReservations(reservationcount); // Save the reservations data
+    console.log("reservations")
+    console.log(reservationcount)
+
     } catch (error) {
-      console.error("Error fetching spaces:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
-  // Filter based on status or badge
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+
+    const lowerCasedTerm = value.toLowerCase();
+
+    const filtered = spaces.filter((space) => {
+      const searchValue = space.title.toLowerCase();
+      return searchValue.includes(lowerCasedTerm);
+    });
+
+    setFilteredData(filtered);
+  };
+
+  // Filter based on status
   const updateListView = (state) => {
     setActiveFilter(state);
     if (state === "all") {
-      setFilteredData(spaces); // Reset filtered data to show all
-      return;
+      setFilteredData(
+        spaces.filter((space) =>
+          space.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      ); // Reset filtered data to show all
+    } else {
+      const status = state;
+      setFilteredData(
+        spaces.filter(
+          (space) =>
+            space.state === status &&
+            space.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      ); // Filter by status
     }
-    if (state === "badge") {
-      setFilteredData(spaces.filter((space) => space.badge)); // Filter by badge
-      return;
-    }
-    const status = state;
-    setFilteredData(spaces.filter((space) => space.state === status)); // Filter by status
   };
 
   const handleDeleteSpace = async (spaceId) => {
@@ -56,10 +87,24 @@ const ManageSpace = () => {
     spaceRequest(); // Initial data fetch
   }, []);
 
-  // Call setData with filtered data to update based on search term
   useEffect(() => {
-    setData(spaces);
-  }, [spaces, setData]);
+    // Update filtered data based on search term and active filter
+    if (activeFilter === "all") {
+      setFilteredData(
+        spaces.filter((space) =>
+          space.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredData(
+        spaces.filter(
+          (space) =>
+            space.state === activeFilter &&
+            space.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+  }, [spaces, activeFilter, searchTerm]);
 
   return (
     <>
@@ -70,7 +115,22 @@ const ManageSpace = () => {
             <button>List New Space</button>
           </Link>
         </div>
-
+        <div className="space_numbers space_numbers_hide">
+          <div className="total_space">
+            <p>Total listing</p>
+            <h2>{spaces.length}</h2>
+          </div>
+          <div className="active_space">
+            <p>Active listing</p>
+            <h2>{spaces.filter((space) => space.state === "active").length}</h2>
+          </div>
+          <div className="deactived_space">
+            <p>Deactivated listing</p>
+            <h2>
+              {spaces.filter((space) => space.state === "deactivated").length}
+            </h2>
+          </div>
+        </div>
         {/* Filter Navbar */}
         <div className="filter_navbar">
           <ul>
@@ -81,10 +141,9 @@ const ManageSpace = () => {
               <Link onClick={() => updateListView("active")}>Active</Link>
             </li>
             <li className={`${activeFilter === "deactivated" ? "active" : ""}`}>
-              <Link onClick={() => updateListView("deactivated")}>Deactive</Link>
-            </li>
-            <li className={`${activeFilter === "badge" ? "active" : ""}`}>
-              <Link onClick={() => updateListView("badge")}>Badge</Link>
+              <Link onClick={() => updateListView("deactivated")}>
+                Deactivated
+              </Link>
             </li>
           </ul>
         </div>
@@ -96,6 +155,7 @@ const ManageSpace = () => {
               <input
                 type="text"
                 placeholder="Search..."
+                value={searchTerm}
                 onChange={handleSearchChange} // Update search term
               />
               <button>Search</button>
@@ -111,9 +171,10 @@ const ManageSpace = () => {
                 <th>Id</th>
                 <th>Image</th>
                 <th>Title</th>
-                <th>Badge</th>
                 <th>Reservation Id</th>
                 <th>Total Booking</th>
+                <th>Pending</th>
+                <th>Confirmed</th>
                 <th>Price</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -128,11 +189,12 @@ const ManageSpace = () => {
                     spaceIndex={index}
                     handleToggleStatus={handleToggleStatus}
                     handleDeleteSpace={handleDeleteSpace}
+                    reservations={reservations}
                   />
                 ))
               ) : (
                 <tr>
-                  <td colSpan="9">No results found</td>
+                  <td colSpan="8">No results found</td>
                 </tr>
               )}
             </tbody>

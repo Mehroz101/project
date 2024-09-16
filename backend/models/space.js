@@ -57,6 +57,6 @@ const spaceSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-const Space = mongoose.model("space", spaceSchema);
+const Space = mongoose.model("Space", spaceSchema);
 module.exports = Space;
 // module.exports = mongoose.model("Space", spaceSchema);

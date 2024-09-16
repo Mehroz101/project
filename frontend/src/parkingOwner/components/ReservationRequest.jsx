@@ -1,8 +1,87 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/ReservationRequest.css";
 import { Link } from "react-router-dom";
 import RequestRow from "./RequestRow";
+import {
+  getReservation,
+  cancelReservation,
+  confirmReservation,
+} from "../../services/reservationService";
+
 const ReservationRequest = () => {
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchOption, setSearchOption] = useState("title");
+
+  const handleSearchChange = (e) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+
+    const lowerCasedTerm = value.toLowerCase();
+
+    const filtered = data.filter((reservation) => {
+      let searchValue = "";
+
+      if (searchOption === "title") {
+        searchValue = reservation.spaceId?.title?.toLowerCase() || "";
+      } else if (searchOption === "name") {
+        searchValue = reservation.name?.toLowerCase() || "";
+      }
+
+      return searchValue.includes(lowerCasedTerm);
+    });
+
+    setFilteredData(filtered);
+  };
+
+  const handleSearchOptionChange = (e) => {
+    setSearchOption(e.target.value);
+  };
+
+  const updateListView = (state) => {
+    setActiveFilter(state);
+    if (state === "all") {
+      setFilteredData(data);
+      return;
+    }
+    setFilteredData(data.filter((reservation) => reservation.state === state));
+  };
+
+  const getreservationData = async () => {
+    try {
+      const response = await getReservation();
+      console.log(response);
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCancelReservation = async (reservartionId) => {
+    console.log(reservartionId);
+    await cancelReservation(reservartionId);
+    getreservationData();
+  };
+  const handleConfirmReservation = async (reservartionId) => {
+    console.log(reservartionId);
+    await confirmReservation(reservartionId);
+    getreservationData();
+  };
+
+  useEffect(() => {
+    getreservationData();
+    if(data){
+      setFilteredData(data)
+    }
+  }, []);
+  useEffect(() => {
+    if(data){
+      setFilteredData(data)
+    }
+  },[data]);
+
   return (
     <>
       <div className="reservation_request_container">
@@ -18,61 +97,79 @@ const ReservationRequest = () => {
           </div>
           <div className="total_request">
             <p>Total request</p>
-            <h2>42</h2>
+            <h2>{data?.length}</h2>
           </div>
           <div className="pending_request">
             <p>Pending request</p>
-            <h2>12</h2>
+            <h2>
+              {
+                data?.filter((reservation) => reservation.state === "pending")
+                  .length
+              }
+            </h2>
+          </div>
+          <div className="pending_request">
+            <p>Confirmed request</p>
+            <h2>
+              {
+                data?.filter((reservation) => reservation.state === "confirmed")
+                  .length
+              }
+            </h2>
           </div>
           <div className="total_completed_request">
             <p>Total completed request</p>
-            <h2>112</h2>
+            <h2>
+              {
+                data?.filter((reservation) => reservation.state === "completed")
+                  .length
+              }
+            </h2>
           </div>
         </div>
         <div className="filter_navbar">
           <ul>
-            <li className="active">
-              <Link>All</Link>
+            <li className={activeFilter === "all" ? "active" : ""}>
+              <Link onClick={() => updateListView("all")}>All</Link>
             </li>
-            <li>
-              <Link>completed</Link>
+            <li className={activeFilter === "completed" ? "active" : ""}>
+              <Link onClick={() => updateListView("completed")}>completed</Link>
             </li>
-            <li>
-              <Link>running</Link>
+            <li className={activeFilter === "confirmed" ? "active" : ""}>
+              <Link onClick={() => updateListView("confirmed")}>confirmed</Link>
             </li>
-            <li>
-              <Link>pending</Link>
+            <li className={activeFilter === "pending" ? "active" : ""}>
+              <Link onClick={() => updateListView("pending")}>pending</Link>
             </li>
-            <li>
-              <Link>canceled</Link>
+            <li className={activeFilter === "cancelled" ? "active" : ""}>
+              <Link onClick={() => updateListView("cancelled")}>cancelled</Link>
             </li>
           </ul>
         </div>
         <div className="search_filter">
           <div className="search_box">
-            <select name="search_option">
-              <option value="id">Id</option>
-              <option value="title">title</option>
+            <select name="search_option" onChange={handleSearchOptionChange}>
+              <option value="title">Title</option>
+              <option value="name">Name</option>
             </select>
             <div className="search_input">
-              <input type="text" placeholder="search..." />
-              <button>search</button>
+              <input
+                type="text"
+                placeholder="search..."
+                onChange={handleSearchChange}
+              />
             </div>
           </div>
-          <select name="filter_option">
-            <option value="pending">pending</option>
-            <option value="complete">complete</option>
-            <option value="cancel">canceled</option>
-          </select>
         </div>
         <div className="reservation_request_list">
           <table className="highlight responsive_table">
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Image</th>
                 <th>Title</th>
                 <th>Request Id</th>
+                <th>Name</th>
+                <th>Email</th>
                 <th>Arrival</th>
                 <th>Leave</th>
                 <th>Price</th>
@@ -81,14 +178,21 @@ const ReservationRequest = () => {
               </tr>
             </thead>
             <tbody>
-             
-              <RequestRow />
-              <RequestRow />
-              <RequestRow />
-              <RequestRow />
-              <RequestRow />
-              <RequestRow />
-              <RequestRow />
+              {filteredData.length > 0 ? (
+                filteredData.map((reservation, index) => (
+                  <RequestRow
+                    key={reservation._id}
+                    reservation={reservation}
+                    index={index}
+                    handleCancelReservation={handleCancelReservation}
+                    handleConfirmReservation={handleConfirmReservation}
+                  />
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="10">No reservations found</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

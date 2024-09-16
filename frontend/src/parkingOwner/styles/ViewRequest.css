@@ -1,0 +1,297 @@
+.listing {
+  display: flex;
+  gap: 15px; /* Increased gap for better spacing */
+  border: 1px solid var(--background); /* Use background color for border */
+  margin-top: 15px; /* Increased margin for separation */
+  padding: var(--spacing-medium);
+  background-color: var(--text-white); /* Background color for each listing */
+  border-radius: 8px; /* Rounded corners */
+}
+
+.listing .listing_left {
+  width: 150px; /* Increased width for better visuals */
+  max-height: 180px;
+  border-radius: 8px; /* Rounded corners */
+  overflow: hidden !important;
+
+}
+.listing .listing_left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover to fit the container */
+}
+
+.listing .listing_right {
+  flex: 2;
+}
+
+.listing_right .location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+}
+
+.listing .listing_right .listing_title h3 {
+  text-wrap: nowrap;
+  overflow: hidden;
+  max-width: 200px;
+  font-size: var(--font-size-base);
+  color: var(--primary); /* Use primary color for title */
+  margin-bottom: 0px; /* Added space below title */
+}
+
+.listing .listing_right .listing_rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Space below rating */
+}
+
+.listing .listing_right .listing_rating .rating {
+  font-size: var(--font-size-medium);
+}
+
+.listing .listing_right .listing_rating .total_booking {
+  font-size: var(--font-size-small);
+  color: var(--text); /* Use text color for total booking */
+}
+
+.listing .listing_right .listing_detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Space below details */
+}
+
+.listing .listing_right .listing_detail a {
+  color: var(--secondary); /* Secondary color for details link */
+  border-bottom: 1px solid var(--secondary); /* Underline for link */
+}
+
+.view_request
+  .listing
+  .listing_right
+  .listing_btn
+  button {
+  background-color: var(--secondary);
+  width: 100%;
+  border-radius: 4px;
+  border: none; /* Removed border for button */
+  color: var(--text-white);
+  padding: 10px;
+  font-size: var(--font-size-small);
+  margin-top: 10px; /* Increased space above button */
+}
+
+.view_request
+  .listing
+  .listing_right
+  .listing_btn
+  button
+  a {
+  color: var(--text-white) !important;
+}
+
+.listing .listing_detail .listing_features span {
+  background-color: var(--primary);
+  color: var(--text-white);
+  padding: 5px 8px;
+  border-radius: 4px;
+  margin: 0 3px;
+  font-size: var(--font-size-small);
+}
+
+.reservation_detail_container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px !important;
+
+}
+
+.reservation_detail_container h3 {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reservation_detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.detail_item {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-grow: 1;
+}
+
+.detail_item i {
+  font-size: 24px;
+  color: #007bff;
+  margin-right: 15px;
+}
+
+.detail_item h4 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.detail_item span {
+  font-size: 16px;
+  color: #666;
+}
+
+.reservation_detail_container .reservation_detail .detail_item:nth-child(2) i {
+  color: #ff6347;
+}
+
+.reservation_detail_container .reservation_detail .detail_item:nth-child(3) i {
+  color: #28a745;
+}
+.customer_detail_container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+  }
+  
+  .customer_detail_container h3 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .customer_detail {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .detail_item {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+  }
+  
+  .detail_item i {
+    font-size: 24px;
+    color: #007bff;
+    margin-right: 15px;
+  }
+  
+  .detail_item h4 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .detail_item span {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  /* Icon Color Customization */
+  .customer_detail_container .detail_item.customer_email i {
+    color: #ff6347;
+  }
+  
+  .customer_detail_container .detail_item.customer_phone i {
+    color: #28a745;
+  }
+  .payment_earning_container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px auto;
+  }
+  
+  .payment_earning_container h3 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .payment_earning_detail {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .detail_item {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
+    flex-grow: 1;
+  }
+
+  
+  .detail_item i {
+    font-size: 24px;
+    color: #007bff;
+    margin-right: 15px;
+  }
+  
+  .detail_item h4 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .detail_item span {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  /* Icon Color Customization */
+  
+  
+  .payment_earning_container .detail_item.total_earning i {
+    color: #ffb300; /* Gold for total earning */
+  }
+  
+  .payment_earning_container .detail_item.payment_method i {
+    color: #007bff; /* Blue for payment method */
+  }
+  
+
+  
+
+/* Mobile responsive design */
+@media (max-width: 768px) {
+  .reservation_detail {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .customer_detail {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .payment_earning_detail {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

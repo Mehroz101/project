@@ -35,7 +35,6 @@ const createSpace = async (req, res) => {
     ) {
       return res.status(400).json();
     }
-    
 
     const newSpace = new Space({
       userId,
@@ -192,7 +191,6 @@ const deleteSpace = async (req,res) => {
     if (!space) {
       return res.status(404).json({ message: "Space not found" });
     }
-    
     res.status(200).json({ message: "Space deleted successfully" });
   } catch (error) {
     console.error("Error deleting space:", error.message);

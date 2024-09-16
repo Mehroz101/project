@@ -69,6 +69,7 @@ export const getSpace = async (spaceId = null) => {
 
       // Check the status code and notify accordingly
       if (response.status === 200) {
+        console.log(response.data.data)
         return response;
       } else if (response.status === 204) {
         notify("info", "No spaces found.");

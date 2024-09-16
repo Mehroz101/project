@@ -98,13 +98,7 @@
   padding: 4px 12px;
   flex: 1;
 }
-.reservation_request_container .search_filter .search_box .search_input button {
-  background-color: var(--secondary);
-  border: none;
-  font-size: var(--font-size-small);
-  border-radius: 4px;
-  padding: 3px 12px;
-}
+
 .reservation_request_container .search_filter select {
   border: 1px solid #dddddd;
   outline: none;
@@ -116,9 +110,16 @@
 .reservation_request_list {
   margin-top: 20px;
   border: 1px solid #dddddd;
+  overflow: scroll;
   width: 100%;
-  overflow: auto;
   max-height: 600px;
+}
+.responsive_table{
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  overflow-x: scroll;
+
 }
 .responsive_table thead {
   font-size: var(--font-size-small);
@@ -157,17 +158,17 @@ td.title {
   color: #f9a825;
 }
 
-.responsive_table .status.complete {
+.responsive_table .status.confirmed {
   background-color: #c8e6c9;
   color: #2e7d32;
 }
 
-.responsive_table .status.canceled {
+.responsive_table .status.cancelled {
   background-color: #ffcdd2;
   color: #c62828;
 }
 
-.responsive_table .status.running {
+.responsive_table .status.completed {
   background-color: #b3e5fc;
   color: #0277bd;
 }
@@ -181,6 +182,12 @@ td.actions > a {
   padding: 5px;
   cursor: pointer;
   border: 1px solid #dddddd;
+}
+td.user_name, td.user_email,td.title,td.request_id{
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 td.actions > a:hover,

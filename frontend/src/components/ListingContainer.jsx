@@ -1,38 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import listingImg from "../assets/listingImg-1.png";
 import { Link } from "react-router-dom";
-const ListingContainer = ({ onShowDetail }) => {
+const ListingContainer = ({onShowDetail, spaceDetail }) => {
+const [space,setSpace]= useState([])
+const REACT_APP_API_URL = "http://localhost:5000/";
 
+
+useEffect(()=>{
+    if(spaceDetail){
+      console.log("space data")
+    setSpace(spaceDetail)
+    console.log(spaceDetail)
+    }
+  },[spaceDetail])
   return (
     <>
       <div className="listing">
         <div className="listing_left">
-          <img src={listingImg} alt="" />
+          <img src={`${REACT_APP_API_URL}${space.images?.[0]}`} alt="" />
         </div>
         <div className="listing_right">
           <div className="listing_title">
-            <h3>Mall of Multan, Multan</h3>
+            <h3>{space.title}</h3>
+          </div>
+          <div className="location">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>{space.location}</span>
           </div>
           <div className="listing_rating">
-            <span className="rating"> <span>&#9733;</span>
-              <span>&#9733;</span>
-              <span>&#9733;</span>
-              <span>&#9733;</span>
-              <span>&#9734;</span></span>
+            <span className="rating">
+              <span className="rating_score">4.5</span>
+              <i class="fa-solid fa-star"></i>
+              <span className="total_reviews">(123)</span>
+
+            </span>
             <span className="total_booking">100+ booking</span>
           </div>
           <div className="listing_detail">
             <div className="listing_features">
-              <span>0</span>
-              <span>0</span>
-              <span>0</span>
+              <span title="secure"><i class="fa-solid fa-shield-halved"></i></span>
+              <span title="underground"><i class="fa-solid fa-arrow-down-short-wide"></i></span>
+              <span title="cctv"><i class="fa-solid fa-video"></i></span>
             </div>
             <span>
-              <Link onClick={onShowDetail}>details</Link>
+              <Link to={`/dashboard/manage-space/view-space/${space._id}`} onClick={onShowDetail}>details</Link>
             </span>
           </div>
           <div className="listing_btn">
-            <button><Link to="/reservation" >Book in $7</Link></button>
+            <button>
+              <Link to="/reservation">Book in ${space.per_hour}</Link>
+            </button>
           </div>
         </div>
       </div>

@@ -10,6 +10,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
+      //check token is expire or not
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      if (decodedToken.exp * 1000 < Date.now()) {
+        localStorage.removeItem('token');
+      }
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);

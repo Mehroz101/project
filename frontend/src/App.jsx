@@ -25,6 +25,7 @@ import ResetPass from "./pages/ResetPass";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import UpdateSpace from "./parkingOwner/components/UpdateSpace";
 import ViewSpace from "./parkingOwner/components/ViewSpace";
+import ViewRequest from "./parkingOwner/components/viewRequest";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -53,10 +54,14 @@ const AppRoutes = () => {
       <Route path="/listyourspace" element={<ListyourSpace />} />
 
       {/* Dashboard Route */}
-      <Route path="/dashboard" element={isAuthenticated ?<ParkingOwnerDashboard />:<Login/>}>
+      <Route
+        path="/dashboard"
+        element={isAuthenticated ? <ParkingOwnerDashboard /> : <Login />}
+      >
         <Route index element={<Dashboard />} />
         {/* Default Dashboard Container */}
         <Route path="reservation-request" element={<ReservationRequest />} />
+        <Route path="reservation-request/view-request/:reservationId" element={<ViewRequest/>}/>
         <Route
           path="reservation-request/create-request"
           element={<CreateRequest />}
@@ -65,7 +70,10 @@ const AppRoutes = () => {
         <Route path="manage-space" element={<ManageSpace />} />
         <Route path="manage-space/create-space" element={<CreateSpace />} />
         <Route path="edit-space/:spaceId" element={<UpdateSpace />} />
-        <Route path="manage-space/view-space/:spaceId" element={<ViewSpace/>}/>
+        <Route
+          path="manage-space/view-space/:spaceId"
+          element={<ViewSpace />}
+        />
       </Route>
     </Routes>
   );

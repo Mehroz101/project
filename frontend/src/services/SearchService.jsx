@@ -30,12 +30,14 @@ export const SearchFunctionality = () => {
    * @param {Event} e - The event object from the input field.
    */
   const handleSearchChange = (e) => {
+    e.preventDefault()
     setSearchTerm(e.target.value); // Update the search term state
   };
 
   return {
     handleSearchChange,
     setData,
+    data,
     filteredData,
   };
 };
