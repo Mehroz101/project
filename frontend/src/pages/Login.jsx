@@ -9,18 +9,7 @@ const Login = () => {
   const goBack = () => {
     navigate(-1); // This will navigate to the previous page
   };
-  // const handleFormSubmit = async (e) => {
-  //   e.preventDefault();
 
-  //   const promise = handleSubmit(e); // Assuming handleSubmit returns a promise
-
-  //   notifyPromise(promise, {
-  //     pending: "Rest Password...",
-  //     success: "Password Reset Successfully",
-  //     error: "Failed to reset password!",
-  //   });
-   
-  // };
   return (
     <>
       <div className="login_page">

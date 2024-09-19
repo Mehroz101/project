@@ -12,7 +12,6 @@ export const signupUser = async (userData) => {
     throw error;
   }
 };
-
 export const signinUser = async (userData) => {
   // console.log("signinuser call");
   try {

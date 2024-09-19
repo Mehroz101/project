@@ -3,14 +3,13 @@ import { toast } from "react-toastify";
 import { notify } from "./errorHandlerService"; // Import notify function
 
 const API_URL = "http://localhost:5000/api/spaces"; // Adjust to your API endpoint
-
+const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+const config = {
+  headers: {
+    Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+  },
+};
 export const createSpace = async (formData) => {
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-  console.log("token:", token);
-
-  // for (let pair of formData.entries()) {
-  //         console.log(pair[0] + ', ' + pair[1]);
-  //       }
   try {
     const response = await axios.post(`${API_URL}/create`, formData, {
       headers: {
@@ -56,12 +55,6 @@ export const createSpace = async (formData) => {
 };
 
 export const getSpace = async (spaceId = null) => {
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
-    },
-  };
   if (spaceId == null) {
     console.log("service page: " + spaceId);
     try {
@@ -69,7 +62,7 @@ export const getSpace = async (spaceId = null) => {
 
       // Check the status code and notify accordingly
       if (response.status === 200) {
-        console.log(response.data.data)
+        console.log(response.data.data);
         return response;
       } else if (response.status === 204) {
         notify("info", "No spaces found.");
@@ -124,8 +117,6 @@ export const getSpace = async (spaceId = null) => {
 };
 
 export const toggleSpaceStatus = async (spaceId) => {
-  console.log("service:", spaceId);
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   const config = {
     headers: {
       Authorization: `Bearer ${token}`, // Add the token to the Authorization header
@@ -143,7 +134,7 @@ export const toggleSpaceStatus = async (spaceId) => {
       config // Pass the config with headers
     );
     if (response.status === 200) {
-      console.log(response.data.message)
+      console.log(response.data.message);
       notify("success", "Space status updated successfully!");
       return response.data.message;
     } else {
@@ -173,28 +164,6 @@ export const toggleSpaceStatus = async (spaceId) => {
   }
 };
 export const updateSpaceDetails = async (formData, spaceId) => {
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-  // console.log("files:" )
-  // console.log(uploadedFiles)
-  // Create FormData to handle file uploads
-  // const formData = new FormData();
-
-  // // Append space details to FormData
-  // for (const [key, value] of Object.entries(spaceDetails)) {
-  //   formData.append(key, value);
-  // }
-
-  // Append each file to FormData
-  // uploadedFiles.forEach(file => {
-  //   formData.append('images', file);
-  // });
-  // Append files
-  // uploadedFiles.forEach((file, index) => {
-  //   formData.append(`images[${index}]`, file); // Use unique keys for each file
-  // });
-
-  console.log("formData");
-  console.log(formData);
   const config = {
     headers: {
       Authorization: `Bearer ${token}`, // Add the token to the Authorization header
@@ -217,23 +186,28 @@ export const updateSpaceDetails = async (formData, spaceId) => {
 };
 
 export const handleDelete = async (spaceId) => {
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`, // Add the token to the Authorization header
-    },
-  };
+  
   try {
     const response = await axios.delete(
       `${API_URL}/deletespace/${spaceId}`,
       config
     );
-    if(response.status == 200){
+    if (response.status == 200) {
       notify("success", "Space deleted successfully!");
     }
-    return response.data
+    return response.data;
   } catch (error) {
     console.log(error.message);
     notify("error" + error.message);
+  }
+};
+
+export const getallspaces = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/getallspaces`,config)
+    console.log(response)
+    
+  } catch (error) {
+    console.log(error.message)
   }
 };

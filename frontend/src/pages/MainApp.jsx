@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ParkingFinderCard from "../components/ParkingFinderCard";
 import "../styles/MainApp.css";
@@ -18,7 +18,17 @@ const MainApp = () => {
   const handleCloseDetail = () => {
     setShowListingDetail(false); // Hide ListingDetail
   };
-  console.log(parkingInput);
+  const getspaces = async () =>{
+     try {
+        const response = await getallspaces()
+     } catch (error) {
+      console.log(error.message)
+     }
+  }
+  useEffect(()=>{
+    getspaces()
+  },[])
+  
   return (
     <>
       <div className="main_page">

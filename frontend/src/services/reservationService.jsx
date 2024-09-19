@@ -11,7 +11,7 @@ const config = {
   },
 };
 
-export const createCustomReservation = async (data) => {
+export const createCustomReservation = async (data,price) => {
   try {
     const response = await axios.post(`${API_URL}/create`, data, config);
     console.log(response);
@@ -28,7 +28,9 @@ export const createCustomReservation = async (data) => {
 };
 export const getReservation = async () => {
   try {
+    console.log("reservation service")
     const response = await axios.get(`${API_URL}/get`, config);
+    console.log("reservation service")
     if (response.status === 200) {
       console.log(response.data.response)
       return response.data.response;

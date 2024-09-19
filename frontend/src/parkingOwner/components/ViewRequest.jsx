@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import ListingContainer from "../../components/ListingContainer";
 import "../styles/ViewRequest.css";
 import { useParams } from "react-router-dom";
 import { getReservationdata } from "../../services/reservationService";
+import ReservationListingDetail from "./ReservationListingDetail";
 
 const ViewRequest = () => {
   const [data, setData] = useState([]);
@@ -90,7 +90,7 @@ const ViewRequest = () => {
   return (
     <>
       <div className="view_request">
-        <ListingContainer spaceDetail={space} />
+        <ReservationListingDetail spaceDetail={space} />
         <div className="reservation_detail_container">
           <h3>Booking Detail</h3>
           <div className="reservation_detail">

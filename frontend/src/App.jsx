@@ -26,7 +26,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import UpdateSpace from "./parkingOwner/components/UpdateSpace";
 import ViewSpace from "./parkingOwner/components/ViewSpace";
 import ViewRequest from "./parkingOwner/components/viewRequest";
-
+import { ParkingOwnerProvider } from "./context/ReservationContext";
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
 
@@ -56,12 +56,23 @@ const AppRoutes = () => {
       {/* Dashboard Route */}
       <Route
         path="/dashboard"
-        element={isAuthenticated ? <ParkingOwnerDashboard /> : <Login />}
+        element={
+          isAuthenticated ? (
+            <ParkingOwnerProvider>
+              <ParkingOwnerDashboard />
+            </ParkingOwnerProvider>
+          ) : (
+            <Login />
+          )
+        }
       >
         <Route index element={<Dashboard />} />
         {/* Default Dashboard Container */}
         <Route path="reservation-request" element={<ReservationRequest />} />
-        <Route path="reservation-request/view-request/:reservationId" element={<ViewRequest/>}/>
+        <Route
+          path="reservation-request/view-request/:reservationId"
+          element={<ViewRequest />}
+        />
         <Route
           path="reservation-request/create-request"
           element={<CreateRequest />}

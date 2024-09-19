@@ -1,41 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Statistics.css'; // Ensure your CSS file is properly linked
+import { useParkingOwner } from '../../context/ReservationContext';
 
 const OverviewStatistics = () => {
   const navigate = useNavigate();
+  const { reservation = [], space = {} } = useParkingOwner(); // Default empty values
+  const [stats, setStats] = useState({
+    totalSpaces: 0,
+    availableSpaces: 0,
+    pendingRequests: 0,
+    completedRequests: 0,
+  });
 
   const handleManageSpace = () => {
-    // Redirect to the space management page
-    navigate('/space-management');
+    navigate('manage-space');
   };
+  const handleManageRequest = () => {
+    navigate('reservation-request');
+  };
+
+  // Update the statistics whenever `reservation` or `space` changes
+  useEffect(() => {
+    const totalSpaces = space?.data?.data?.length || 0;
+    const availableSpaces = space?.data?.data?.filter((slot) => slot.state === 'active').length || 0;
+    const pendingRequests = reservation.filter((request) => request.state === 'pending').length || 0;
+    const completedRequests = reservation.filter((request) => request.state === 'completed').length || 0;
+
+    // Set the updated stats
+    setStats({
+      totalSpaces,
+      availableSpaces,
+      pendingRequests,
+      completedRequests,
+    });
+  }, [reservation,space]); // Dependencies
 
   return (
     <div className="overview_statistics">
       <div className="stats_card">
         <h3>Total Spaces</h3>
-        <p>50</p>
+        <p>{stats.totalSpaces}</p>
         <button onClick={handleManageSpace}>Manage Spaces</button>
       </div>
       <div className="stats_card">
         <h3>Available Spaces</h3>
-        <p>20</p>
-        <button onClick={handleManageSpace}>Manage Spaces</button>
-      </div>
-      <div className="stats_card">
-        <h3>Reserved Spaces</h3>
-        <p>10</p>
+        <p>{stats.availableSpaces}</p>
         <button onClick={handleManageSpace}>Manage Spaces</button>
       </div>
       <div className="stats_card">
         <h3>Pending Requests</h3>
-        <p>5</p>
-        <button onClick={handleManageSpace}>Manage Requests</button>
+        <p>{stats.pendingRequests}</p>
+        <button onClick={handleManageRequest}>Manage Requests</button>
       </div>
       <div className="stats_card">
-        <h3>Completed Reservations</h3>
-        <p>15</p>
-        <button onClick={handleManageSpace}>Manage Reservations</button>
+        <h3>Completed Requests</h3>
+        <p>{stats.completedRequests}</p>
+        <button onClick={handleManageRequest}>Manage Reservations</button>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
       //check token is expire or not
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       if (decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem('token');
+        localStorage.removeItem('token'); 
       }
       setIsAuthenticated(true);
     } else {

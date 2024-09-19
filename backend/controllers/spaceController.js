@@ -61,6 +61,7 @@ const createSpace = async (req, res) => {
 const showSpace = async (req, res) => {
   try {
     const user = req.user.id;
+    console.log(user)
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -198,6 +199,27 @@ const deleteSpace = async (req,res) => {
   }
 
 }
+const getallspaces =async () =>{
+  try {
+    const user = req.user.id;
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const spaces = await Space.find();
+    if (spaces.length === 0) {
+      return res.status(404).json();
+    }
+
+    return res.status(200).json({ data: spaces });
+  } catch (error) {
+    // console.error("Error fetching spaces:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+}
+
 
 module.exports = {
   createSpace,
@@ -205,5 +227,6 @@ module.exports = {
   toggleSpaceStatus,
   getspacedetail,
   updateSpaceDetails,
-  deleteSpace
+  deleteSpace,
+  getallspaces,
 };

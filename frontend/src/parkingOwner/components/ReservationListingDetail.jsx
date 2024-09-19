@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import listingImg from "../assets/listingImg-1.png";
 import { Link } from "react-router-dom";
-const ListingContainer = ({onShowDetail, spaceDetail }) => {
+const ReservationListingDetail = ({onShowDetail, spaceDetail }) => {
 const [space,setSpace]= useState([])
 const REACT_APP_API_URL = "http://localhost:5000/";
 
@@ -43,8 +42,7 @@ useEffect(()=>{
               <span title="cctv"><i class="fa-solid fa-video"></i></span>
             </div>
             <span>
-              {/* <Link to={`/dashboard/manage-space/view-space/${space._id}`} onClick={onShowDetail}>details</Link> */}
-              <Link  onClick={onShowDetail}>details</Link>
+              <Link to={`/dashboard/manage-space/view-space/${space._id}`} onClick={onShowDetail}>details</Link>
             </span>
           </div>
           <div className="listing_btn">
@@ -58,4 +56,4 @@ useEffect(()=>{
   );
 };
 
-export default ListingContainer;
+export default ReservationListingDetail;

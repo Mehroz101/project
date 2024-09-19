@@ -182,7 +182,8 @@ const reservationcount =reservationsResponse.map((reservation)=>reservation)
             </thead>
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData.map((item, index) => (
+                filteredData?.slice()
+                .reverse().map((item, index) => (
                   <SpaceRow
                     key={index}
                     spaceInfo={item}

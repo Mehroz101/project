@@ -7,34 +7,43 @@ import { customReservationRequest } from "../../services/CreateReservationForm";
 const CreateRequest = () => {
   const [selectedSpace, setSelectedSpace] = useState([]);
   const [isSpaceSelect, setIsSpaceSelect] = useState(false);
+
   // Import the search functionality
   const { handleSearchChange, setData, filteredData } = SearchFunctionality();
-  const { customRequest, handleChange, handleSumbit } =
+  const { customRequest, handleChange, handleSubmit } =
     customReservationRequest();
   const navigate = useNavigate();
 
   const setSelectedSpaceFun = (space) => {
     setSelectedSpace(space);
     customRequest.spaceId = space._id;
-    console.log(selectedSpace);
+
     setIsSpaceSelect(true);
   };
-  useEffect(() => {
-    //get today date
-
-    const getSpaces = async () => {
-      const response = await getSpace();
-      console.log(response.data.data)
-      const activeListing = response.data.data.filter((state)=>state.state === "active");
-      console.log(activeListing)
-
+  const getSpaces = async () => {
+    const response = await getSpace();
+    console.log(response.data.data);
+    const activeListing = response.data.data.filter(
+      (state) => state.state === "active"
+    );
+    console.log(activeListing);
+    if (activeListing) {
       setData(activeListing); // Initialize the full data in the search service
-    };
+    }
+  };
+  useEffect(() => {
     getSpaces();
   }, []);
+  useEffect(() => {
+    if (selectedSpace) {
+      console.log(selectedSpace.per_hour);
+
+      customRequest.price_perhour = selectedSpace.per_hour;
+      customRequest.price_perday = selectedSpace.per_day;
+    }
+  }, [selectedSpace]);
   const handleSubmitFun = async () => {
-    
-    const response = await handleSumbit();
+    const response = await handleSubmit();
     console.log("response", response);
     if (response === "Reservation created successfully") {
       navigate(-1);

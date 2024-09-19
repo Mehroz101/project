@@ -72,15 +72,15 @@ const ReservationRequest = () => {
 
   useEffect(() => {
     getreservationData();
-    if(data){
-      setFilteredData(data)
+    if (data) {
+      setFilteredData(data);
     }
   }, []);
   useEffect(() => {
-    if(data){
-      setFilteredData(data)
+    if (data) {
+      setFilteredData(data);
     }
-  },[data]);
+  }, [data]);
 
   return (
     <>
@@ -179,15 +179,18 @@ const ReservationRequest = () => {
             </thead>
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData.map((reservation, index) => (
-                  <RequestRow
-                    key={reservation._id}
-                    reservation={reservation}
-                    index={index}
-                    handleCancelReservation={handleCancelReservation}
-                    handleConfirmReservation={handleConfirmReservation}
-                  />
-                ))
+                filteredData
+                  ?.slice()
+                  .reverse()
+                  .map((reservation, index) => (
+                    <RequestRow
+                      key={reservation._id}
+                      reservation={reservation}
+                      index={index+1}
+                      handleCancelReservation={handleCancelReservation}
+                      handleConfirmReservation={handleConfirmReservation}
+                    />
+                  ))
               ) : (
                 <tr>
                   <td colSpan="10">No reservations found</td>

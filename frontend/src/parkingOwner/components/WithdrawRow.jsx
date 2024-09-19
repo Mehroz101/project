@@ -1,33 +1,39 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import img from "../../assets/hero_img.png";
 
-const WithdrawRow = () => {
+const WithdrawRow = ({requests,index}) => {
+
+  const reqTime = new Date(requests?.createdAt)
+ const month = reqTime.getMonth()
+ const year = reqTime.getFullYear()
+ const date = reqTime.getDate()
   return (
     <>
       <tr>
         <td>
-          <span className="id">1</span>
+          <span className="id">{index}</span>
         </td>
         <td>
-            <span>14/07/2024</span>
+            <span>{date}/{month}/{year}</span>
+        </td>
+        <td className="account_name">
+            <span>{requests.accountName}</span>
+        </td>
+        <td className="account_number">
+            <span>{requests.accountNumber}</span>
         </td>
         <td>
-            <span>Mehroz Farooq</span>
-        </td>
-        <td>
-            <span>1234567780</span>
+            <span>{requests.accountType}</span>
         </td>
         <td>
 
           {/* pending complete canceled */}
-            <span className="status complete">complete</span>
+            <span className={`status ${requests.status}`}>{requests.status}</span>
+        </td>
+        <td className="order_id">
+            <span >{requests._id}</span>
         </td>
         <td>
-            <span>1234</span>
-        </td>
-        <td>
-            <span>$343</span>
+            <span>${requests.withdrawAmount}</span>
         </td>
       </tr>
     </>

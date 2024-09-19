@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { calculatePrice } from "./Functions";
 
 const RequestRow = ({
   reservation,
@@ -7,33 +8,9 @@ const RequestRow = ({
   handleCancelReservation,
   handleConfirmReservation,
 }) => {
-  const calculateHours = (reservation) => {
-    const arrival = new Date(
-      `${reservation.arrivalDate}T${reservation.arrivalTime}`
-    );
-    const leave = new Date(`${reservation.leaveDate}T${reservation.leaveTime}`);
-    const diffInMs = leave - arrival;
-    const hours = diffInMs / (1000 * 60 * 60);
-    return hours;
-  };
-  const calculatePrice =(reservation) => {
-    const perHourPrice = reservation.spaceId.per_hour;
-    const perDayPrice = reservation.spaceId.per_day;
-    const hours = calculateHours(reservation);
-    console.log(hours)
-    if (hours >= 24) {
-      // If reservation is for a full day or more
-      const days = Math.floor(hours / 24);
-      const remainingHours = hours % 24;
 
-      return days * perDayPrice + remainingHours * perHourPrice;
-    } else {
-      // If reservation is less than a full day
-      return hours * perHourPrice;
-    }
+  
 
-
-  }
   const cancelReservation = () => {
     handleCancelReservation(reservation._id);
   };
@@ -59,10 +36,7 @@ const RequestRow = ({
           ${reservation.leaveTime}`}
         </td>
         <td className="price">
-          $
-          {(calculatePrice(reservation)).toFixed(
-            2
-          )}
+          ${reservation.totalPrice}
         </td>
         <td>
           <span className={`status ${reservation.state}`}>

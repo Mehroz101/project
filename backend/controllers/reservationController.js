@@ -20,7 +20,9 @@ const createReservation = async (req, res) => {
       leaveTime,
       arrivalDate,
       leaveDate,
+      totalPrice
     } = req.body;
+    console.log(req.body)
     if (
       !spaceId ||
       !name ||
@@ -30,7 +32,8 @@ const createReservation = async (req, res) => {
       !arrivalTime ||
       !leaveTime ||
       !arrivalDate ||
-      !leaveDate
+      !leaveDate ||
+      ! totalPrice
     ) {
       return res.status(400).json();
     }
@@ -45,6 +48,7 @@ const createReservation = async (req, res) => {
       leaveTime,
       arrivalDate,
       leaveDate,
+      totalPrice
     });
     await createReservation.save();
     // console.log(createReservation)

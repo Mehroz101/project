@@ -43,10 +43,18 @@ const reservationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    totalPrice:{
+      type:String,
+      required:true
+    },
     state: {
       type: String,
       default: "pending",
     },
+    withdrawn:{
+      type:Boolean,
+      default:false
+    }
   },
   {
     timestamps: true,

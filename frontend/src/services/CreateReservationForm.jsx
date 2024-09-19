@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { createCustomReservation } from "./reservationService";
 import { notify } from "./errorHandlerService";
+import {
+  calculateHours,
+  calculatePrice,
+} from "../parkingOwner/components/Functions";
 
 export const customReservationRequest = () => {
   const [customRequest, setCustomRequest] = useState({
@@ -13,11 +17,13 @@ export const customReservationRequest = () => {
     leaveTime: "",
     arrivalDate: "",
     leaveDate: "",
+    // price_perhour:"",
+    // price_perday:"",
   });
   const handleChange = (e) => {
     setCustomRequest({ ...customRequest, [e.target.name]: e.target.value });
   };
-  const handleSumbit = async () => {
+  const handleSubmit = async () => {
     const {
       spaceId,
       name,
@@ -28,7 +34,10 @@ export const customReservationRequest = () => {
       leaveTime,
       arrivalDate,
       leaveDate,
+      price_perhour,
+      price_perday,
     } = customRequest;
+    console.log(customRequest);
 
     if (
       spaceId === "" ||
@@ -39,7 +48,9 @@ export const customReservationRequest = () => {
       arrivalTime === "" ||
       leaveTime === "" ||
       arrivalDate === "" ||
-      leaveDate === ""
+      leaveDate === "" ||
+      price_perhour === "" ||
+      price_perday === ""
     ) {
       notify("info", "Please fill all the fields");
       return;
@@ -64,18 +75,29 @@ export const customReservationRequest = () => {
       }
     }
 
+    const hours = calculateHours(
+      arrivalTime,
+      arrivalDate,
+      leaveTime,
+      leaveDate
+    );
+    const price = calculatePrice(hours, price_perhour, price_perday);
+    console.log(price);
     // Combine arrival date and time to create a single Date object
     const arrivalDateTime = new Date(`${arrivalDate}T${arrivalTime}`);
     const currentDateTime = new Date();
 
     // Check if arrival date and time are in the past
-    if (arrivalDateTime <= currentDateTime) {
-      notify("warning", "Arrival date and time must be in the future");
-      return;
-    }
+    // if (arrivalDateTime <= currentDateTime) {
+    //   notify("warning", "Arrival date and time must be in the future");
+    //   return;
+    // }
 
-
-    const response = await createCustomReservation(customRequest);
+    const updatedRequest = {
+      ...customRequest,
+      totalPrice: price, // Add the calculated price here
+    };
+    const response = await createCustomReservation(updatedRequest);
     console.log(response);
     return response;
   };
@@ -83,6 +105,6 @@ export const customReservationRequest = () => {
   return {
     customRequest,
     handleChange,
-    handleSumbit,
+    handleSubmit,
   };
 };

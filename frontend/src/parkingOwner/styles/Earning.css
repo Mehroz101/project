@@ -146,7 +146,13 @@
   td.actions a i {
     color: #bfbfbf;
   }
-  
+  td.order_id, td.account_number, td.account_name{
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+  }
   thead {
     background-color: #f4f4f4;
   }
