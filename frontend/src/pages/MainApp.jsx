@@ -6,29 +6,42 @@ import "../styles/MainApp.css";
 import ListingContainer from "../components/ListingContainer";
 import ListingDetail from "../components/ListingDetail";
 import MapBox from "../components/MapBox";
+import { getallspaces } from "../services/spaceService";
+import { notify } from "../services/errorHandlerService";
 const MainApp = () => {
   const [togglebtn, setToggelbtn] = useState(false);
   const [parkingInput, setParkingInput] = useState(false);
   const [showListingDetail, setShowListingDetail] = useState(false); // State to control ListingDetail visibility
-
-  const handleShowDetail = () => {
-    setShowListingDetail(true); // Show ListingDetail
+  const [spaces, setSpaces] = useState();
+  const [showSpace, setShowSpace] = useState("");
+  const handleShowDetail = (spaceId) => {
+    const selectedSpace = spaces.filter((space) => space._id === spaceId);
+    setShowSpace(selectedSpace[0]);
   };
 
   const handleCloseDetail = () => {
     setShowListingDetail(false); // Hide ListingDetail
+    setShowSpace("");
   };
-  const getspaces = async () =>{
-     try {
-        const response = await getallspaces()
-     } catch (error) {
-      console.log(error.message)
-     }
-  }
-  useEffect(()=>{
-    getspaces()
-  },[])
-  
+  const getspaces = async () => {
+    try {
+      const response = await getallspaces();
+      setSpaces(response);
+    } catch (error) {
+      console.log(error.message);
+      notify("error", "Something wrong, please try again later");
+    }
+  };
+  useEffect(() => {
+    getspaces();
+  }, []);
+  useEffect(() => {
+    if (showSpace) {
+      console.log(showSpace);
+      setShowListingDetail(true); // Show ListingDetail
+    }
+  }, [showSpace]);
+
   return (
     <>
       <div className="main_page">
@@ -47,7 +60,7 @@ const MainApp = () => {
                 className="droparrow"
                 onClick={() => setParkingInput(!parkingInput)}
               >
-                <i class="fa-solid fa-chevron-down"></i>
+                <i className="fa-solid fa-chevron-down"></i>
               </div>
             </div>
             <div
@@ -90,15 +103,21 @@ const MainApp = () => {
                     : "Listing_container"
                 } ${parkingInput ? "listing_container_full" : ""}`}
               >
-                <ListingContainer onShowDetail={handleShowDetail} />
-                <ListingContainer onShowDetail={handleShowDetail} />
-                <ListingContainer onShowDetail={handleShowDetail} />
-                <ListingContainer onShowDetail={handleShowDetail} />
+                {spaces?.map((slot) => (
+                  <ListingContainer
+                    key={slot._id}
+                    slotData={slot}
+                    onShowDetail={handleShowDetail}
+                  />
+                ))}
               </div>
             </div>
             {showListingDetail && (
               <div className="popup_detail">
-                <ListingDetail onHideDetail={handleCloseDetail} />
+                <ListingDetail
+                  space={showSpace}
+                  onHideDetail={handleCloseDetail}
+                />
               </div>
             )}
           </div>
@@ -106,7 +125,12 @@ const MainApp = () => {
             className={togglebtn ? "app_right" : "app_right app_right_hide"}
             onClick={() => setParkingInput(false)}
           >
-            <ListingContainer onShowDetail={handleShowDetail} />
+            {spaces && (
+              <ListingContainer
+                slotData={spaces[0]}
+                onShowDetail={handleShowDetail}
+              />
+            )}
             <MapBox />
           </div>
         </div>

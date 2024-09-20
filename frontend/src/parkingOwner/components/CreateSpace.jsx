@@ -2,27 +2,28 @@ import React, { useEffect, useState } from "react";
 import "../styles/CreateSpace.css";
 import { useCreateSpaceForm } from "../../services/useCreateSpaceForm";
 import FileUpload from "./FileUpload";
+import {useNavigate} from "react-router-dom"
 
 const CreateSpace = () => {
-   const {spaceDetails,handleChange, handleSubmit} = useCreateSpaceForm();
+  const { spaceDetails, handleChange, handleSubmit } = useCreateSpaceForm();
   const [uploadedFiles, setUploadedFiles] = useState([]);
-
+  const navigate = useNavigate()
   const handleFilesChange = (files) => {
     setUploadedFiles(files);
     console.log("Files received from FileUpload:", files); // Log the files to the console
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit =async (e) => {
     e.preventDefault();
-    console.log(spaceDetails)
-    console.log("uploadedFiles")
-    console.log(uploadedFiles)
-      handleSubmit(uploadedFiles);
-    
+    console.log(spaceDetails);
+    console.log("uploadedFiles");
+    console.log(uploadedFiles);
+    const response = await handleSubmit(uploadedFiles);
+    if(response === 201){
+      navigate(-1)
+    }
   };
 
-
-  
   return (
     <div className="create_space">
       <h2>Create New Space</h2>
@@ -71,6 +72,43 @@ const CreateSpace = () => {
             initialFiles={spaceDetails.images} // Pass existing images to FileUpload
           />
         </div>
+        {/* Address city and country */}
+        <div className="address">
+          <div className="input_combo_box">
+            <div className="input_box">
+              <label htmlFor="city">City</label>
+              <input
+                type="text"
+                name="city"
+                placeholder="Enter city name"
+                value={spaceDetails.city}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="input_box">
+              <label htmlFor="country">Country</label>
+              <input
+                type="text"
+                name="country"
+                placeholder="Enter country name"
+                value={spaceDetails.country}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="input_box">
+            <label htmlFor="address">Address</label>
+            <input
+              type="text"
+              name="address"
+              placeholder="Enter complete address"
+              value={spaceDetails.address}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
         {/* Features Section */}
         <div className="features">
           <h2>Features</h2>
@@ -167,7 +205,7 @@ const CreateSpace = () => {
         </div>
         {/* Submit Button */}
         <button type="submit" className="list_space">
-        List Your Space
+          List Your Space
         </button>
       </form>
     </div>

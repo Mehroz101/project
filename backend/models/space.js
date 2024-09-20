@@ -19,6 +19,18 @@ const spaceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
     features: {
       type: [String], // Array of features
       default: [],

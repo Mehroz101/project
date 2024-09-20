@@ -276,13 +276,16 @@
   position: absolute;
   right: -460px;
   top: 0px;
+  min-width: 400px;
   max-width: 460px;
+  max-height: 630px;
   background-color: var(--text-white);
   padding: var(--spacing-medium);
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow: hidden;
   z-index: 99999;
   overflow-y: scroll;
 }
@@ -307,7 +310,7 @@
 
 .listing_detail_container .listing_detail_image_box {
   width: 100%;
-  height: 200px;
+  min-height: 200px;
   overflow: hidden;
   border-radius: 15px;
 }
@@ -353,9 +356,13 @@
 .listing_detail_container .listing_detail_section {
   display: flex;
   flex-direction: column;
+}
+.listing_detail_container .listing_detail_section .location{
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
-.listing_detail_container .listing_detail_section p.address {
+.listing_detail_container .listing_detail_section p.address,.listing_detail_container .listing_detail_section .location i {
   font-size: 14px;
   color: var(--secondary);
 }
@@ -363,12 +370,14 @@
   font-size: var(--font-size-large);
   font-weight: bold;
   color: var(--primary);
+  margin-bottom: 0;
 }
 
 .listing_detail_container .listing_detail_section .badge_shortdesc {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 10px 0;
 }
 
 .listing_detail_container .listing_detail_section .badge_shortdesc .badge {

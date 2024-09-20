@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/OverviewStats.css";
 import "./Chart";
 import Chart from "./Chart";
@@ -25,8 +25,9 @@ const OverviewStats = () => {
         return acc;
       }, 0)
     : 0;
-  console.log("withdrawable");
-  console.log(withdrawable);
+  // console.log("withdrawable");
+  // console.log(withdrawable);
+
 
   return (
     <div className="overview_stats">

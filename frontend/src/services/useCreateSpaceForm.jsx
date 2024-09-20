@@ -8,6 +8,9 @@ export const useCreateSpaceForm = () => {
     title: "",
     short_description: "",
     description: "",
+    address: "",
+    country: "",
+    city: "",
     features: [],
     longitude: "",
     latitude: "",
@@ -35,13 +38,16 @@ export const useCreateSpaceForm = () => {
 
   const handleSubmit = async (files) => {
     try {
-      console.log(" recieved")
-      console.log(files)
+      console.log(" recieved");
+      console.log(files);
       const formData = new FormData();
-      
+
       formData.append("title", spaceDetails.title);
       formData.append("short_description", spaceDetails.short_description);
       formData.append("description", spaceDetails.description);
+      formData.append("address", spaceDetails.address);
+      formData.append("city", spaceDetails.city);
+      formData.append("country", spaceDetails.country);
       formData.append("features", JSON.stringify(spaceDetails.features));
       formData.append("longitude", spaceDetails.longitude);
       formData.append("latitude", spaceDetails.latitude);
@@ -49,23 +55,16 @@ export const useCreateSpaceForm = () => {
       formData.append("per_day", spaceDetails.per_day);
 
       files.forEach((file, index) => {
-        // console.log(`File ${index + 1}:`);
-        // console.log('File Name:', file.name);
-        // console.log('File Size:', file.size);
-        // console.log('File Type:', file.type);
-        // console.log('Last Modified Date:', new Date(file.lastModified).toLocaleDateString());
-        // console.log('Last Modified Timestamp:', file.lastModified);
-        console.log(file.file)
         formData.append("files", file.file);
       });
 
       // Debugging FormData
-      
 
       const response = await createSpace(formData);
-
-      if (response.status === 200) {
-        notify("success", "Space created successfully!");
+      console.log(response);
+      if (response === 201) {
+        // notify("success", "Space created successfully!");
+        return 201;
       } else {
         handleError(response);
       }
@@ -130,5 +129,5 @@ export const useCreateSpaceForm = () => {
     }
   };
 
-  return { spaceDetails,setSpaceDetails, handleChange, handleSubmit };
+  return { spaceDetails, setSpaceDetails, handleChange, handleSubmit };
 };

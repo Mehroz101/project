@@ -37,6 +37,20 @@
 
   box-shadow: #e4e4e4 0 48px 100px 0;
 }
+.create_space form .address {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.create_space form .address .input_combo_box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.create_space form .address .input_combo_box > div {
+  flex: 1;
+  min-width: 200px;
+}
 
 .create_space label {
   color: #3e3e3e;

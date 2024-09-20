@@ -20,8 +20,10 @@ export const createSpace = async (formData) => {
     // Check the status code and notify accordingly
     if (response.status === 201) {
       notify("success", "Space created successfully!");
+      return 201
     } else {
       notify("warning", "Space creation completed with some issues.");
+      return
     }
     // return response;
   } catch (error) {
@@ -178,8 +180,10 @@ export const updateSpaceDetails = async (formData, spaceId) => {
       config
     );
     console.log(response);
-    if (response.status) notify("success", "update successfully");
-    return response.data;
+    if (response.status === 201) {
+      notify("success", "Space update successfully");
+      return 201;
+    }
   } catch (error) {
     console.error("Error updating space details:", error);
   }
@@ -205,9 +209,10 @@ export const handleDelete = async (spaceId) => {
 export const getallspaces = async () => {
   try {
     const response = await axios.get(`${API_URL}/getallspaces`,config)
-    console.log(response)
+    return response.data.data
     
   } catch (error) {
     console.log(error.message)
+    notify("error","Something wents wrong, please try again later")
   }
 };

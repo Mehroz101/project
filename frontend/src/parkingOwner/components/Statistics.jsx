@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Statistics.css'; // Ensure your CSS file is properly linked
 import { useParkingOwner } from '../../context/ReservationContext';
 
-const OverviewStatistics = () => {
+const OverviewStatistics = ({reservation,space}) => {
   const navigate = useNavigate();
-  const { reservation = [], space = {} } = useParkingOwner(); // Default empty values
+  // const { reservation = [], space = {} } = useParkingOwner(); // Default empty values
   const [stats, setStats] = useState({
     totalSpaces: 0,
     availableSpaces: 0,
@@ -24,9 +24,14 @@ const OverviewStatistics = () => {
   useEffect(() => {
     const totalSpaces = space?.data?.data?.length || 0;
     const availableSpaces = space?.data?.data?.filter((slot) => slot.state === 'active').length || 0;
-    const pendingRequests = reservation.filter((request) => request.state === 'pending').length || 0;
-    const completedRequests = reservation.filter((request) => request.state === 'completed').length || 0;
-
+    const pendingRequests = reservation?.filter((request) => request.state === 'pending').length || 0;
+    const completedRequests = reservation?.filter((request) => request.state === 'completed').length || 0;
+// const totalSpaces =0
+// const availableSpaces =0
+// const pendingRequests =0
+// const completedRequests =0
+console.log(reservation)
+console.log(space)
     // Set the updated stats
     setStats({
       totalSpaces,

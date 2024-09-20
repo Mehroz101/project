@@ -8,6 +8,9 @@ export const useUpdateSpaceForm = () => {
     title: "",
     short_description: "",
     description: "",
+    address: "",
+    country: "",
+    city: "",
     features: [],
     longitude: "",
     latitude: "",
@@ -38,15 +41,15 @@ export const useUpdateSpaceForm = () => {
 
   const handleSubmit = async ( newFiles, removeImages,fetchedImg, spaceId) => {
     try {
-        console.log("handle submit function")
-      console.log(" new images files");
-      console.log(newFiles);
-      console.log(" removeImg");
-      console.log(removeImages);
-      console.log(" Fetched images");
-      console.log(fetchedImg);
-      console.log("form data");
-      console.log(spaceDetails);
+      //   console.log("handle submit function")
+      // console.log(" new images files");
+      // console.log(newFiles);
+      // console.log(" removeImg");
+      // console.log(removeImages);
+      // console.log(" Fetched images");
+      // console.log(fetchedImg);
+      // console.log("form data");
+      // console.log(spaceDetails);
       const commonElements = fetchedImg.filter((value) =>
       removeImages.includes(value)
     );
@@ -59,23 +62,16 @@ export const useUpdateSpaceForm = () => {
       formData.append("title", spaceDetails.title);
       formData.append("short_description", spaceDetails.short_description);
       formData.append("description", spaceDetails.description);
+      formData.append("address", spaceDetails.address);
+      formData.append("city", spaceDetails.city);
+      formData.append("country", spaceDetails.country);
       formData.append("features", JSON.stringify(spaceDetails.features));
       formData.append("longitude", spaceDetails.longitude);
       formData.append("latitude", spaceDetails.latitude);
       formData.append("per_hour", spaceDetails.per_hour);
       formData.append("per_day", spaceDetails.per_day);
 
-      //   files.forEach((file, index) => {
-      //     // console.log(`File ${index + 1}:`);
-      //     // console.log('File Name:', file.name);
-      //     // console.log('File Size:', file.size);
-      //     // console.log('File Type:', file.type);
-      //     // console.log('Last Modified Date:', new Date(file.lastModified).toLocaleDateString());
-      //     // console.log('Last Modified Timestamp:', file.lastModified);
-      //     formData.append("files", file.file);
-      //   });
-     
-    //   previousImg.forEach((image) => formData.append("previousImg", image));
+      
      
     newFiles.forEach((image) => 
       formData.append("files", image)
@@ -88,10 +84,9 @@ export const useUpdateSpaceForm = () => {
       console.log(spaceId);
 
       const response = await updateSpaceDetails(formData, spaceId);
-      console.log("status");
       console.log(response);
-      if (response.status === 200) {
-        notify("success", "Space created successfully!");
+      if (response === 201) {
+        return 201
       } else {
         handleError(response);
       }

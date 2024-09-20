@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import img1 from "../assets/listingImg-1.png";
-import img2 from "../assets/listingImg-2.png";
-// import img3 from "../assets/listingImg-2.png"; // Add more images as needed
+import React, { useEffect, useState } from "react";
 
-const images = [img1, img2]; // Array of images
+const REACT_APP_API_URL = "http://localhost:5000/";
 
-const ListingDetail = ({ onHideDetail }) => {
+const ListingDetail = ({ onHideDetail, space }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [images, setImages] = useState([]); // Store images in state
 
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -20,6 +18,16 @@ const ListingDetail = ({ onHideDetail }) => {
     );
   };
 
+  useEffect(() => {
+    if (space.images && space.images.length > 0) {
+      // Set images from the space object
+      const formattedImages = space.images.map(
+        (image) => `${REACT_APP_API_URL}/${image}`
+      );
+      setImages(formattedImages); // Update the state with formatted images
+    }
+  }, [space.images]); // Effect depends on space.images
+
   return (
     <>
       <div className="listing_detail_container">
@@ -29,35 +37,36 @@ const ListingDetail = ({ onHideDetail }) => {
           </span>
         </div>
         <div className="listing_detail_image_box">
-          <button className="prev_btn" onClick={handlePreviousImage}>
-            <i className="fa-solid fa-chevron-left"></i>
-          </button>
-          <img
-            src={images[currentImageIndex]}
-            alt="Listing"
-            className="listing_image"
-          />
-          <button className="next_btn" onClick={handleNextImage}>
-            <i className="fa-solid fa-chevron-right"></i>
-          </button>
+          {images.length > 0 && (
+            <>
+              <button className="prev_btn" onClick={handlePreviousImage}>
+                <i className="fa-solid fa-chevron-left"></i>
+              </button>
+              <img
+                src={images[currentImageIndex]}
+                alt="Listing"
+                className="listing_image"
+              />
+              <button className="next_btn" onClick={handleNextImage}>
+                <i className="fa-solid fa-chevron-right"></i>
+              </button>
+            </>
+          )}
         </div>
         <div className="listing_detail_section">
-          <h2 className="listing_detail_title">Mall of Multan, Multan  </h2>
-          <p className="address">Near Nadren Bypass, Bosan road, Multan</p>
+          <h2 className="listing_detail_title">{space.title} </h2>
+          <div className="location">
+            <i className="fa-solid fa-location-dot"></i>
+            <p className="address">{space.location}</p>
+          </div>
           <div className="badge_shortdesc">
-            <span className="badge">Secure</span>
-            <span className="short_description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi,
-              eos!
-            </span>
+            <span className="short_description">{space.short_description}</span>
           </div>
           <div className="listing_rating">
             <span className="rating">
-              <span>&#9733;</span>
-              <span>&#9733;</span>
-              <span>&#9733;</span>
-              <span>&#9733;</span>
-              <span>&#9734;</span>
+              <span className="rating_score">4.5</span>
+              <i className="fa-solid fa-star"></i>
+              <span className="total_reviews">(123)</span>
             </span>
             <span className="total_booking">100+ booking</span>
           </div>
@@ -77,22 +86,28 @@ const ListingDetail = ({ onHideDetail }) => {
           </div>
         </div>
         <div className="listing_detail_features">
-          <span className="feature">CCTV</span>
-          <span className="feature">Underground</span>
-          <span className="feature">Secure</span>
+          {space.features?.map((feature, index) => {
+            switch (feature) {
+              case "secure":
+                return <span className="feature">CCTV</span>;
+              case "underground":
+                return <span className="feature">Underground</span>;
+              case "cctv":
+                return <span className="feature">Secure</span>;
+              default:
+                return null;
+            }
+          })}
         </div>
         <div className="listing_detail_description">
           <h3>Description</h3>
           <p className="description">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ratione
-            dignissimos et ut accusantium, rerum, expedita dolorem consequuntur
-            ipsa corporis sint, dolorum dolores dolore corrupti deleniti
-            veritatis cumque officiis quod saepe?
+            {space.description}
           </p>
         </div>
         <div className="listing_detail_btn">
-          <button className="all_day_book_btn">All day in $57</button>
-          <button className="book_btn">Reserve in $7</button>
+          <button className="all_day_book_btn">All day in $23</button>
+          <button className="book_btn">Reserve in ${space.per_hour}</button>
         </div>
       </div>
     </>

@@ -7,36 +7,31 @@ import NotificationsAlerts from "../components/NotificationsAlerts";
 import UserFeedbackReviews from "../components/UserFeedbackReviews";
 import SettingsAccountManagement from "../components/SettingsAccountManagement";
 import SupportHelp from "../components/SupportHelp";
-const Dashboard = () => {
-  // const [slots,setSlots] = useState()
-  // const [reservation,setReservation] = useState()
+import { useParkingOwner } from "../../context/ReservationContext";
 
-  // const getDetail = async () => {
-  //   try {
-  //     const [reservationsResponse, spacesResponse] = await Promise.all([
-  //       getReservation(),
-  //       getSpace(),
-  //     ]);
-  //     // console.log(reservationsResponse)
-  //     setSlots(spacesResponse.data.data)
-  //     setReservation(reservationsResponse)
-  //     // console.log(spacesResponse)
-  //   } catch (error) {
-  //     console.log(error.message)
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   getDetail();
-  // }, []);
-  // useEffect(()=>{
-  //   if(slots){
-  //     console.log("slots")
-  //   }
-  // },[])
+const Dashboard = () => {
+  const { reservation, space } = useParkingOwner();
+  const [reservations, setReservations] = useState([]);
+  const [spaces, setSpaces] = useState([]);
+
+  const assignResponse = () => {
+    if (reservation) {
+      setReservations(reservation);
+    }
+    if (space) {
+      setSpaces(space);
+    }
+  };
+  useEffect(() => {
+    assignResponse();
+  }, []);
+  useEffect(() => {
+    setSpaces(space);
+    setReservations(reservation);
+  }, [space, reservation]);
   return (
     <>
-      <OverviewStats  />
+      <OverviewStats space={spaces} reservation={reservations} />
       <RecentActivities />
       <Statistics />
       {/* <EarningsSummary /> */}

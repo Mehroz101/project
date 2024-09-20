@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import listingImg from "../assets/listingImg-1.png";
 import { Link } from "react-router-dom";
-const ListingContainer = ({onShowDetail, spaceDetail }) => {
-const [space,setSpace]= useState([])
-const REACT_APP_API_URL = "http://localhost:5000/";
+const ListingContainer = ({ onShowDetail, slotData }) => {
+  const [space, setSpace] = useState([]);
+  const REACT_APP_API_URL = "http://localhost:5000/";
 
-
-useEffect(()=>{
-    if(spaceDetail){
-      console.log("space data")
-    setSpace(spaceDetail)
-    console.log(spaceDetail)
+  useEffect(() => {
+    if (slotData) {
+      console.log(slotData);
+      setSpace(slotData);
     }
-  },[spaceDetail])
+  }, []);
   return (
     <>
       <div className="listing">
@@ -24,27 +22,46 @@ useEffect(()=>{
             <h3>{space.title}</h3>
           </div>
           <div className="location">
-            <i class="fa-solid fa-location-dot"></i>
+            <i className="fa-solid fa-location-dot"></i>
             <span>{space.location}</span>
           </div>
           <div className="listing_rating">
             <span className="rating">
               <span className="rating_score">4.5</span>
-              <i class="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
               <span className="total_reviews">(123)</span>
-
             </span>
             <span className="total_booking">100+ booking</span>
           </div>
           <div className="listing_detail">
             <div className="listing_features">
-              <span title="secure"><i class="fa-solid fa-shield-halved"></i></span>
-              <span title="underground"><i class="fa-solid fa-arrow-down-short-wide"></i></span>
-              <span title="cctv"><i class="fa-solid fa-video"></i></span>
+              {space.features?.map((feature, index) => {
+                switch (feature) {
+                  case "secure":
+                    return (
+                      <span key={index} title="secure">
+                        <i className="fa-solid fa-shield-halved"></i>
+                      </span>
+                    );
+                  case "underground":
+                    return (
+                      <span key={index} title="underground">
+                        <i className="fa-solid fa-arrow-down-short-wide"></i>
+                      </span>
+                    );
+                  case "cctv":
+                    return (
+                      <span key={index} title="cctv">
+                        <i className="fa-solid fa-video"></i>
+                      </span>
+                    );
+                  default:
+                    return null;
+                }
+              })}
             </div>
             <span>
-              {/* <Link to={`/dashboard/manage-space/view-space/${space._id}`} onClick={onShowDetail}>details</Link> */}
-              <Link  onClick={onShowDetail}>details</Link>
+              <Link onClick={()=>onShowDetail(space._id)}>details</Link>
             </span>
           </div>
           <div className="listing_btn">

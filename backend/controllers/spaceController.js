@@ -16,6 +16,9 @@ const createSpace = async (req, res) => {
       title,
       short_description,
       description,
+      address,
+      city,
+      country,
       features,
       longitude,
       latitude,
@@ -28,6 +31,9 @@ const createSpace = async (req, res) => {
       !title ||
       !short_description ||
       !description ||
+      !address ||
+      !city ||
+      !country ||
       !longitude ||
       !latitude ||
       !per_hour ||
@@ -41,6 +47,9 @@ const createSpace = async (req, res) => {
       title,
       short_description,
       description,
+      address,
+      city,
+      country,
       features: JSON.parse(features),
       longitude,
       latitude,
@@ -49,8 +58,8 @@ const createSpace = async (req, res) => {
       images: req.files.map((file) => file.filename), // Save the file paths
     });
 
-    await newSpace.save();
-    return res.status(201).json({ data: newSpace });
+    const data = await newSpace.save();
+    return res.status(201).json({ data });
   } catch (error) {
     console.error("Server error:", error.message);
     return res.status(500).json();
@@ -61,7 +70,7 @@ const createSpace = async (req, res) => {
 const showSpace = async (req, res) => {
   try {
     const user = req.user.id;
-    console.log(user)
+    console.log(user);
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -118,6 +127,9 @@ const updateSpaceDetails = async (req, res) => {
     title,
     short_description,
     description,
+    address,
+    city,
+    country,
     features,
     longitude,
     latitude,
@@ -137,6 +149,9 @@ const updateSpaceDetails = async (req, res) => {
     space.title = title || space.title;
     space.short_description = short_description || space.short_description;
     space.description = description || space.description;
+    space.address = address || space.address;
+    space.city = city || space.city;
+    space.country = country || space.country;
     space.features = features ? JSON.parse(features) : space.features;
     space.longitude = longitude || space.longitude;
     space.latitude = latitude || space.latitude;
@@ -145,12 +160,14 @@ const updateSpaceDetails = async (req, res) => {
 
     // Handle image removal
     if (removeImg && removeImg.length > 0) {
-      const removedImages = space.images.filter((img) => removeImg.includes(img));
+      const removedImages = space.images.filter((img) =>
+        removeImg.includes(img)
+      );
 
       // Delete removed images from server
       for (const img of removedImages) {
         const imagePath = path.join(__dirname, "../uploads", img);
-        
+
         // Check if file exists before attempting to delete
         if (fs.existsSync(imagePath)) {
           fs.unlink(imagePath, (err) => {
@@ -176,17 +193,17 @@ const updateSpaceDetails = async (req, res) => {
     }
 
     // Save the updated space in the database
-    await space.save();
+    const response = await space.save();
 
-    console.log("Remaining images in database:", space.images);
-    res.status(200).json({ message: "Space updated successfully", space });
+
+    res.status(201).json({ message: "Space updated successfully", response });
   } catch (error) {
     console.error("Error updating space details:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 };
-const deleteSpace = async (req,res) => {
-  const {spaceId} = req.params;
+const deleteSpace = async (req, res) => {
+  const { spaceId } = req.params;
   try {
     const space = await Space.findByIdAndDelete(spaceId);
     if (!space) {
@@ -197,9 +214,8 @@ const deleteSpace = async (req,res) => {
     console.error("Error deleting space:", error.message);
     res.status(500).json({ message: "Server error" });
   }
-
-}
-const getallspaces =async () =>{
+};
+const getallspaces = async (req, res) => {
   try {
     const user = req.user.id;
     if (!user) {
@@ -218,8 +234,7 @@ const getallspaces =async () =>{
       .status(500)
       .json({ message: "Server error", error: error.message });
   }
-}
-
+};
 
 module.exports = {
   createSpace,

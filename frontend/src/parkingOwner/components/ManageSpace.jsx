@@ -15,7 +15,7 @@ const ManageSpace = () => {
   // Fetch data from backend
   const spaceRequest = async () => {
     try {
-      const [reservationsResponse,spacesResponse] = await Promise.all([
+      const [reservationsResponse, spacesResponse] = await Promise.all([
         getReservation(),
         getSpace(),
       ]);
@@ -23,11 +23,12 @@ const ManageSpace = () => {
       const spacesArray = spacesResponse.data.data;
       setSpaces(spacesArray); // Save the fetched spaces data
       setFilteredData(spacesArray); // Initialize filteredData with all spaces
-const reservationcount =reservationsResponse.map((reservation)=>reservation)
+      const reservationcount = reservationsResponse.map(
+        (reservation) => reservation
+      );
       setReservations(reservationcount); // Save the reservations data
-    console.log("reservations")
-    console.log(reservationcount)
-
+      console.log("reservations");
+      console.log(reservationcount);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -154,11 +155,10 @@ const reservationcount =reservationsResponse.map((reservation)=>reservation)
             <div className="search_input">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search by title"
                 value={searchTerm}
                 onChange={handleSearchChange} // Update search term
               />
-              <button>Search</button>
             </div>
           </div>
         </div>
@@ -182,17 +182,19 @@ const reservationcount =reservationsResponse.map((reservation)=>reservation)
             </thead>
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData?.slice()
-                .reverse().map((item, index) => (
-                  <SpaceRow
-                    key={index}
-                    spaceInfo={item}
-                    spaceIndex={index}
-                    handleToggleStatus={handleToggleStatus}
-                    handleDeleteSpace={handleDeleteSpace}
-                    reservations={reservations}
-                  />
-                ))
+                filteredData
+                  ?.slice()
+                  .reverse()
+                  .map((item, index) => (
+                    <SpaceRow
+                      key={index}
+                      spaceInfo={item}
+                      spaceIndex={index}
+                      handleToggleStatus={handleToggleStatus}
+                      handleDeleteSpace={handleDeleteSpace}
+                      reservations={reservations}
+                    />
+                  ))
               ) : (
                 <tr>
                   <td colSpan="8">No results found</td>
