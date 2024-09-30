@@ -1,11 +1,14 @@
 import { createContext, useEffect, useState, useContext } from "react";
+import io from "socket.io-client"; // Import socket.io-client
 import { getReservation } from "../services/reservationService";
 import { getSpace } from "../services/spaceService";
 
 // Create the context
 const ParkingOwnerContext = createContext();
 
-// Provider component
+// Socket connection (Make sure to replace with your actual backend URL)
+const socket = io("http://localhost:5000");
+
 export const ParkingOwnerProvider = ({ children }) => {
   const [reservation, setReservation] = useState([]);
   const [space, setSpace] = useState([]);
@@ -14,8 +17,6 @@ export const ParkingOwnerProvider = ({ children }) => {
     try {
       const response = await getReservation();
       setReservation(response);
-      console.log("Fetched reservations:");
-      console.log(response); // Log the fetched data
     } catch (error) {
       console.log(error.message);
     }
@@ -25,8 +26,6 @@ export const ParkingOwnerProvider = ({ children }) => {
     try {
       const response = await getSpace();
       setSpace(response);
-      console.log("Fetched spaces:");
-      console.log(response); // Log the fetched data
     } catch (error) {
       console.log(error.message);
     }
@@ -35,6 +34,22 @@ export const ParkingOwnerProvider = ({ children }) => {
   useEffect(() => {
     getReservationData();
     getSpaceData();
+
+    // Set up socket listeners for real-time updates
+    socket.on("reservationUpdated", (updatedReservations) => {
+      console.log(updatedReservations);
+      setReservation(updatedReservations);
+    });
+
+    socket.on("spaceUpdated", (updatedSpaces) => {
+      setSpace(updatedSpaces);
+    });
+
+    // Cleanup on unmount
+    return () => {
+      socket.off("reservationUpdated");
+      socket.off("spaceUpdated");
+    };
   }, []);
 
   return (

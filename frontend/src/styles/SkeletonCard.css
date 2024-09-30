@@ -1,0 +1,119 @@
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+.skeleton_image,
+.skeleton_text,
+.skeleton_star,
+.skeleton_icon,
+.skeleton_detail,
+.skeleton_button {
+  background-color: #e0e0e0;
+  background-image: linear-gradient(
+    90deg,
+    #e0e0e0 25%,
+    #ebebeb 50%,
+    #e0e0e0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+.skeleton_card {
+  display: flex;
+  background-color: #f5f5f5;
+  box-shadow: 0px 1px 3px rgba(114, 114, 114, 0.12),
+    0px 1px 2px rgba(85, 83, 83, 0.24);
+  gap: 15px; /* Increased gap for better spacing */
+  margin-top: 15px; /* Increased margin for separation */
+  padding: var(--spacing-medium);
+  border-radius: 8px; /* Rounded corners */
+}
+
+.skeleton_image {
+  background-color: #e0e0e0;
+  margin-bottom: 12px;
+  flex: 1;
+  width: 150px; /* Increased width for better visuals */
+  min-height: 160px;
+  border-radius: 8px;
+}
+
+.skeleton_content {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+.skeleton_text {
+  height: 16px;
+  background-color: #e0e0e0;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  max-width: 200px;
+}
+
+.skeleton_text.title {
+  width: 60%;
+  height: 24px;
+}
+
+.skeleton_text.location {
+  max-width: 70%;
+  height: 10px;
+}
+
+.skeleton_rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.skeleton_star {
+  width: 60px;
+  height: 12px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+}
+
+.skeleton_text.small {
+  width: 40px;
+  height: 12px;
+}
+
+.skeleton_icons {
+  display: flex;
+  margin-bottom: 12px;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton_icons div.icon {
+  display: flex;
+  gap: 10px;
+}
+.skeleton_icons .skeleton_icon {
+  width: 24px;
+  height: 24px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+}
+.skeleton_detail {
+  width: 40px;
+  height: 15px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+}
+.skeleton_button {
+  height: 35px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  width: 100%;
+
+  margin-top: 10px; /* Increased space above button */
+}

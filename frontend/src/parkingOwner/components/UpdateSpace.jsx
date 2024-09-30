@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const UpdateSpace = () => {
   const { spaceDetails, setSpaceDetails, handleChange, handleSubmit } =
     useUpdateSpaceForm();
-  const REACT_APP_API_URL = "http://localhost:5000/";
+  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
   const { spaceId } = useParams();
   console.log("space id:" + spaceId);
   const [images, setImages] = useState([]);
@@ -25,7 +25,7 @@ const UpdateSpace = () => {
       setExistingImages(data.space.images);
       setFetchImg(data.space.images);
       setNewImagePreviews(
-        data.space.images.map((image) => `${REACT_APP_API_URL}${image}`)
+        data.space.images.map((image) => `${REACT_APP_API_URL}/${image}`)
       );
       // console.log("Fetch images in updatespace file");
       // console.log(data.space.images);

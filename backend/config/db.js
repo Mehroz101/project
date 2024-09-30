@@ -5,11 +5,12 @@ const mongoose = require("mongoose");
 // Flag to track the database connection status
 let isDatabaseConnected = false;
 
+const URI = process.env.MONGO_URI || "mongodb://localhost:27017/parking"
 // Function to connect to the MongoDB database
 const connectDB = async () => {
   try {
     // Attempt to connect to the database
-    const connection = await mongoose.connect(process.env.MONGO_URI);
+    const connection = await mongoose.connect(URI);
 
     if (connection) {
       console.log("Database connected successfully");

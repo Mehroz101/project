@@ -47,6 +47,10 @@ const reservationSchema = new mongoose.Schema(
       type:String,
       required:true
     },
+    isCustom:{
+      type:Boolean,
+      default:false
+    },
     state: {
       type: String,
       default: "pending",

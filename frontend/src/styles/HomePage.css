@@ -92,7 +92,7 @@
 }
 
 .parking_finder_card form .btn:hover {
-  background-color: darken(var(--secondary), 10%);
+  background-color:#1eb06c;
 }.hero_section .hero_right {
   display: flex;
   justify-content: center;

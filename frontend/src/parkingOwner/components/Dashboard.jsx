@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [reservations, setReservations] = useState([]);
   const [spaces, setSpaces] = useState([]);
 
+
   const assignResponse = () => {
     if (reservation) {
       setReservations(reservation);
@@ -24,16 +25,13 @@ const Dashboard = () => {
   };
   useEffect(() => {
     assignResponse();
-  }, []);
-  useEffect(() => {
-    setSpaces(space);
-    setReservations(reservation);
   }, [space, reservation]);
+
   return (
     <>
       <OverviewStats space={spaces} reservation={reservations} />
       <RecentActivities />
-      <Statistics />
+      <Statistics  space={spaces} reservation={reservations}/>
       {/* <EarningsSummary /> */}
       {/* <NotificationsAlerts /> */}
       <UserFeedbackReviews />

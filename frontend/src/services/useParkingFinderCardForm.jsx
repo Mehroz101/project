@@ -1,60 +1,47 @@
 import { useState } from "react";
-import { createCustomReservation } from "./reservationService";
 import { notify } from "./errorHandlerService";
 import {
   calculateHours,
-  calculatePrice,
 } from "../parkingOwner/components/Functions";
 
-export const customReservationRequest = () => {
-  const [customRequest, setCustomRequest] = useState({
-    spaceId: "",
-    name: "",
-    email: "",
-    phoneNo: "",
-    vehicleNo: "",
-    arrivalTime: "",
-    leaveTime: "",
+export const useParkingFinderCardForm = () => {
+  const [findParking, setFindParking] = useState({
+    searchInput: "",
     arrivalDate: "",
+    arrivalTime: "",
     leaveDate: "",
-    price_perhour:"",
-    price_perday:"",
+    leaveTime: "",
+    totalHours: "",
   });
   const handleChange = (e) => {
-    setCustomRequest({ ...customRequest, [e.target.name]: e.target.value });
+    setFindParking({ ...findParking, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async () => {
-    const {
-      spaceId,
-      name,
-      email,
-      phoneNo,
-      vehicleNo,
-      arrivalTime,
-      leaveTime,
-      arrivalDate,
-      leaveDate,
-      price_perhour,
-      price_perday,
-    } = customRequest;
-    console.log(customRequest);
+
+  const handleSubmit = () => {
+    const { searchInput, arrivalDate, arrivalTime, leaveDate, leaveTime } =
+      findParking;
+  
 
     if (
-      spaceId === "" ||
-      name === "" ||
-      email === "" ||
-      phoneNo === "" ||
-      vehicleNo === "" ||
-      arrivalTime === "" ||
-      leaveTime === "" ||
+      searchInput === "" ||
       arrivalDate === "" ||
+      arrivalTime === "" ||
       leaveDate === "" ||
-      price_perhour === "" ||
-      price_perday === ""
+      leaveTime === ""
     ) {
-      notify("info", "Please fill all the fields");
-      return;
+      notify("info", "please enter in all field to search");
+      return 400;
+    } else if (
+      searchInput === undefined ||
+      arrivalDate === undefined ||
+      arrivalTime === undefined ||
+      leaveDate === undefined ||
+      leaveTime === undefined
+    ) {
+      notify("info", "please enter in all field to search");
+      return 400;
     }
+  
     const now = new Date();
     const currentDate = now.toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
@@ -66,50 +53,45 @@ export const customReservationRequest = () => {
         "warning",
         "Arrival time must be greater than or equal to the current time"
       );
-      return;
+      return 400;
     }
 
     // Condition 2: Arrival must be in the future for dates after today
     if (arrivalDateTime <= now) {
       notify("warning", "Arrival Date is in past");
-      return;
+      return 400;
     }
 
     // Condition 3: Leave time must be after arrival time
     if (leaveDateTime <= arrivalDateTime) {
       notify("warning", "Leave Date or time is less than arrival date");
-      return;
+      return 400;
     }
     console.log(leaveDateTime - arrivalDateTime);
     const minParkingDuration = 60 * 60 * 1000; // Minimum duration: 30 minutes
     if (leaveDateTime - arrivalDateTime < minParkingDuration) {
       notify("warning", "Parking time must be at least 1 hour.");
-      return;
+      return 400;
     }
-
-
     const hours = calculateHours(
       arrivalTime,
       arrivalDate,
       leaveTime,
       leaveDate
     );
-    const price = calculatePrice(hours, price_perhour, price_perday);
-    console.log(price);
-   
+    findParking.totalHours = hours.toFixed(2);
+    console.log(hours);
+    localStorage.setItem("arrivalDate",arrivalDate)
+    localStorage.setItem("arrivalTime",arrivalTime)
+    localStorage.setItem("leaveDate",leaveDate)
+    localStorage.setItem("leaveTime",leaveTime)
+    localStorage.setItem("totalHours", findParking.totalHours)
 
-    const updatedRequest = {
-      ...customRequest,
-      totalPrice: price, // Add the calculated price here
-    };
-    const response = await createCustomReservation(updatedRequest);
-    console.log(response);
-    return response;
   };
-
   return {
-    customRequest,
     handleChange,
     handleSubmit,
+    setFindParking,
+    findParking,
   };
 };

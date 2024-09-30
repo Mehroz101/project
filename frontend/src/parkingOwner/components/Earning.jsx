@@ -31,8 +31,11 @@ const Earning = () => {
   useEffect(() => {
     const totalEarning = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
-          const price = parseFloat(request.totalPrice); // Convert to number
-          return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
+          if (request.state === "completed") {
+            const price = parseFloat(request.totalPrice); // Convert to number
+            return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
+          }
+          return acc;
         }, 0)
       : 0;
     const withdrawable = Array.isArray(reservation)
@@ -63,12 +66,12 @@ const Earning = () => {
               requestDate.getMonth() === 0 &&
               requestDate.getFullYear() === lastMonthYear)
           ) {
-            console.log("done");
-
-            const price = parseFloat(request.totalPrice);
-            return acc + (isNaN(price) ? 0 : price);
-          } else {
-            console.log("not done");
+            if (request.state === "completed") {
+              const price = parseFloat(request.totalPrice); // Convert to number
+              return acc + (isNaN(price) ? 0 : price);
+            }
+            // const price = parseFloat(request.totalPrice);
+            // return acc + (isNaN(price) ? 0 : price);
           }
 
           return acc;
@@ -136,7 +139,7 @@ const Earning = () => {
                 ?.slice()
                 .reverse()
                 .map((request, index) => {
-                  return <WithdrawRow requests={request} index={index+1} />;
+                  return <WithdrawRow requests={request} index={index + 1} />;
                 })}
             </tbody>
           </table>

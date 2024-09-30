@@ -20,10 +20,10 @@ export const createSpace = async (formData) => {
     // Check the status code and notify accordingly
     if (response.status === 201) {
       notify("success", "Space created successfully!");
-      return 201
+      return 201;
     } else {
       notify("warning", "Space creation completed with some issues.");
-      return
+      return;
     }
     // return response;
   } catch (error) {
@@ -49,9 +49,11 @@ export const createSpace = async (formData) => {
             "Error creating space: " +
               (error.response?.data?.message || error.message)
           );
+          return
       }
     } else {
       notify("error", "Network error. Please check your connection.");
+      return
     }
   }
 };
@@ -117,7 +119,19 @@ export const getSpace = async (spaceId = null) => {
     }
   }
 };
-
+export const getSpaceForReservation = async (spaceId) => {
+  try {
+    console.log("req page:=> " + spaceId);
+    const response = await axios.get(
+      `${API_URL}/getspacedetailforreservation/${spaceId}`,
+      config
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error.message);
+    notify("error" + error.message);
+  }
+};
 export const toggleSpaceStatus = async (spaceId) => {
   const config = {
     headers: {
@@ -190,7 +204,6 @@ export const updateSpaceDetails = async (formData, spaceId) => {
 };
 
 export const handleDelete = async (spaceId) => {
-  
   try {
     const response = await axios.delete(
       `${API_URL}/deletespace/${spaceId}`,
@@ -208,11 +221,28 @@ export const handleDelete = async (spaceId) => {
 
 export const getallspaces = async () => {
   try {
-    const response = await axios.get(`${API_URL}/getallspaces`,config)
-    return response.data.data
-    
+    const response = await axios.get(`${API_URL}/getallspaces`, config);
+    console.log(response);
+    if (response.status === 201) return response.data.data;
+    // return response.data.data;
   } catch (error) {
-    console.log(error.message)
-    notify("error","Something wents wrong, please try again later")
+    if (error.response) {
+      switch (error.response.status) {
+        case 404:
+          notify("info", "Space not found.");
+          break;
+        case 500:
+          notify("error", "Please try again later.");
+          break;
+        default:
+          notify(
+            "error",
+            "Error creating space: " +
+              (error.response?.data?.message || error.message)
+          );
+      }
+    } else {
+      notify("error", "Network error. Please check your connection.");
+    }
   }
 };

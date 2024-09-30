@@ -7,7 +7,7 @@ const SpaceRow = ({
   spaceIndex,
   handleToggleStatus,
   handleDeleteSpace,
-  reservations=[],
+  reservations,
 }) => {
   const [pause, setPause] = useState(false);
 
@@ -18,10 +18,14 @@ const SpaceRow = ({
     // Calculate total pending for the current space
   const totalPending = reservations.filter((reservation) => reservation.spaceId._id === spaceInfo._id)
     .filter((reservation) => reservation.state === "pending").length;
-  const totalConfirmed = reservations.filter((reservation) => reservation.spaceId._id === spaceInfo._id)
+  const totalConfirmed = reservations?.filter((reservation) => reservation.spaceId._id === spaceInfo._id)
     .filter((reservation) => reservation.state === "confirmed").length;
-
-
+//   const totalPending = 0;
+//   const totalBookings = 0;
+// const totalConfirmed = 0;
+console.log("reservations")
+console.log("spaceInfo")
+console.log(spaceInfo)
   // Toggle space status
   const toggleStatus = async (e) => {
     e.preventDefault(); // Prevent default link behavior
@@ -43,7 +47,7 @@ const SpaceRow = ({
     handleDeleteSpace(spaceInfo._id);
   };
 
-  const REACT_APP_API_URL = "http://localhost:5000/";
+  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
   return (
     <>
@@ -53,7 +57,7 @@ const SpaceRow = ({
         </td>
         <td>
           <img
-            src={`${REACT_APP_API_URL}${spaceInfo.images[0]}`}
+            src={`${REACT_APP_API_URL}/${spaceInfo.images[0]}`}
             alt="Product Image"
             className="responsive_img"
             width="50"

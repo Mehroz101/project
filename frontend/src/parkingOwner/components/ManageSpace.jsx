@@ -185,16 +185,35 @@ const ManageSpace = () => {
                 filteredData
                   ?.slice()
                   .reverse()
-                  .map((item, index) => (
-                    <SpaceRow
-                      key={index}
-                      spaceInfo={item}
-                      spaceIndex={index}
-                      handleToggleStatus={handleToggleStatus}
-                      handleDeleteSpace={handleDeleteSpace}
-                      reservations={reservations}
-                    />
-                  ))
+                  .map((item, index) => {
+                    // Find the corresponding reservation for the current item
+                    const reservationForSpace = reservations?.find(
+                      (slot) => slot.spaceId === item.spaceId
+                    );
+
+                    // Check if the current reservation's spaceId is null
+                    if (reservationForSpace?.spaceId === null) {
+                      console.log(
+                        "SpaceId is null for reservation of item",
+                        reservationForSpace
+                      );
+                      return null; // Skip this iteration
+                    }
+
+                    return (
+                      <>
+                        {console.log("SpaceId is valid for item", item)}
+                        <SpaceRow
+                          key={index}
+                          spaceInfo={item}
+                          spaceIndex={index}
+                          handleToggleStatus={handleToggleStatus}
+                          handleDeleteSpace={handleDeleteSpace}
+                          reservations={reservations}
+                        />
+                      </>
+                    );
+                  })
               ) : (
                 <tr>
                   <td colSpan="8">No results found</td>

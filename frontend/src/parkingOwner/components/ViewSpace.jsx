@@ -8,7 +8,7 @@ const ViewSpace = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]);
   const { spaceId } = useParams();
-  const REACT_APP_API_URL = "http://localhost:5000/";
+  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
   const getSpaceData = async () => {
     const spaceData = await getSpace(spaceId);

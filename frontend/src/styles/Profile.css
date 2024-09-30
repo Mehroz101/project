@@ -150,7 +150,7 @@
 .reset_password_from_hide {
   display: none;
 }
-.reset_password_from_head{
+.reset_password_from_head {
   font-size: 16px !important;
   margin-top: 10px !important;
 }
@@ -219,6 +219,13 @@
   padding: 15px;
   font-size: var(--font-size-small);
   border-bottom: 1px solid #dddddd;
+}
+.reservation_history_container .reservation_list td.title,
+.reservation_history_container .reservation_list td.id {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .reservation_history_container .reservation_list th {

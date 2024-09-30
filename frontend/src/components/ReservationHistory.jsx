@@ -1,13 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Img from "../assets/hero_img.png";
 import { Link } from "react-router-dom";
 import ReviewPopup from "./ReviewPopup";
+import { getUserReservation } from "../services/reservationService";
+const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
 const ReservationHistory = () => {
   const [reviewBox, setReviewBox] = useState(false);
+  const [data, setData] = useState([]);
   const hidePopupFun = () => {
     setReviewBox(false);
   };
+  const getreservationData = async () => {
+    try {
+      const response = await getUserReservation();
+      console.log(response);
+      setData(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getreservationData();
+  }, []);
   return (
     <div className="reservation_history_container">
       <h2>Booking History</h2>
@@ -23,7 +38,7 @@ const ReservationHistory = () => {
         <table className="highlight responsive_table">
           <thead>
             <tr>
-              <th>S No.</th>
+              <th>SNo.</th>
               <th>Image</th>
               <th>Location</th>
               <th>Reservation ID</th>
@@ -35,82 +50,42 @@ const ReservationHistory = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>
-                <img src={Img} alt="Reservation" />
-              </td>
-              <td>Mall of Multan, Multan</td>
-              <td>12345</td>
-              <td>08/14/24 4:00PM</td>
-              <td>08/14/24 7:00PM</td>
-              <td>$7</td>
-              <td>
-                <span className="status canceled">Canceled</span>
-              </td>
-              <td>
-                {/* <button>Direction</button>
-                <button>Review</button> */}
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-
-              <td>
-                <img src={Img} alt="Reservation" />
-              </td>
-              <td>Mall of Multan, Multan</td>
-              <td>12345</td>
-              <td>08/14/24 4:00PM</td>
-              <td>08/14/24 7:00PM</td>
-              <td>$7</td>
-              <td>
-                <span className="status completed">Completed</span>
-              </td>
-              <td>
-                {/* <button>Direction</button> */}
-                <button onClick={() => setReviewBox(true)}>Review</button>
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-
-              <td>
-                <img src={Img} alt="Reservation" />
-              </td>
-              <td>Mall of Multan, Multan</td>
-              <td>12345</td>
-              <td>08/14/24 4:00PM</td>
-              <td>08/14/24 7:00PM</td>
-              <td>$7</td>
-              <td>
-                <span className="status pending">Pending</span>
-              </td>
-              <td>
-                <button>Direction</button>
-                {/* <button>Review</button> */}
-              </td>
-            </tr>
-            <tr>
-              <td>1</td>
-
-              <td>
-                <img src={Img} alt="Reservation" />
-              </td>
-              <td>Mall of Multan, Multan</td>
-              <td>12345</td>
-              <td>08/14/24 4:00PM</td>
-              <td>08/14/24 7:00PM</td>
-              <td>$7</td>
-              <td>
-                <span className="status confirm">Confirmed</span>
-              </td>
-              <td>
-                <button>Direction</button>
-                {/* <button>Review</button> */}
-              </td>
-            </tr>
-            {/* Add more rows as needed */}
+            {data?.map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>
+                  <img src={`${REACT_APP_API_URL}/${item.spaceId.images[0]}`} alt="Reservation" />
+                </td>
+                <td className="title">{item.spaceId.address}</td>
+                <td className="id">{item._id}</td>
+                <td className="date">
+                  {item.arrivalDate} {item.arrivalTime}
+                </td>
+                <td className="date">
+                  {item.leaveDate} {item.leaveTime}
+                </td>
+                <td>Rs. {item.totalPrice}</td>
+                <td>
+                  <span className={`status ${item.state}`}>{item.state}</span>
+                </td>
+                {item.state === "confirmed" ||
+                  (item.state === "pending" && (
+                    <td>
+                      <button>Direction</button>
+                    </td>
+                  ))}
+                {item.state === "completed" && (
+                  <td>
+                    <button onClick={() => setReviewBox(true)}>Review</button>
+                  </td>
+                )}
+                {item.state === "cancelled" && (
+                  <td>
+                  </td>
+                )}
+              </tr>
+            ))}
+          
           </tbody>
         </table>
       </div>

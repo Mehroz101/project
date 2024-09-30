@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { calculatePrice } from "./Functions";
 
 const RequestRow = ({
   reservation,
@@ -8,8 +7,17 @@ const RequestRow = ({
   handleCancelReservation,
   handleConfirmReservation,
 }) => {
-
-  
+  const [reservationReq, setReservationReq] = useState(reservation);
+  const [nonReservationReq, setNonReservationReq] = useState();
+  useEffect(() => {
+    if (reservation?.spaceId !== null) {
+      console.log(reservation?.spaceId?.title);
+      setReservationReq(reservation);
+    } else {
+      console.log(reservation);
+      setNonReservationReq(reservation);
+    }
+  }, [reservation]); // Run this effect when the reservation prop changes
 
   const cancelReservation = () => {
     handleCancelReservation(reservation._id);
@@ -23,31 +31,38 @@ const RequestRow = ({
         <td>
           <span className="id">{index}</span>
         </td>
-        <td className="title">{reservation.spaceId.title}</td>
-        <td className="request_id">{reservation._id}</td>
-        <td className="user_name">{reservation.name}</td>
-        <td className="user_email">{reservation.email}</td>
+        <td className="title">{reservationReq?.spaceId?.title}</td>
+        <td className="request_id">{reservationReq._id}</td>
+        <td className="user_name">{reservationReq.name}</td>
+        <td className="user_email">{reservationReq.email}</td>
         <td className="arrival">
-          {`${new Date(reservation.arrivalDate).toLocaleDateString()} 
-          ${reservation.arrivalTime}`}
+          {`${new Date(reservationReq.arrivalDate).toLocaleDateString()} 
+          ${reservationReq.arrivalTime}`}
         </td>
         <td className="leave">
-          {`${new Date(reservation.leaveDate).toLocaleDateString()} 
-          ${reservation.leaveTime}`}
+          {`${new Date(reservationReq.leaveDate).toLocaleDateString()} 
+          ${reservationReq.leaveTime}`}
         </td>
-        <td className="price">
-          ${reservation.totalPrice}
-        </td>
+        <td className="price">${reservationReq.totalPrice}</td>
         <td>
-          <span className={`status ${reservation.state}`}>
-            {reservation.state}
-          </span>
+          {nonReservationReq && (
+            <span className={`status cancelled`}>
+              space deleted
+            </span>
+          )}
+          {!nonReservationReq && (
+            <span className={`status ${reservationReq.state}`}>
+              {reservationReq.state}
+            </span>
+          )}
+
+         
         </td>
         <td className="actions">
-          <Link title="view request" to={`view-request/${reservation._id}`}>
+          <Link title="view request" to={`view-request/${reservationReq._id}`}>
             <i className="fa-regular fa-eye"></i>
           </Link>
-          {reservation.state === "completed" ? null : (
+          {reservationReq.state === "completed" ? null : (
             // Otherwise, show the confirm and cancel links
             <>
               <Link title="confirm" onClick={confirmReservation}>

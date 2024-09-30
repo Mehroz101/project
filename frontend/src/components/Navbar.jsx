@@ -5,25 +5,24 @@ import { useAuth } from "../context/AuthContext";
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
   const [profileNav, setProfileNav] = useState(false);
-  const [email,setEmail] = useState("")
+  const [email, setEmail] = useState("");
   const navbarRef = useRef(null); // Reference to the navbar element
-  const {logout} = useAuth()
-const logoutFun = () =>{
-  logout()
-}
-const getUsername = () =>{
-  const emailname = localStorage.getItem('user');
-  if(emailname){
-  const name = emailname.split('@')[0];
-  setEmail(name)
-  }
-  else{
-    setEmail("profile")
-  }
-}
+  const { logout } = useAuth();
+  const logoutFun = () => {
+    logout();
+  };
+  const getUsername = () => {
+    const emailname = localStorage.getItem("user");
+    if (emailname) {
+      const name = emailname.split("@")[0];
+      setEmail(name);
+    } else {
+      setEmail("Login");
+    }
+  };
   // Handle clicks outside the navbar to close it
   useEffect(() => {
-    getUsername()
+    getUsername();
     const handleClickOutside = (event) => {
       if (navbarRef.current && !navbarRef.current.contains(event.target)) {
         setNavbar(false);
@@ -64,17 +63,24 @@ const getUsername = () =>{
                   About
                 </Link>
               </li>
-              <li>
-                <Link to="/login" onClick={() => setNavbar(false)}>
-                  Login
-                </Link>
-              </li>
               <li className="profile">
-                <Link to="/profile" onClick={() => setProfileNav(!profileNav)}>
-                  <i className="fa-solid fa-user"></i>
-                  <span>{email}</span>
-                  <i className="fa-solid fa-chevron-down arrow_down"></i>
-                </Link>
+                {email == "Login" ? (
+                  <Link
+                    to="/profile"
+                    onClick={() => setProfileNav(!profileNav)}
+                  >
+                    <span>{email}</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/profile"
+                    onClick={() => setProfileNav(!profileNav)}
+                  >
+                    <i className="fa-solid fa-user"></i>
+                    <span>{email}</span>
+                    <i className="fa-solid fa-chevron-down arrow_down"></i>
+                  </Link>
+                )}
               </li>
               {profileNav && (
                 <ul className="profile_links">
@@ -103,7 +109,7 @@ const getUsername = () =>{
                       to=""
                       onClick={() => {
                         setNavbar(false);
-                        logoutFun()
+                        logoutFun();
                       }}
                     >
                       Logout

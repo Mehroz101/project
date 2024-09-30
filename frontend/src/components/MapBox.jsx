@@ -3,12 +3,14 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import axios from 'axios';
 import "../styles/MapBox.css";
-import { useSearch } from "../context/SearchContext"; // Update the path as necessary
+// import { useSearch } from "../context/SearchContext"; // Update the path as necessary
+import { useParams } from 'react-router-dom';
 
 const TOKEN = "pk.eyJ1IjoibWVocm96ZmFyb29xIiwiYSI6ImNtMGc2ODJqZzE0dDkyanFyamlwdmQ3eTIifQ.tKoAqHa7Fyq96aj59q4vlw";
 
 const MapBox = () => {
-  const { searchQuery } = useSearch(); // Use the context
+  // const { searchQuery } = useSearch(); // Use the context
+  const {searchInput} = useParams()
   const [viewPort, setViewPort] = useState({
     latitude: 30.4390,
     longitude: 72.3552,
@@ -47,12 +49,12 @@ const MapBox = () => {
 
   useEffect(() => {
     const fetchLocation = async () => {
-      if (searchQuery.trim() === "") return;
+      if (searchInput.trim() === "") return;
 
       try {
         const response = await axios.get(
           `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-            searchQuery
+            searchInput
           )}.json`,
           {
             params: {
@@ -88,7 +90,7 @@ const MapBox = () => {
     };
 
     fetchLocation();
-  }, [searchQuery]);
+  }, [searchInput]);
 
   useEffect(() => {
     if (markers.length > 0 && mapRef.current) {

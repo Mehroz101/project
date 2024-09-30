@@ -1,6 +1,8 @@
 const Space = require("../models/Space"); // Import your Space model
 const fs = require("fs");
 const path = require("path");
+const io = require("socket.io"); // Attach to your server
+
 // Create a new space
 const createSpace = async (req, res) => {
   try {
@@ -59,6 +61,8 @@ const createSpace = async (req, res) => {
     });
 
     const data = await newSpace.save();
+    req.io.emit("spaceUpdated", data);
+
     return res.status(201).json({ data });
   } catch (error) {
     console.error("Server error:", error.message);
@@ -195,7 +199,6 @@ const updateSpaceDetails = async (req, res) => {
     // Save the updated space in the database
     const response = await space.save();
 
-
     res.status(201).json({ message: "Space updated successfully", response });
   } catch (error) {
     console.error("Error updating space details:", error.message);
@@ -222,7 +225,28 @@ const getallspaces = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const spaces = await Space.find();
+    const spaces = await Space.find({ state: "active" });
+    if (spaces.length === 0) {
+      return res.status(404).json();
+    }
+    return res.status(201).json({ data: spaces });
+  } catch (error) {
+    // console.error("Error fetching spaces:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+const getspacedetailforreservation = async (req, res) => {
+  const { spaceId } = req.params;
+  try {
+    const user = req.user.id;
+    console.log(user);
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const spaces = await Space.findById(spaceId);
     if (spaces.length === 0) {
       return res.status(404).json();
     }
@@ -244,4 +268,5 @@ module.exports = {
   updateSpaceDetails,
   deleteSpace,
   getallspaces,
+  getspacedetailforreservation,
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/FileUpload.css";
 
 const UpdateFile = ({ onFilesChange, initialFiles }) => {
-  const REACT_APP_IMAGE_BASE_URL = "http://localhost:5000";
+  const REACT_APP_IMAGE_BASE_URL =import.meta.env.REACT_APP_API_URL;
 
   const [images, setImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 const ReservationListingDetail = ({onShowDetail, spaceDetail }) => {
 const [space,setSpace]= useState([])
-const REACT_APP_API_URL = "http://localhost:5000/";
+const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
 
 useEffect(()=>{
@@ -16,7 +16,7 @@ useEffect(()=>{
     <>
       <div className="listing">
         <div className="listing_left">
-          <img src={`${REACT_APP_API_URL}${space.images?.[0]}`} alt="" />
+          <img src={`${REACT_APP_API_URL}/${space.images?.[0]}`} alt="" />
         </div>
         <div className="listing_right">
           <div className="listing_title">

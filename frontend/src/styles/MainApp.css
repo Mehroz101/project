@@ -120,9 +120,18 @@
   max-height: 400px;
   background-color: white;
 }
-.listing_container_full{
+.app_container .app_left .Listing_container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.app_container .app_left .Listing_container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.listing_container_full {
   max-height: 200px !important;
-  min-height:150px !important ;
+  min-height: 150px !important ;
 }
 
 .app_container .app_left .Listing_container .listing {
@@ -168,7 +177,16 @@
   color: var(--primary); /* Use primary color for title */
   margin-bottom: 5px; /* Added space below title */
 }
+.app_container .app_left .Listing_container .listing .location {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  overflow: hidden;
+}
 
+.app_container .app_left .Listing_container .listing .location span{
+  font-size: 14px;
+}
 .app_container
   .app_left
   .Listing_container
@@ -289,6 +307,15 @@
   z-index: 99999;
   overflow-y: scroll;
 }
+.app_container .listing_detail_container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.app_container .listing_detail_container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 
 .listing_detail_container .back_btn {
   position: absolute;
@@ -357,12 +384,13 @@
   display: flex;
   flex-direction: column;
 }
-.listing_detail_container .listing_detail_section .location{
+.listing_detail_container .listing_detail_section .location {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.listing_detail_container .listing_detail_section p.address,.listing_detail_container .listing_detail_section .location i {
+.listing_detail_container .listing_detail_section p.address,
+.listing_detail_container .listing_detail_section .location i {
   font-size: 14px;
   color: var(--secondary);
 }
@@ -476,7 +504,7 @@
   gap: 10px;
 }
 
-.listing_detail_container .listing_detail_btn button {
+.listing_detail_container .listing_detail_btn span, .listing_detail_container .listing_detail_btn a {
   background-color: var(--secondary);
   color: var(--text-white);
   padding: 10px;
@@ -484,7 +512,10 @@
   border-radius: 10px;
   flex: 1;
   border: none;
-  cursor: pointer;
+  text-align: center;
+}
+.listing_detail_container .listing_detail_btn a:hover{
+  color: var(--primary) !important;
 }
 .listing_detail_container .listing_detail_btn button.all_day_book_btn {
   background-color: var(--secondary);
@@ -494,14 +525,14 @@
   background-color: var(--secondary);
 }
 .app_right {
-  background-color: #EEE9E7;
+  background-color: #eee9e7;
   width: 100%;
   min-height: 70vh;
   z-index: 1;
   position: relative;
 }
 
-.app_right .listing {
+.app_right .listing,.app_right .skeleton_card {
   display: none;
 }
 
@@ -518,9 +549,9 @@
     max-height: 100%;
     background-color: white;
   }
-  .listing_container_full{
+  .listing_container_full {
     max-height: 270px !important;
-    min-height:150px !important ;
+    min-height: 150px !important ;
   }
 
   .listing_detail_container {
@@ -592,10 +623,8 @@
     padding: 4px 15px;
   }
 
-  
-
   .app_right {
-    background-color: #EEE9E7;
+    background-color: #eee9e7;
   }
 
   .Listing_container_hide {
@@ -605,8 +634,6 @@
   .app_right_hide {
     display: none;
   }
-
-
 
   .ParkingFinderCard {
     height: 290px;
@@ -636,6 +663,12 @@
     ); /* Light background to distinguish each listing */
     border-radius: 12px; /* Rounded corners for a more modern look */
     box-shadow: rgba(17, 12, 46, 0.1) 0 4px 8px; /* Subtle shadow for depth */
+  }
+  .app_container .app_right .skeleton_card{
+    display:flex;
+    position: sticky;
+    z-index: 1000;
+    top: 75%;
   }
 
   .app_container .app_right .listing .listing_left {

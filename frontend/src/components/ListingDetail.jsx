@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import {
+  calculatePrice,
+  totalBooking,
+} from "../parkingOwner/components/Functions";
 
-const REACT_APP_API_URL = "http://localhost:5000/";
+const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
-const ListingDetail = ({ onHideDetail, space }) => {
+const ListingDetail = ({ onHideDetail, space, reservations }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]); // Store images in state
+  const [prices, setPrices] = useState("");
+  const [totalCompleted, setTotalCompleted] = useState(0); // State to hold total confirmed bookings
 
+  const { totalHours } = useParams();
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
@@ -27,7 +35,13 @@ const ListingDetail = ({ onHideDetail, space }) => {
       setImages(formattedImages); // Update the state with formatted images
     }
   }, [space.images]); // Effect depends on space.images
-
+  useEffect(() => {
+    if (space) {
+      const total = calculatePrice(totalHours, space.per_hour, space.per_day);
+      setPrices(total);
+      setTotalCompleted(totalBooking("completed", space, reservations));
+    }
+  }, [space, totalHours]);
   return (
     <>
       <div className="listing_detail_container">
@@ -57,7 +71,7 @@ const ListingDetail = ({ onHideDetail, space }) => {
           <h2 className="listing_detail_title">{space.title} </h2>
           <div className="location">
             <i className="fa-solid fa-location-dot"></i>
-            <p className="address">{space.location}</p>
+            <p className="address">{space.address}</p>
           </div>
           <div className="badge_shortdesc">
             <span className="short_description">{space.short_description}</span>
@@ -68,16 +82,16 @@ const ListingDetail = ({ onHideDetail, space }) => {
               <i className="fa-solid fa-star"></i>
               <span className="total_reviews">(123)</span>
             </span>
-            <span className="total_booking">100+ booking</span>
+            <span className="total_booking">{totalCompleted} booking</span>
           </div>
         </div>
         <div className="listing_booking_details">
           <div className="booking_details_duration">
-            <span>5h</span>
+            <span>{totalHours}h</span>
             <span>duration</span>
           </div>
           <div className="booking_details_fee">
-            <span>$7</span>
+            <span>Rs. {prices}</span>
             <span>parking fee</span>
           </div>
           <div className="booking_details_destination">
@@ -101,13 +115,13 @@ const ListingDetail = ({ onHideDetail, space }) => {
         </div>
         <div className="listing_detail_description">
           <h3>Description</h3>
-          <p className="description">
-            {space.description}
-          </p>
+          <p className="description">{space.description}</p>
         </div>
         <div className="listing_detail_btn">
-          <button className="all_day_book_btn">All day in $23</button>
-          <button className="book_btn">Reserve in ${space.per_hour}</button>
+          <span className="all_day_book_btn">
+            All day in Rs. {space.per_day}
+          </span>
+          <Link to={`/reservation/${space._id}`}>Reserve in Rs. {prices}</Link>
         </div>
       </div>
     </>

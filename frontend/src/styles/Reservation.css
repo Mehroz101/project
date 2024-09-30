@@ -5,13 +5,14 @@
   gap: 20px;
   padding: var(--spacing-large);
 }
-.reservation_detail_left {
+.reservation_detail_left,.reservation_detail_left form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   flex: 1;
 }
-.reservation_detail_left > div {
+.reservation_detail_left > div,
+.reservation_detail_left form > div {
   border: 1px solid #dddddd;
   border-radius: 8px;
   background-color: white;
@@ -32,9 +33,9 @@
   display: flex;
   justify-content: space-between;
 }
-.reservation_detail_left .booking_detail_top a{
-    color: var(--secondary);
-    text-decoration: underline;
+.reservation_detail_left .booking_detail_top a {
+  color: var(--secondary);
+  text-decoration: underline;
 }
 .reservation_detail_left .booking_detail_top h2 {
   color: var(--primary);
@@ -132,9 +133,10 @@
   font-weight: 500;
   font-size: 18px;
   padding: 12px 5px;
-  background-color: #cdd3db;
+  /* background-color: #cdd3db; */
+  background-color: var(--secondary);
   border: none;
-  cursor: not-allowed;
+  /* cursor: not-allowed; */
 }
 .reservation_detail_right {
   position: relative;

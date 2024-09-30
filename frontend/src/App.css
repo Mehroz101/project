@@ -6,7 +6,16 @@
 body{
   overflow-x: hidden; 
 }
-
+.no_data_found{
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap:10px;
+  color: var(--text-white);
+  background-color: var(--secondary);
+}
 
 .status {
   padding: 5px 10px;

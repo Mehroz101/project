@@ -6,7 +6,7 @@ const FileUpload = ({ onFilesChange, initialFiles }) => {
   const [files, setFiles] = useState([]);
 
 
-const REACT_APP_IMAGE_BASE_URL = "http://localhost:5000";
+const REACT_APP_IMAGE_BASE_URL = import.meta.env.REACT_APP_API_URL;
   useEffect(() => {
     if (initialFiles) {
       const formattedFiles = initialFiles.map((file) => ({

@@ -2,18 +2,34 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ParkingFinderCard from "../components/ParkingFinderCard";
 import "../styles/MainApp.css";
-
 import ListingContainer from "../components/ListingContainer";
 import ListingDetail from "../components/ListingDetail";
 import MapBox from "../components/MapBox";
 import { getallspaces } from "../services/spaceService";
 import { notify } from "../services/errorHandlerService";
+import { useParkingFinderCardForm } from "../services/useParkingFinderCardForm";
+import { useParams } from "react-router-dom";
+import { getallreservation } from "../services/reservationService";
+import SkeletonCard from "../components/Skeletonbox";
+
 const MainApp = () => {
   const [togglebtn, setToggelbtn] = useState(false);
   const [parkingInput, setParkingInput] = useState(false);
   const [showListingDetail, setShowListingDetail] = useState(false); // State to control ListingDetail visibility
-  const [spaces, setSpaces] = useState();
+  const [spaces, setSpaces] = useState([]);
+  const [reservation, setReservation] = useState([]);
   const [showSpace, setShowSpace] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  const {
+    searchInput,
+    arrivalDate,
+    arrivalTime,
+    leaveDate,
+    leaveTime,
+    totalHours,
+  } = useParams();
+
   const handleShowDetail = (spaceId) => {
     const selectedSpace = spaces.filter((space) => space._id === spaceId);
     setShowSpace(selectedSpace[0]);
@@ -23,22 +39,27 @@ const MainApp = () => {
     setShowListingDetail(false); // Hide ListingDetail
     setShowSpace("");
   };
+
   const getspaces = async () => {
     try {
       const response = await getallspaces();
-      setSpaces(response);
+      const reservation = await getallreservation();
+      setSpaces(response || []);
+      setReservation(reservation);
+      setIsLoading(false); // Data loaded, hide skeleton
     } catch (error) {
       console.log(error.message);
-      notify("error", "Something wrong, please try again later");
+      notify("error", "Something went wrong, please try again later");
     }
   };
+
   useEffect(() => {
     getspaces();
   }, []);
+
   useEffect(() => {
     if (showSpace) {
-      console.log(showSpace);
-      setShowListingDetail(true); // Show ListingDetail
+      setShowListingDetail(true);
     }
   }, [showSpace]);
 
@@ -71,10 +92,14 @@ const MainApp = () => {
               }
               onClick={() => setParkingInput(!parkingInput)}
             >
-              <p className="location">Mall of Multan, Multan</p>
+              <p className="location">{searchInput}</p>
               <div className="datetime">
-                <span className="arrival">14-08-24 4:00PM</span>
-                <span className="leave">14-08-24 7:00PM</span>
+                <span className="arrival">
+                  {arrivalDate} {arrivalTime}
+                </span>
+                <span className="leave">
+                  {leaveDate} {leaveTime}
+                </span>
               </div>
             </div>
             <div className="app_listings">
@@ -87,7 +112,7 @@ const MainApp = () => {
                 <select name="filter" id="filter">
                   <option>filter</option>
                   <option value="CCTV">CCTV</option>
-                  <option value="gurad">Guard</option>
+                  <option value="guard">Guard</option>
                 </select>
                 <button
                   className="toggle_btn"
@@ -103,19 +128,36 @@ const MainApp = () => {
                     : "Listing_container"
                 } ${parkingInput ? "listing_container_full" : ""}`}
               >
-                {spaces?.map((slot) => (
-                  <ListingContainer
-                    key={slot._id}
-                    slotData={slot}
-                    onShowDetail={handleShowDetail}
-                  />
-                ))}
+                {isLoading ? (
+                  <>
+                    <SkeletonCard />
+                    <SkeletonCard />
+                    <SkeletonCard />
+                  </>
+                ) : // Ensure spaces is an array before checking its length
+                Array.isArray(spaces) && spaces.length === 0 ? (
+                  <div className="no_data_found">
+                  <i class="fa-solid fa-face-meh"></i>
+                    <span>No space found</span>
+                  </div>
+                ) : (
+                  Array.isArray(spaces) &&
+                  spaces.map((slot) => (
+                    <ListingContainer
+                      key={slot._id}
+                      slotData={slot}
+                      reservations={reservation}
+                      onShowDetail={handleShowDetail}
+                    />
+                  ))
+                )}
               </div>
             </div>
             {showListingDetail && (
               <div className="popup_detail">
                 <ListingDetail
                   space={showSpace}
+                  reservations={reservation}
                   onHideDetail={handleCloseDetail}
                 />
               </div>
@@ -125,11 +167,27 @@ const MainApp = () => {
             className={togglebtn ? "app_right" : "app_right app_right_hide"}
             onClick={() => setParkingInput(false)}
           >
-            {spaces && (
+            {/* {spaces && (
               <ListingContainer
                 slotData={spaces[0]}
                 onShowDetail={handleShowDetail}
               />
+            )} */}
+            {isLoading ? (
+              <>
+                <SkeletonCard />
+              </>
+            ) : Array.isArray(spaces) && spaces.length === 0 ? (
+              ""
+            ) : (
+              Array.isArray(spaces) && (
+                <ListingContainer
+                  key={spaces[0]._id}
+                  slotData={spaces[0]}
+                  reservations={reservation}
+                  onShowDetail={handleShowDetail}
+                />
+              )
             )}
             <MapBox />
           </div>

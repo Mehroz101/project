@@ -11,9 +11,13 @@ const config = {
   },
 };
 
-export const createCustomReservation = async (data,price) => {
+export const createCustomReservation = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/create`, data, config);
+    const response = await axios.post(
+      `${API_URL}/createCustomReservation`,
+      data,
+      config
+    );
     console.log(response);
     if (response.status === 201) {
       notify("success", "Reservation created successfully!");
@@ -28,11 +32,10 @@ export const createCustomReservation = async (data,price) => {
 };
 export const getReservation = async () => {
   try {
-    console.log("reservation service")
     const response = await axios.get(`${API_URL}/get`, config);
-    console.log("reservation service")
     if (response.status === 200) {
-      console.log(response.data.response)
+      console.log("response");
+      console.log(response);
       return response.data.response;
     } else {
       notify("error", `error: ${response.data.message}`);
@@ -44,7 +47,7 @@ export const getReservation = async () => {
 };
 export const cancelReservation = async (reservartionId) => {
   try {
-    const data = {reservartionId};
+    const data = { reservartionId };
     const response = await axios.patch(`${API_URL}/cancel`, data, config);
     console.log(response);
     notify("success", "cancelled");
@@ -55,7 +58,7 @@ export const cancelReservation = async (reservartionId) => {
 };
 export const confirmReservation = async (reservartionId) => {
   try {
-    const data = {reservartionId};
+    const data = { reservartionId };
     const response = await axios.patch(`${API_URL}/confirm`, data, config);
     console.log(response);
     notify("success", "confirmed");
@@ -65,17 +68,80 @@ export const confirmReservation = async (reservartionId) => {
   }
 };
 
-export const getReservationdata = async (reservartionId) =>{
+export const getReservationdata = async (reservartionId) => {
   try {
-    console.log(reservartionId)
-    const response = await axios.get(`${API_URL}/get/${reservartionId}`, config);
+    console.log(reservartionId);
+    const response = await axios.get(
+      `${API_URL}/get/${reservartionId}`,
+      config
+    );
     if (response.status === 200) {
       return response.data.response;
     } else {
       notify("error", `error: ${response.data.message}`);
     }
-    
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
+};
+export const createReservation = async (data) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/createReservation`,
+      data,
+      config
+    );
+    return response;
+  } catch (error) {
+    console.log("error in service page");
+    console.log(error.message);
+  }
+};
+export const getUserReservation = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/getuserreservation`, config);
+    if (response.status === 200) {
+      console.log("response");
+      // console.log(response.data);
+      return response.data.response;
+    } else {
+      notify("error", `error: ${response.data.message}`);
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const getallreservation = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/getallreservation`, config);
+    if (response.status === 404) {
+      return notify("error", "no space found");
+    }
+    if (response.status === 201) return response.data.response;
+  } catch (error) {
+    if (error.response) {
+      switch (error.response.status) {
+        case 400:
+          notify("error", "Please check your input data.");
+          break;
+        case 401:
+          notify("error", "Please log in again.");
+          break;
+        case 403:
+          notify("error", "You don't have permission to perform this action.");
+          break;
+        case 500:
+          notify("error", "Please try again later.");
+          break;
+        default:
+          notify(
+            "error",
+            "Error creating space: " +
+              (error.response?.data?.message || error.message)
+          );
+      }
+    } else {
+      notify("error", "Network error. Please check your connection.");
+    }
+  }
+};

@@ -11,13 +11,32 @@ const OverviewStats = () => {
   // console.log(reservation)
   const totalEarning = Array.isArray(reservation)
     ? reservation.reduce((acc, request) => {
-        const price = parseFloat(request.totalPrice); // Convert to number
-        return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
+        if (request.state === "completed" || request.state === "confirmed") {
+          if(request.spaceId !== null && request.state === "confirmed"){
+          const price = parseFloat(request.totalPrice); // Convert to number
+          return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
+          }
+        }
+        return acc;
       }, 0)
     : 0;
-    const withdrawable = Array.isArray(reservation)
+  const totalBooking = Array.isArray(reservation)
+    ? reservation.reduce((acc, req) => {
+        if (
+          req.state == "completed" ||
+          req.state === "confirmed" ||
+          req.state === "pending"
+        ) {
+          if (req.spaceId === null || req.state === "pending") {
+            if (req.spaceId === null || req.state === "confirmed")
+              return acc + 1;
+          }
+        }
+        return acc;
+      }, 0)
+    : 0;
+  const withdrawable = Array.isArray(reservation)
     ? reservation.reduce((acc, request) => {
-      
         if (request.state === "completed" && request.withdrawn === false) {
           const price = parseFloat(request.totalPrice);
           return acc + (isNaN(price) ? 0 : price);
@@ -25,9 +44,9 @@ const OverviewStats = () => {
         return acc;
       }, 0)
     : 0;
+
   // console.log("withdrawable");
   // console.log(withdrawable);
-
 
   return (
     <div className="overview_stats">
@@ -37,7 +56,7 @@ const OverviewStats = () => {
             <span>Total Earnings</span>
           </div>
           <div className="stat_value">
-            <h2>${totalEarning}</h2>
+            <h2>${totalEarning.toFixed(2)}</h2>
           </div>
         </div>
         <div className="stat_item">
@@ -53,7 +72,7 @@ const OverviewStats = () => {
             <span>Total Bookings</span>
           </div>
           <div className="stat_value">
-            <h2>{reservation?.length}</h2>
+            <h2>{totalBooking}</h2>
           </div>
         </div>
         <div className="stat_item">
@@ -66,7 +85,7 @@ const OverviewStats = () => {
         </div>
       </div>
       <div className="graph_container">
-        <h3>Monthly Earnings</h3>
+        <h3>Weekly Earnings</h3>
         {/* Here, you can include a graph/chart library like Chart.js */}
         <div className="earnings_graph">
           {/* Placeholder for the graph */}

@@ -34,12 +34,12 @@ export const useUpdateSpaceForm = () => {
         [name]: value,
       }));
     }
-    console.log("handle change function")
-    console.log(JSON.stringify(spaceDetails.features))
-    console.log(spaceDetails.features)
+    console.log("handle change function");
+    console.log(JSON.stringify(spaceDetails.features));
+    console.log(spaceDetails.features);
   };
 
-  const handleSubmit = async ( newFiles, removeImages,fetchedImg, spaceId) => {
+  const handleSubmit = async (newFiles, removeImages, fetchedImg, spaceId) => {
     try {
       //   console.log("handle submit function")
       // console.log(" new images files");
@@ -51,12 +51,12 @@ export const useUpdateSpaceForm = () => {
       // console.log("form data");
       // console.log(spaceDetails);
       const commonElements = fetchedImg.filter((value) =>
-      removeImages.includes(value)
-    );
-    console.log("common images to remove")
-    console.log(commonElements)
-    // console.log("features")
-    // console.log(spaceDetails.features)
+        removeImages.includes(value)
+      );
+      console.log("common images to remove");
+      console.log(commonElements);
+      // console.log("features")
+      // console.log(spaceDetails.features)
       const formData = new FormData();
 
       formData.append("title", spaceDetails.title);
@@ -71,11 +71,7 @@ export const useUpdateSpaceForm = () => {
       formData.append("per_hour", spaceDetails.per_hour);
       formData.append("per_day", spaceDetails.per_day);
 
-      
-     
-    newFiles.forEach((image) => 
-      formData.append("files", image)
-      );
+      newFiles.forEach((image) => formData.append("files", image));
 
       commonElements.forEach((image) => formData.append("removeImg", image));
 
@@ -86,7 +82,7 @@ export const useUpdateSpaceForm = () => {
       const response = await updateSpaceDetails(formData, spaceId);
       console.log(response);
       if (response === 201) {
-        return 201
+        return 201;
       } else {
         handleError(response);
       }

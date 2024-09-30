@@ -33,8 +33,14 @@ const aggregateDataByDate = (data) => {
       result[date] = { name: date, request: 0, earning: 0 };
     }
     result[date].request += 1; // Increment request count
-    result[date].earning += parseFloat(item.totalPrice); // Sum up earnings
+    if (item.state === "completed") {
+      console.log("reservation is completed");
+      result[date].earning += parseFloat(item.totalPrice); // Sum up earnings
+    }
   });
+  for (const date in result) {
+    result[date].earning = parseFloat(result[date].earning.toFixed(2));
+  }
 
   // Convert the result to an array and sort by date
   const sortedData = Object.values(result).sort((a, b) => {

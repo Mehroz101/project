@@ -24,7 +24,7 @@ const OverviewStatistics = ({reservation,space}) => {
   useEffect(() => {
     const totalSpaces = space?.data?.data?.length || 0;
     const availableSpaces = space?.data?.data?.filter((slot) => slot.state === 'active').length || 0;
-    const pendingRequests = reservation?.filter((request) => request.state === 'pending').length || 0;
+    const pendingRequests = reservation?.filter((request) => request?.state === 'pending' && request.spaceId !== null).length || 0;
     const completedRequests = reservation?.filter((request) => request.state === 'completed').length || 0;
 // const totalSpaces =0
 // const availableSpaces =0

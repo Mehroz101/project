@@ -38,6 +38,7 @@ const AppRoutes = () => {
       <Route path="/forgetpassword" element={<ForgetPass />} />
       <Route path="/resetpassword/:token" element={<ResetPass />} />
       <Route path="/searchResult" element={<MainApp />} />
+      <Route path="/searchResult/:searchInput/:arrivalDate/:arrivalTime/:leaveDate/:leaveTime/:totalHours" element={<MainApp />} />
       <Route path="/aboutus" element={<AboutUs />} />
 
       <Route
@@ -50,7 +51,7 @@ const AppRoutes = () => {
         <Route path="message" element={<MessagesContainer />} />
       </Route>
 
-      <Route path="/reservation" element={<Reservation />} />
+      <Route path="/reservation/:spaceId" element={<Reservation />} />
       <Route path="/listyourspace" element={<ListyourSpace />} />
 
       {/* Dashboard Route */}

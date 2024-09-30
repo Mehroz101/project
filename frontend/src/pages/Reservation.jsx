@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Reservation.css";
 import Navbar from "../components/Navbar";
 import ListingDetail from "../components/ListingDetail";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { getSpaceForReservation } from "../services/spaceService";
+import { useNavigate } from "react-router-dom";
+import { useReservationForm } from "../services/useReservationForm";
 const Reservation = () => {
+  const [space, setSpace] = useState([]);
+  const [reservationTime, setResvationTime] = useState({
+    arrivalDate: "",
+    arrivalTime: "",
+    leaveDate: "",
+    leaveTime: "",
+    totalHours: "",
+  });
+  const { spaceId } = useParams();
+  const navigate = useNavigate()
+  const { handleChange, reservation, setReservation,handleSubmit } = useReservationForm();
+  const handleSubmitForm =async (e) => {
+    e.preventDefault();
+    reservation.arrivalDate = reservationTime.arrivalDate;
+    reservation.arrivalTime = reservationTime.arrivalTime;
+    reservation.leaveDate = reservationTime.leaveDate;
+    reservation.leaveTime = reservationTime.leaveTime;
+    reservation.spaceId = spaceId;
+    reservation.per_hour = space.per_hour
+    reservation.per_day = space.per_day
+    const response = await handleSubmit()
+    if (response === 201){
+      navigate("/profile/booking")
+    }
+  };
+  
+  const getSpace = async () => {
+    const response = await getSpaceForReservation(spaceId);
+    setSpace(response);
+  };
+  useEffect(() => {
+    getSpace();
+    reservationTime.arrivalDate = localStorage.getItem(`arrivalDate`);
+    reservationTime.arrivalTime = localStorage.getItem(`arrivalTime`);
+    reservationTime.leaveDate = localStorage.getItem(`leaveDate`);
+    reservationTime.leaveTime = localStorage.getItem(`leaveTime`);
+    reservationTime.totalHours = localStorage.getItem(`totalHours`);
+  }, [localStorage]);
   return (
     <>
       <Navbar />
@@ -16,104 +57,132 @@ const Reservation = () => {
             </div>
             <div className="booking_detail_bottom">
               <div className="booking_location">
-                <span>0</span>
+                <i className="fa-solid fa-location-dot"></i>
                 <div className="data">
                   <h3 className="location">Location</h3>
-                  <p>Mall of Multan</p>
+                  <p>{space.address}</p>
                 </div>
               </div>
               <div className="booking_arrival">
-                <span>0</span>
+                <i className="fa-solid fa-right-to-bracket"></i>
                 <div className="data">
                   <h3 className="arrival">Arrival</h3>
-                  <p>14-08-24 4:00PM</p>
+                  <p>{reservationTime.arrivalDate} {reservationTime.arrivalTime}</p>
                 </div>
               </div>
               <div className="booking_leave">
-                <span>0</span>
+                <i className="fa-solid fa-right-from-bracket"></i>
                 <div className="data">
                   <h3 className="leave">Leave</h3>
-                  <p>14-08-24 7:00PM</p>
+                  <p>{reservationTime.leaveDate} {reservationTime.leaveTime}</p>
                 </div>
               </div>
               <div className="booking_duration">
-                <span>0</span>
+                <i className="fa-solid fa-clock"></i>
                 <div className="data">
                   <h3 className="duration">Duration</h3>
-                  <p>4h</p>
+                  <p>{reservationTime.totalHours}h</p>
                 </div>
               </div>
             </div>
           </div>
-          <div className="your_information">
-            <h2>Your information</h2>
-            <div className="input_container">
-              <div className="input_box">
-                <label htmlFor="name">Name</label>
-                <input type="text" placeholder="Enter your name" />
-              </div>
-              <div className="input_box">
-                <label htmlFor="email">Email</label>
-                <input type="email" placeholder="Enter your email" />
-              </div>
-              <div className="input_box">
-                <label htmlFor="phone_number">Phone number</label>
-                <input type="number" placeholder="Enter your phone number" />
-              </div>
-            </div>
-          </div>
-          <div className="vehicle_information">
-            <h2>Vehicle information</h2>
-            <div className="input_container">
-              <div className="input_box">
-                <label htmlFor="license">License number</label>
-                <input type="text" placeholder="Enter License Plate Number" />
-              </div>
-            </div>
-          </div>
-          <div className="payment_information">
-            <h2>Payment information</h2>
-            <p>All Payment are Secure and Encrypted</p>
-            <div className="payment_form">
-              <div className="input_box">
-                <label htmlFor="name">Cardholder Name</label>
-                <input type="text" placeholder="Enter Cardholder Name" />
-              </div>
-              <div className="input_box">
-                <label htmlFor="card_number">Card Name</label>
-                <input type="number" placeholder="4111 111 111 111" />
-              </div>
-              <div className="input_combo_box">
+          <form onSubmit={handleSubmitForm}>
+            <div className="your_information">
+              <h2>Your information</h2>
+              <div className="input_container">
                 <div className="input_box">
-                  <label htmlFor="expire">Expiry</label>
-                  <input type="string" placeholder="12/24" />
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter your name"
+                    name="name"
+                    value={reservation.name}
+                    onChange={handleChange}
+                  />
                 </div>
                 <div className="input_box">
-                  <label htmlFor="cvv">CVV</label>
-                  <input type="number" placeholder="123" />
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    name="email"
+                    value={reservation.email}
+                    onChange={handleChange}
+                  />
                 </div>
-              </div>
-              <div className="input_combo_box">
                 <div className="input_box">
-                  <label htmlFor="zip_code">Billing Zip Code</label>
-                  <input type="text" placeholder="Enter Zip Code" />
-                </div>
-                <div className="input_select_box">
-                <label htmlFor="country">Country</label>
-                  <select name="country" id="country">
-                    <option value="pakistan">Pakistan</option>
-                    <option value="india">India</option>
-                    <option value="united state">United State</option>
-                  </select>
+                  <label htmlFor="phone_number">Phone number</label>
+                  <input
+                    type="number"
+                    placeholder="Enter your phone number"
+                    name="phoneNo"
+                    value={reservation.phoneNo}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
-          </div>
-          <button className="paynow_reserve">$7 - Pay now and reserve</button>
+            <div className="vehicle_information">
+              <h2>Vehicle information</h2>
+              <div className="input_container">
+                <div className="input_box">
+                  <label htmlFor="license">License number</label>
+                  <input
+                    type="text"
+                    placeholder="Enter License Plate Number"
+                    name="vehicleNo"
+                    value={reservation.vehicleNo}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="payment_information">
+              <h2>Payment information</h2>
+              <p>All Payment are Secure and Encrypted</p>
+              <div className="payment_form">
+                <div className="input_box">
+                  <label htmlFor="name">Cardholder Name</label>
+                  <input type="text" placeholder="Enter Cardholder Name" />
+                </div>
+                <div className="input_box">
+                  <label htmlFor="card_number">Card Name</label>
+                  <input type="number" placeholder="4111 111 111 111" />
+                </div>
+                <div className="input_combo_box">
+                  <div className="input_box">
+                    <label htmlFor="expire">Expiry</label>
+                    <input type="string" placeholder="12/24" />
+                  </div>
+                  <div className="input_box">
+                    <label htmlFor="cvv">CVV</label>
+                    <input type="number" placeholder="123" />
+                  </div>
+                </div>
+                <div className="input_combo_box">
+                  <div className="input_box">
+                    <label htmlFor="zip_code">Billing Zip Code</label>
+                    <input type="text" placeholder="Enter Zip Code" />
+                  </div>
+                  <div className="input_select_box">
+                    <label htmlFor="country">Country</label>
+                    <select name="country" id="country">
+                      <option value="pakistan">Pakistan</option>
+                      <option value="india">India</option>
+                      <option value="united state">United State</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button className="paynow_reserve">
+              $7 - Pay now and reserve
+            </button>
+          </form>
         </div>
         <div className="reservation_detail_right">
           <div className="reservation_detail_right_box">
-            <ListingDetail />
+            <ListingDetail space={space} />
           </div>
         </div>
       </div>
