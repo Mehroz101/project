@@ -6,7 +6,7 @@
 .profile_page .profile_left {
   background-color: #eff4f4;
   min-height: 90vh;
-  width: 300px;
+  min-width: 300px;
   padding: 4rem;
 }
 .profile_page .profile_left ul {
@@ -185,23 +185,35 @@
   margin-bottom: var(--spacing-medium);
 }
 
+
 .reservation_history_container .filter_navbar {
-  margin: var(--spacing-medium) 0;
+  margin: var(--spacing-large) 0;
   border-bottom: 1px solid #dddddd;
-  padding: 10px;
+  overflow-x: scroll;
+}
+.reservation_history_container .filter_navbar ul {
   display: flex;
-  justify-content: flex-end;
-  border-radius: 4px;
+  gap: 20px;
+  color: #3e3e3e;
+  font-size: var(--font-size-small);
+}
+.reservation_history_container .filter_navbar ul .active {
+  font-weight: 700;
+}
+.reservation_history_container .filter_navbar ul li.active {
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 8px;
 }
 
-.reservation_history_container .filter_navbar select {
-  font-size: var(--font-size-small);
-  padding: 8px;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  background-color: white;
-  color: #3e3e3e;
+.reservation_history_container .search_filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: var(--spacing-medium) 0;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 20px;
 }
+
 
 .reservation_history_container .reservation_list {
   margin-top: var(--spacing-medium);

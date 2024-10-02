@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Profile.css";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 
-import { Link , Outlet} from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 const Profile = () => {
-  const {logout} = useAuth()
+  const location = useLocation(); // Get the current location (URL)
+  const [activeLink, setActiveLink] = useState("profile");
 
-  const logoutFun = () =>{
-    logout()
-  }
+  useEffect(() => {
+    const pathParts = location.pathname.split("/"); // Split the path by "/"
+    const lastPart = pathParts[pathParts.length - 1] || "profile"; // Get the last part, fallback to "profile"
+    setActiveLink(lastPart);
+  }, []);
+  const { logout } = useAuth();
+  const profileLinkClick = (link) => {
+    setActiveLink(link);
+  };
+  const logoutFun = () => {
+    logout();
+  };
   return (
     <>
       <Navbar />
@@ -17,26 +27,50 @@ const Profile = () => {
         <div className="profile_left">
           <ul>
             <li>
-              <Link className="active" to="/profile">My Profile</Link>
+              <Link
+                className={`${activeLink === "profile" ? "active" : ""}`}
+                to="/profile"
+                onClick={() => profileLinkClick("profile")}
+              >
+                My Profile
+              </Link>
             </li>
             <li>
-              <Link to="booking">Booking</Link>
+              <Link
+                className={`${activeLink === "booking" ? "active" : ""}`}
+                to="booking"
+                onClick={() => profileLinkClick("booking")}
+              >
+                Booking
+              </Link>
             </li>
             <li>
-              <Link to="message">Message</Link>
+              <Link
+                className={`${activeLink === "message" ? "active" : ""}`}
+                to="message"
+                onClick={() => profileLinkClick("message")}
+              >
+                Message
+              </Link>
             </li>
             <li>
-              <Link to="listyourspace">List Your Space</Link>
+              <Link
+                className={`${activeLink === "listyourspace" ? "active" : ""}`}
+                to="listyourspace"
+                onClick={() => profileLinkClick("listyourspace")}
+              >
+                List Your Space
+              </Link>
             </li>
             <li>
-              <Link onClick={()=>logoutFun()}>Logout</Link>
+              <Link onClick={() => logoutFun()}>Logout</Link>
             </li>
           </ul>
         </div>
         <div className="profile_right">
-        <Outlet />
+          <Outlet />
 
-        {/* <AccountInformation/>
+          {/* <AccountInformation/>
         <ReservationHistory/> 
         <ListyourSpace/> */}
         </div>

@@ -11,6 +11,7 @@ import { useParkingFinderCardForm } from "../services/useParkingFinderCardForm";
 import { useParams } from "react-router-dom";
 import { getallreservation } from "../services/reservationService";
 import SkeletonCard from "../components/Skeletonbox";
+import { calculateDistance } from "../parkingOwner/components/Functions";
 
 const MainApp = () => {
   const [togglebtn, setToggelbtn] = useState(false);
@@ -37,14 +38,45 @@ const MainApp = () => {
 
   const handleCloseDetail = () => {
     setShowListingDetail(false); // Hide ListingDetail
-    setShowSpace("");
+    // setShowSpace("");
   };
 
-  const getspaces = async () => {
+  // const getspaces = async (searchLocation) => {
+  //   try {
+  //     const response = await getallspaces();
+  //     const reservation = await getallreservation();
+  //     setSpaces(response || []);
+  //     setReservation(reservation);
+  //     setIsLoading(false); // Data loaded, hide skeleton
+  //   } catch (error) {
+  //     console.log(error.message);
+  //     notify("error", "Something went wrong, please try again later");
+  //   }
+  // };
+  const getspaces = async (searchLocation = null) => {
     try {
       const response = await getallspaces();
       const reservation = await getallreservation();
-      setSpaces(response || []);
+
+      // Use the user's search location to filter spaces within 5 km
+      if (searchInput) {
+        // const searchCoords = await fetchCoordinates(searchInput); // Fetch coordinates from the user's input
+        const nearbySpaces = response.filter((space) => {
+          const distance = calculateDistance(
+            searchLocation?.latitude,
+            searchLocation?.longitude,
+            space?.latitude,
+            space?.longitude
+          );
+          return distance <= 5;
+        });
+        setSpaces(nearbySpaces || []);
+
+      } else {
+        setSpaces(response || []);
+
+      }
+
       setReservation(reservation);
       setIsLoading(false); // Data loaded, hide skeleton
     } catch (error) {
@@ -54,12 +86,13 @@ const MainApp = () => {
   };
 
   useEffect(() => {
-    getspaces();
+    getspaces(null);
   }, []);
 
   useEffect(() => {
     if (showSpace) {
       setShowListingDetail(true);
+      console.log(showSpace)
     }
   }, [showSpace]);
 
@@ -137,7 +170,7 @@ const MainApp = () => {
                 ) : // Ensure spaces is an array before checking its length
                 Array.isArray(spaces) && spaces.length === 0 ? (
                   <div className="no_data_found">
-                  <i class="fa-solid fa-face-meh"></i>
+                    <i class="fa-solid fa-face-meh"></i>
                     <span>No space found</span>
                   </div>
                 ) : (
@@ -167,12 +200,6 @@ const MainApp = () => {
             className={togglebtn ? "app_right" : "app_right app_right_hide"}
             onClick={() => setParkingInput(false)}
           >
-            {/* {spaces && (
-              <ListingContainer
-                slotData={spaces[0]}
-                onShowDetail={handleShowDetail}
-              />
-            )} */}
             {isLoading ? (
               <>
                 <SkeletonCard />
@@ -182,14 +209,18 @@ const MainApp = () => {
             ) : (
               Array.isArray(spaces) && (
                 <ListingContainer
-                  key={spaces[0]._id}
-                  slotData={spaces[0]}
+                  key={showSpace._id} // Show selected space or first space
+                  slotData={showSpace}
                   reservations={reservation}
                   onShowDetail={handleShowDetail}
                 />
               )
             )}
-            <MapBox />
+            <MapBox
+              spaces={spaces}
+              getSpace={getspaces}
+              onShowDetail={handleShowDetail}
+            />
           </div>
         </div>
       </div>

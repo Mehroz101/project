@@ -24,7 +24,7 @@ useEffect(()=>{
           </div>
           <div className="location">
             <i class="fa-solid fa-location-dot"></i>
-            <span>{space.location}</span>
+            <span>{space.address}</span>
           </div>
           <div className="listing_rating">
             <span className="rating">

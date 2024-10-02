@@ -37,6 +37,10 @@ const Navbar = () => {
           <div className={navbar ? `nav_right nav_show` : `nav_right`}>
             <div className="nav_right_list">
               <ul>
+              
+              <li>
+              <Link to="/profile">Go to Profile</Link>
+            </li>
               <li>
               <Link to="/dashboard">Dashboard</Link>
             </li>

@@ -15,17 +15,19 @@ const SpaceRow = ({
   const totalBookings = reservations.filter(
     (reservation) => reservation.spaceId._id === spaceInfo._id
   ).length;
-    // Calculate total pending for the current space
-  const totalPending = reservations.filter((reservation) => reservation.spaceId._id === spaceInfo._id)
+  // Calculate total pending for the current space
+  const totalPending = reservations
+    .filter((reservation) => reservation.spaceId._id === spaceInfo._id)
     .filter((reservation) => reservation.state === "pending").length;
-  const totalConfirmed = reservations?.filter((reservation) => reservation.spaceId._id === spaceInfo._id)
+  const totalConfirmed = reservations
+    ?.filter((reservation) => reservation.spaceId._id === spaceInfo._id)
     .filter((reservation) => reservation.state === "confirmed").length;
-//   const totalPending = 0;
-//   const totalBookings = 0;
-// const totalConfirmed = 0;
-console.log("reservations")
-console.log("spaceInfo")
-console.log(spaceInfo)
+  //   const totalPending = 0;
+  //   const totalBookings = 0;
+  // const totalConfirmed = 0;
+  console.log("reservations");
+  console.log("spaceInfo");
+  console.log(spaceInfo);
   // Toggle space status
   const toggleStatus = async (e) => {
     e.preventDefault(); // Prevent default link behavior

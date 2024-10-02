@@ -181,7 +181,7 @@ const ManageSpace = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
+              {filteredData?.length > 0 ? (
                 filteredData
                   ?.slice()
                   .reverse()
