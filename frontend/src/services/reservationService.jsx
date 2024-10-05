@@ -101,7 +101,7 @@ export const getUserReservation = async () => {
   try {
     const response = await axios.get(`${API_URL}/getuserreservation`, config);
     if (response.status === 200) {
-      console.log("response");
+      // console.log("response");
       // console.log(response.data);
       return response.data.response;
     } else {

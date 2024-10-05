@@ -6,11 +6,11 @@ const spaceRoutes = require("./routes/spaceRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const { connectDB, checkDatabaseConnection } = require("./config/db");
-const path = require('path');
+const path = require("path");
 const http = require("http");
 const socketIo = require("socket.io");
 const attachSocketIo = require("./middleware/socketMiddleware"); // Import the middleware
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 const server = http.createServer(app); // Create HTTP server for socket.io
@@ -30,13 +30,14 @@ connectDB();
 app.use(checkDatabaseConnection);
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'uploads')));
-
+app.use(express.static(path.join(__dirname, "uploads")));
+// Expose the io instance to the whole app for use in routes/controllers
+app.set("io", io);
 // Apply the attachSocketIo middleware for specific routes
-app.use('/api/spaces', attachSocketIo(io), spaceRoutes);
-app.use('/api/reservation', attachSocketIo(io), reservationRoutes);
-app.use('/api/withdraw', attachSocketIo(io), paymentRoutes);
-app.use("/api/auth", authRoutes);  
+app.use("/api/spaces", spaceRoutes);
+app.use("/api/reservation", reservationRoutes);
+app.use("/api/withdraw", paymentRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 // const HOST = '0.0.0.0'; // Change this from 'localhost' to '0.0.0.0'
 

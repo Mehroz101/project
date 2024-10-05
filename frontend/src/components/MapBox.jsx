@@ -24,7 +24,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
 
   // Filter locations within 5 km
   const getNearbySpaces = (userLat, userLong) => {
-    return spaces.filter((space) => {
+    return spaces?.filter((space) => {
       const distance = calculateDistance(
         userLat,
         userLong,
@@ -182,7 +182,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
     );
     clearSpaceMarkers(); // Clear existing markers
 
-    nearbySpaces.forEach((space) => {
+    nearbySpaces?.forEach((space) => {
       const spaceMarker = new mapboxgl.Marker()
         .setLngLat([space.longitude, space.latitude])
         .setPopup(new mapboxgl.Popup().setText(space.title))

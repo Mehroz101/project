@@ -1,5 +1,4 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import { notify } from "./errorHandlerService"; // Import notify function
 
 const API_URL = "http://localhost:5000/api/spaces"; // Adjust to your API endpoint

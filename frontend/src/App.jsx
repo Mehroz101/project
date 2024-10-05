@@ -27,6 +27,7 @@ import UpdateSpace from "./parkingOwner/components/UpdateSpace";
 import ViewSpace from "./parkingOwner/components/ViewSpace";
 import ViewRequest from "./parkingOwner/components/viewRequest";
 import { ParkingOwnerProvider } from "./context/ReservationContext";
+import { MainAppProvider } from "./context/MainAppContext";
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
 
@@ -37,8 +38,22 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgetpassword" element={<ForgetPass />} />
       <Route path="/resetpassword/:token" element={<ResetPass />} />
-      <Route path="/searchResult" element={<MainApp />} />
-      <Route path="/searchResult/:searchInput/:arrivalDate/:arrivalTime/:leaveDate/:leaveTime/:totalHours" element={<MainApp />} />
+      {/* <Route
+        path="/searchResult"
+        element={
+          <MainAppProvider>
+            <MainApp />
+          </MainAppProvider>
+        }
+      /> */}
+      <Route
+        path="/searchResult/:searchInput/:arrivalDate/:arrivalTime/:leaveDate/:leaveTime/:totalHours"
+        element={
+          <MainAppProvider>
+            <MainApp />
+          </MainAppProvider>
+        }
+      />
       <Route path="/aboutus" element={<AboutUs />} />
 
       <Route

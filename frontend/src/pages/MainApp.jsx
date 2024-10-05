@@ -5,23 +5,32 @@ import "../styles/MainApp.css";
 import ListingContainer from "../components/ListingContainer";
 import ListingDetail from "../components/ListingDetail";
 import MapBox from "../components/MapBox";
-import { getallspaces } from "../services/spaceService";
+import { getallspaces } from "../services/spaceService"; // Assuming getallspaces is an API call to fetch spaces
 import { notify } from "../services/errorHandlerService";
-import { useParkingFinderCardForm } from "../services/useParkingFinderCardForm";
 import { useParams } from "react-router-dom";
-import { getallreservation } from "../services/reservationService";
+import { getallreservation } from "../services/reservationService"; // Assuming getallreservation is an API call to fetch reservations
 import SkeletonCard from "../components/Skeletonbox";
-import { calculateDistance } from "../parkingOwner/components/Functions";
+import { calculateDistance } from "../parkingOwner/components/Functions"; // Assuming calculateDistance is a utility function
+import { useMainAppContext } from "../context/MainAppContext"; // Assuming you're using context for state management
 
 const MainApp = () => {
   const [togglebtn, setToggelbtn] = useState(false);
   const [parkingInput, setParkingInput] = useState(false);
   const [showListingDetail, setShowListingDetail] = useState(false); // State to control ListingDetail visibility
-  const [spaces, setSpaces] = useState([]);
-  const [reservation, setReservation] = useState([]);
-  const [showSpace, setShowSpace] = useState("");
+  const [showSpace, setShowSpace] = useState(""); // To store selected space details
   const [isLoading, setIsLoading] = useState(true); // Loading state
+  // const [getAllReservations,setGetAllReservations] = useState([])
+  // const [getAllSpaces,setGetAllSpaces]= useState([])
+  // Accessing context
+  // console.log("context",useMainAppContext())
+  const {
+    getAllReservations,
+    getAllSpaces,
+    setGetAllReservations,
+    setGetAllSpaces,
+  } = useMainAppContext();
 
+  // Extracting route parameters (for search input, dates, etc.)
   const {
     searchInput,
     arrivalDate,
@@ -31,200 +40,187 @@ const MainApp = () => {
     totalHours,
   } = useParams();
 
+  // Function to handle showing detail of a specific space
   const handleShowDetail = (spaceId) => {
-    const selectedSpace = spaces.filter((space) => space._id === spaceId);
-    setShowSpace(selectedSpace[0]);
+    const selectedSpace = getAllSpaces.find((space) => space._id === spaceId); // Changed from `filter` to `find` for single space
+    setShowSpace(selectedSpace);
   };
 
+  // Function to close the detail popup
   const handleCloseDetail = () => {
-    setShowListingDetail(false); // Hide ListingDetail
-    // setShowSpace("");
+    setShowListingDetail(false);
   };
 
-  // const getspaces = async (searchLocation) => {
-  //   try {
-  //     const response = await getallspaces();
-  //     const reservation = await getallreservation();
-  //     setSpaces(response || []);
-  //     setReservation(reservation);
-  //     setIsLoading(false); // Data loaded, hide skeleton
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     notify("error", "Something went wrong, please try again later");
-  //   }
-  // };
+  // Fetch spaces and reservations (including filtering by search location)
   const getspaces = async (searchLocation = null) => {
     try {
-      const response = await getallspaces();
-      const reservation = await getallreservation();
-
-      // Use the user's search location to filter spaces within 5 km
+      const response = await getallspaces()
+      const Resrepsonse = await getallreservation()
+      // console.log(response)
+      // console.log(Resrepsonse)
+      setGetAllSpaces(response)
+      setGetAllReservations(Resrepsonse)
       if (searchInput) {
-        // const searchCoords = await fetchCoordinates(searchInput); // Fetch coordinates from the user's input
-        const nearbySpaces = response.filter((space) => {
+
+        const nearbySpaces = response?.filter((space) => {
+           console.log("space")
           const distance = calculateDistance(
             searchLocation?.latitude,
             searchLocation?.longitude,
             space?.latitude,
             space?.longitude
           );
-          return distance <= 5;
+          return distance <= 5; // Filter spaces within 5km radius
         });
-        setSpaces(nearbySpaces || []);
-
+        console.log(nearbySpaces)
+        setGetAllSpaces(nearbySpaces || []);
+       // Update context with filtered spaces
       } else {
-        setSpaces(response || []);
-
+        setGetAllSpaces(await getallspaces()); // Fetch and set all spaces from the API
       }
 
-      setReservation(reservation);
+      setGetAllReservations(await getallreservation()); // Fetch and set all reservations from the API
       setIsLoading(false); // Data loaded, hide skeleton
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
       notify("error", "Something went wrong, please try again later");
     }
   };
 
+  // Trigger space fetching on component mount or when searchInput changes
   useEffect(() => {
-    getspaces(null);
-  }, []);
+    getspaces();
+  }, [searchInput]); // Added dependency to refetch spaces when searchInput changes
 
+  // Show listing detail when space is selected
   useEffect(() => {
     if (showSpace) {
       setShowListingDetail(true);
-      console.log(showSpace)
     }
   }, [showSpace]);
 
   return (
-    <>
-      <div className="main_page">
-        <Navbar />
-        <div className="app_container">
-          <div className="app_left">
+    <div className="main_page">
+      <Navbar />
+      <div className="app_container">
+        <div className="app_left">
+          <div
+            className={
+              parkingInput
+                ? "ParkingFinderCard"
+                : "ParkingFinderCard ParkingFinderCard_hide"
+            }
+          >
+            <ParkingFinderCard />
             <div
-              className={
-                parkingInput
-                  ? "ParkingFinderCard"
-                  : "ParkingFinderCard ParkingFinderCard_hide"
-              }
-            >
-              <ParkingFinderCard />
-              <div
-                className="droparrow"
-                onClick={() => setParkingInput(!parkingInput)}
-              >
-                <i className="fa-solid fa-chevron-down"></i>
-              </div>
-            </div>
-            <div
-              className={
-                parkingInput
-                  ? "parkingFinderDetail parkingFinderDetail_hide"
-                  : "parkingFinderDetail "
-              }
+              className="droparrow"
               onClick={() => setParkingInput(!parkingInput)}
             >
-              <p className="location">{searchInput}</p>
-              <div className="datetime">
-                <span className="arrival">
-                  {arrivalDate} {arrivalTime}
-                </span>
-                <span className="leave">
-                  {leaveDate} {leaveTime}
-                </span>
-              </div>
+              <i className="fa-solid fa-chevron-down"></i>
             </div>
-            <div className="app_listings">
-              <div className="listing_filter_sort">
-                <select name="sort" id="sort">
-                  <option>sort by</option>
-                  <option value="price">Price</option>
-                  <option value="distance">Distance</option>
-                </select>
-                <select name="filter" id="filter">
-                  <option>filter</option>
-                  <option value="CCTV">CCTV</option>
-                  <option value="guard">Guard</option>
-                </select>
-                <button
-                  className="toggle_btn"
-                  onClick={() => setToggelbtn(!togglebtn)}
-                >
-                  {togglebtn ? "list" : "map"}
-                </button>
-              </div>
-              <div
-                className={`${
-                  togglebtn
-                    ? "Listing_container Listing_container_hide"
-                    : "Listing_container"
-                } ${parkingInput ? "listing_container_full" : ""}`}
-              >
-                {isLoading ? (
-                  <>
-                    <SkeletonCard />
-                    <SkeletonCard />
-                    <SkeletonCard />
-                  </>
-                ) : // Ensure spaces is an array before checking its length
-                Array.isArray(spaces) && spaces.length === 0 ? (
-                  <div className="no_data_found">
-                    <i class="fa-solid fa-face-meh"></i>
-                    <span>No space found</span>
-                  </div>
-                ) : (
-                  Array.isArray(spaces) &&
-                  spaces.map((slot) => (
-                    <ListingContainer
-                      key={slot._id}
-                      slotData={slot}
-                      reservations={reservation}
-                      onShowDetail={handleShowDetail}
-                    />
-                  ))
-                )}
-              </div>
-            </div>
-            {showListingDetail && (
-              <div className="popup_detail">
-                <ListingDetail
-                  space={showSpace}
-                  reservations={reservation}
-                  onHideDetail={handleCloseDetail}
-                />
-              </div>
-            )}
           </div>
           <div
-            className={togglebtn ? "app_right" : "app_right app_right_hide"}
-            onClick={() => setParkingInput(false)}
+            className={
+              parkingInput
+                ? "parkingFinderDetail parkingFinderDetail_hide"
+                : "parkingFinderDetail "
+            }
+            onClick={() => setParkingInput(!parkingInput)}
           >
-            {isLoading ? (
-              <>
-                <SkeletonCard />
-              </>
-            ) : Array.isArray(spaces) && spaces.length === 0 ? (
-              ""
-            ) : (
-              Array.isArray(spaces) && (
-                <ListingContainer
-                  key={showSpace._id} // Show selected space or first space
-                  slotData={showSpace}
-                  reservations={reservation}
-                  onShowDetail={handleShowDetail}
-                />
-              )
-            )}
-            <MapBox
-              spaces={spaces}
-              getSpace={getspaces}
+            <p className="location">{searchInput}</p>
+            <div className="datetime">
+              <span className="arrival">
+                {arrivalDate} {arrivalTime}
+              </span>
+              <span className="leave">
+                {leaveDate} {leaveTime}
+              </span>
+            </div>
+          </div>
+          <div className="app_listings">
+            <div className="listing_filter_sort">
+              <select name="sort" id="sort">
+                <option>sort by</option>
+                <option value="price">Price</option>
+                <option value="distance">Distance</option>
+              </select>
+              <select name="filter" id="filter">
+                <option>filter</option>
+                <option value="CCTV">CCTV</option>
+                <option value="guard">Guard</option>
+              </select>
+              <button
+                className="toggle_btn"
+                onClick={() => setToggelbtn(!togglebtn)}
+              >
+                {togglebtn ? "list" : "map"}
+              </button>
+            </div>
+            <div
+              className={`${
+                togglebtn
+                  ? "Listing_container Listing_container_hide"
+                  : "Listing_container"
+              } ${parkingInput ? "listing_container_full" : ""}`}
+            >
+              {isLoading ? (
+                <>
+                  <SkeletonCard />
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </>
+              ) : Array.isArray(getAllSpaces) && getAllSpaces.length === 0 ? (
+                <div className="no_data_found">
+                  <i className="fa-solid fa-face-meh"></i>
+                  <span>No space found within 5km</span>
+                </div>
+              ) : (
+                Array.isArray(getAllSpaces) &&
+                getAllSpaces.map((slot) => (
+                  <ListingContainer
+                    key={slot._id}
+                    slotData={slot}
+                    reservations={getAllReservations}
+                    onShowDetail={handleShowDetail}
+                  />
+                ))
+              )}
+            </div>
+          </div>
+          {showListingDetail && (
+            <div className="popup_detail">
+              <ListingDetail
+                space={showSpace}
+                reservations={getAllReservations}
+                onHideDetail={handleCloseDetail}
+              />
+            </div>
+          )}
+        </div>
+        <div
+          className={togglebtn ? "app_right" : "app_right app_right_hide"}
+          onClick={() => setParkingInput(false)}
+        >
+          {isLoading ? (
+            <SkeletonCard />
+          ) : Array.isArray(getAllSpaces) && getAllSpaces.length === 0 ? (
+            ""
+          ) : (
+            <ListingContainer
+              key={showSpace._id}
+              slotData={showSpace}
+              reservations={getAllReservations}
               onShowDetail={handleShowDetail}
             />
-          </div>
+          )}
+          <MapBox
+            spaces={getAllSpaces}
+            getSpace={getspaces}
+            onShowDetail={handleShowDetail}
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

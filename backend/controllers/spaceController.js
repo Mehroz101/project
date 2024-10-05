@@ -1,8 +1,8 @@
 const Space = require("../models/Space"); // Import your Space model
 const fs = require("fs");
 const path = require("path");
-const io = require("socket.io"); // Attach to your server
-
+// const io = require("socket.io"); // Attach to your server
+// Get the Socket.io instance from the app
 // Create a new space
 const createSpace = async (req, res) => {
   try {
@@ -61,16 +61,18 @@ const createSpace = async (req, res) => {
     });
 
     const data = await newSpace.save();
-    req.io.emit("spaceUpdated", data);
+    const io = req.app.get("io");
 
+    // Emit an event to notify clients about the space status change
+    io.emit("spaceUpdated", {
+      message: "Space status updated",
+    });
     return res.status(201).json({ data });
   } catch (error) {
     console.error("Server error:", error.message);
     return res.status(500).json();
   }
 };
-
-// Show spaces for a user
 const showSpace = async (req, res) => {
   try {
     const user = req.user.id;
@@ -105,7 +107,14 @@ const toggleSpaceStatus = async (req, res) => {
     // Toggle the state
     space.state = space.state === "active" ? "deactivated" : "active";
     await space.save();
+    const io = req.app.get("io");
 
+    // Emit an event to notify clients about the space status change
+    io.emit("spaceUpdated", {
+      spaceId: spaceId,
+      status: space.state,
+      message: "Space status updated",
+    });
     res.status(200).json({ message: "Space status updated", data: space });
   } catch (error) {
     console.error("Error toggling space status:", error);
@@ -198,7 +207,14 @@ const updateSpaceDetails = async (req, res) => {
 
     // Save the updated space in the database
     const response = await space.save();
+    const io = req.app.get("io");
 
+    // Emit an event to notify clients about the space status change
+    io.emit("spaceUpdated", {
+      spaceId: spaceId,
+      status: space.state,
+      message: "Space detail updated",
+    });
     res.status(201).json({ message: "Space updated successfully", response });
   } catch (error) {
     console.error("Error updating space details:", error.message);
@@ -212,6 +228,14 @@ const deleteSpace = async (req, res) => {
     if (!space) {
       return res.status(404).json({ message: "Space not found" });
     }
+    const io = req.app.get("io");
+
+    // Emit an event to notify clients about the space status change
+    io.emit("spaceUpdated", {
+      spaceId: spaceId,
+      status: space.state,
+      message: "Space deleted",
+    });
     res.status(200).json({ message: "Space deleted successfully" });
   } catch (error) {
     console.error("Error deleting space:", error.message);
@@ -229,6 +253,7 @@ const getallspaces = async (req, res) => {
     if (spaces.length === 0) {
       return res.status(404).json();
     }
+
     return res.status(201).json({ data: spaces });
   } catch (error) {
     // console.error("Error fetching spaces:", error.message);
