@@ -10,18 +10,17 @@ const TOKEN =
   "pk.eyJ1IjoibWVocm96ZmFyb29xIiwiYSI6ImNtMGc2ODJqZzE0dDkyanFyamlwdmQ3eTIifQ.tKoAqHa7Fyq96aj59q4vlw";
 
 const MapBox = ({ spaces, onShowDetail, getSpace }) => {
-  const { searchInput } = useParams(); // searchInput from URL params
+  const { searchInput } = useParams();
   const [viewPort, setViewPort] = useState({
     latitude: 30.439,
     longitude: 72.3552,
     zoom: 12,
   });
-  const [searchLocation, setSearchLocation] = useState(null); // State to store user's search location
-  const [marker, setMarkers] = useState(null); // State to store user's search location
+  const [searchLocation, setSearchLocation] = useState(null);
+  const [searchMarker, setSearchMarker] = useState(null); // State to manage the search marker
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-  const searchMarkerRef = useRef(null); // Reference to the search location marker
-  const spaceMarkersRef = useRef([]); // Reference to store space markers
+  const spaceMarkersRef = useRef([]);
 
   // Filter locations within 5 km
   const getNearbySpaces = (userLat, userLong) => {
@@ -37,25 +36,90 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
   };
 
   // Initialize Mapbox only once
+  // useEffect(() => {
+  //   mapboxgl.accessToken = TOKEN;
+
+  //   mapRef.current = new mapboxgl.Map({
+  //     container: mapContainerRef.current,
+  //     style: "mapbox://styles/mehrozfarooq/cm0g6qi11000z01pihk088cvz",
+  //     center: [viewPort.longitude, viewPort.latitude],
+  //     zoom: viewPort.zoom,
+  //   });
+
+  //   mapRef.current.addControl(new mapboxgl.NavigationControl());
+
+  //   // Add double-click event listener to map
+  //   mapRef.current.on("click", (e) => {
+  //     const { lng, lat } = e.lngLat; // Get longitude and latitude of the clicked point
+  //     console.log("Double-clicked at:", lng, lat); // Log for debugging
+
+  //     // Update the search location and fetch nearby spaces
+  //     setSearchLocation({ latitude: lat, longitude: lng });
+  //     getSpace({ latitude: lat, longitude: lng });
+
+  //     // Update or create the search marker
+  //     if (searchMarker) {
+  //       // Remove the previous marker before adding a new one
+  //       searchMarker.remove();
+  //     }
+
+  //     const newMarker = new mapboxgl.Marker({ color: "green" })
+  //       .setLngLat([lng, lat])
+  //       .addTo(mapRef.current);
+  //     setSearchMarker(newMarker); // Update state with the new marker
+  //   });
+
+  //   return () => {
+  //     if (mapRef.current) {
+  //       mapRef.current.off("click"); // Clean up event listener on component unmount
+  //       mapRef.current.remove();
+  //     }
+  //   };
+  // }, []);
   useEffect(() => {
     mapboxgl.accessToken = TOKEN;
-
+  
     mapRef.current = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mehrozfarooq/cm0g6qi11000z01pihk088cvz",
       center: [viewPort.longitude, viewPort.latitude],
       zoom: viewPort.zoom,
     });
-
+  
     mapRef.current.addControl(new mapboxgl.NavigationControl());
-
+  
+    // Declare a variable to track the current marker
+    let currentMarker = null;
+  
+    // Add single-click event listener to the map
+    mapRef.current.on("click", (e) => {
+      const { lng, lat } = e.lngLat; // Get longitude and latitude of the clicked point
+      console.log("Clicked at:", lng, lat); // Log for debugging
+  
+      // Remove the previous marker if it exists
+      if (currentMarker) {
+        currentMarker.remove();
+      }
+  
+      // Create a new marker and add it to the map
+      currentMarker = new mapboxgl.Marker({ color: "green" })
+        .setLngLat([lng, lat])
+        .addTo(mapRef.current);
+      
+      // Update the search location and fetch nearby spaces
+      setSearchLocation({ latitude: lat, longitude: lng });
+      getSpace({ latitude: lat, longitude: lng });
+    });
+  
     return () => {
       if (mapRef.current) {
+        mapRef.current.off("click"); // Clean up event listener on component unmount
         mapRef.current.remove();
       }
     };
   }, []);
-
+  
+  // Update map center when viewPort changes
   useEffect(() => {
     if (mapRef.current) {
       mapRef.current.setCenter([viewPort.longitude, viewPort.latitude]);
@@ -63,7 +127,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
     }
   }, [viewPort]);
 
-  // Fetch user's search location only on search input change
+  // Fetch location based on user input
   useEffect(() => {
     const fetchLocation = async () => {
       if (!searchInput.trim()) return;
@@ -82,37 +146,33 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
         );
 
         const [longitude, latitude] = response.data.features[0].center;
-        setSearchLocation({ latitude, longitude }); // Save user's search location
+        setSearchLocation({ latitude, longitude });
         getSpace({ latitude, longitude });
-        // Update viewport to user's search location
         setViewPort({
           latitude,
           longitude,
           zoom: 13,
         });
 
-        // Remove previous search location marker if it exists
-        if (searchMarkerRef.current) {
-          searchMarkerRef.current.remove();
+        // Move or create search marker
+        if (searchMarker) {
+          searchMarker.setLngLat([longitude, latitude]); // Move existing marker
+        } else {
+          const newMarker = new mapboxgl.Marker({ color: "green" })
+            .setLngLat([longitude, latitude])
+            .setPopup(new mapboxgl.Popup().setText("Your Location"))
+            .addTo(mapRef.current);
+          setSearchMarker(newMarker); // Update state with the new marker
         }
-
-        // Add marker for the user's search location
-        const searchMarker = new mapboxgl.Marker({ color: "green" }) // Green marker for user's location
-          .setLngLat([longitude, latitude])
-          .setPopup(new mapboxgl.Popup().setText("Your Location"))
-          .addTo(mapRef.current);
-
-        // Save reference to the marker to remove later
-        searchMarkerRef.current = searchMarker;
       } catch (error) {
         console.error("Error fetching location data:", error);
       }
     };
 
-    fetchLocation(); // Trigger location fetch when searchInput changes
+    fetchLocation();
   }, [searchInput]);
 
-  // Update markers when spaces change
+  // Update nearby spaces based on search location
   useEffect(() => {
     if (!searchLocation) return;
 
@@ -120,31 +180,24 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
       searchLocation.latitude,
       searchLocation.longitude
     );
-    setMarkers(nearbySpaces);
+    clearSpaceMarkers(); // Clear existing markers
 
-    // Clear existing space markers
-    clearSpaceMarkers();
-
-    // Add markers for nearby spaces
     nearbySpaces.forEach((space) => {
       const spaceMarker = new mapboxgl.Marker()
         .setLngLat([space.longitude, space.latitude])
-        .setPopup(new mapboxgl.Popup().setText(space.title)) // Add popup with space name
+        .setPopup(new mapboxgl.Popup().setText(space.title))
         .addTo(mapRef.current);
 
       const markerElement = spaceMarker.getElement();
-      markerElement.style.cursor = "pointer"; // Change cursor to pointer
+      markerElement.style.cursor = "pointer";
 
-      // Add click event listener to marker
       markerElement.addEventListener("click", () => {
-        onShowDetail(space._id); // Call onShowDetail with the space ID
+        onShowDetail(space._id);
       });
-      // Add marker to reference array
       spaceMarkersRef.current.push(spaceMarker);
     });
   }, [spaces, searchLocation]);
 
-  // Function to clear space markers
   const clearSpaceMarkers = () => {
     spaceMarkersRef.current.forEach((marker) => marker.remove());
     spaceMarkersRef.current = []; // Clear the reference array
