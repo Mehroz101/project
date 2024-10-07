@@ -3,35 +3,36 @@ import "../styles/ManageSpace.css";
 import { Link } from "react-router-dom";
 import SpaceRow from "./SpaceRow";
 import { getSpace, handleDelete } from "../../services/spaceService";
-import { getReservation } from "../../services/reservationService";
+// import { getReservation } from "../../services/reservationService";
+import { useParkingOwner } from "../../context/ReservationContext";
 
 const ManageSpace = () => {
-  const [spaces, setSpaces] = useState([]); // Original data from backend
+  // const [spaces, setSpaces] = useState([]); // Original data from backend
   const [filteredData, setFilteredData] = useState([]); // Filtered data for search
   const [activeFilter, setActiveFilter] = useState("all"); // State to keep track of active filter
   const [searchTerm, setSearchTerm] = useState(""); // Search term for filtering
-  const [reservations, setReservations] = useState([]); // Reservations data
-
+  // const [reservations, setReservations] = useState([]); // Reservations data
+const {reservation,space,setSpace} = useParkingOwner()
   // Fetch data from backend
-  const spaceRequest = async () => {
-    try {
-      const [reservationsResponse, spacesResponse] = await Promise.all([
-        getReservation(),
-        getSpace(),
-      ]);
-
-      const spacesArray = spacesResponse.data.data;
-      setSpaces(spacesArray); // Save the fetched spaces data
-      setFilteredData(spacesArray); // Initialize filteredData with all spaces
-      const reservationcount = reservationsResponse.map(
-        (reservation) => reservation
-      );
-      setReservations(reservationcount); // Save the reservations data
-      console.log("reservations");
-      console.log(reservationcount);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const spaceRequest = () => {
+    // try {
+      // const [reservationsResponse, spacesResponse] = await Promise.all([
+      //   getReservation(),
+      //   getSpace(),
+      // ]);
+      console.log(space)
+      // const spacesArray = spacesResponse.data.data;
+      // setSpaces(spacesArray); // Save the fetched spaces data
+      setFilteredData(space); // Initialize filteredData with all spaces
+      // const reservationcount = reservation.map(
+      //   (reservation) => reservation
+      // );
+      // setReservations(reservationcount); // Save the reservations data
+      // console.log("reservations");
+      // console.log(reservationcount);
+    // } catch (error) {
+    //   console.error("Error fetching data:", error);
+    // }
   };
 
   // Handle search input change
@@ -41,7 +42,7 @@ const ManageSpace = () => {
 
     const lowerCasedTerm = value.toLowerCase();
 
-    const filtered = spaces.filter((space) => {
+    const filtered = space.filter((space) => {
       const searchValue = space.title.toLowerCase();
       return searchValue.includes(lowerCasedTerm);
     });
@@ -54,14 +55,14 @@ const ManageSpace = () => {
     setActiveFilter(state);
     if (state === "all") {
       setFilteredData(
-        spaces.filter((space) =>
+        space.filter((space) =>
           space.title.toLowerCase().includes(searchTerm.toLowerCase())
         )
       ); // Reset filtered data to show all
     } else {
       const status = state;
       setFilteredData(
-        spaces.filter(
+        space.filter(
           (space) =>
             space.state === status &&
             space.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -69,6 +70,7 @@ const ManageSpace = () => {
       ); // Filter by status
     }
   };
+  
 
   const handleDeleteSpace = async (spaceId) => {
     await handleDelete(spaceId); // Call delete function
@@ -76,12 +78,11 @@ const ManageSpace = () => {
   };
 
   const handleToggleStatus = async (spaceId, newState) => {
-    setSpaces((prevSpaces) =>
+    setSpace((prevSpaces) =>
       prevSpaces.map((space) =>
         space._id === spaceId ? { ...space, state: newState } : space
       )
     );
-    await spaceRequest(); // Refresh space data after status change
   };
 
   useEffect(() => {
@@ -92,20 +93,20 @@ const ManageSpace = () => {
     // Update filtered data based on search term and active filter
     if (activeFilter === "all") {
       setFilteredData(
-        spaces.filter((space) =>
+        space.filter((space) =>
           space.title.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
     } else {
       setFilteredData(
-        spaces.filter(
+        space.filter(
           (space) =>
             space.state === activeFilter &&
             space.title.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
     }
-  }, [spaces, activeFilter, searchTerm]);
+  }, [space, activeFilter, searchTerm]);
 
   return (
     <>
@@ -119,16 +120,16 @@ const ManageSpace = () => {
         <div className="space_numbers space_numbers_hide">
           <div className="total_space">
             <p>Total listing</p>
-            <h2>{spaces.length}</h2>
+            <h2>{space.length}</h2>
           </div>
           <div className="active_space">
             <p>Active listing</p>
-            <h2>{spaces.filter((space) => space.state === "active").length}</h2>
+            <h2>{space.filter((space) => space.state === "active").length}</h2>
           </div>
           <div className="deactived_space">
             <p>Deactivated listing</p>
             <h2>
-              {spaces.filter((space) => space.state === "deactivated").length}
+              {space.filter((space) => space.state === "deactivated").length}
             </h2>
           </div>
         </div>
@@ -187,7 +188,7 @@ const ManageSpace = () => {
                   .reverse()
                   .map((item, index) => {
                     // Find the corresponding reservation for the current item
-                    const reservationForSpace = reservations?.find(
+                    const reservationForSpace = reservation?.find(
                       (slot) => slot.spaceId === item.spaceId
                     );
 
@@ -209,7 +210,7 @@ const ManageSpace = () => {
                           spaceIndex={index}
                           handleToggleStatus={handleToggleStatus}
                           handleDeleteSpace={handleDeleteSpace}
-                          reservations={reservations}
+                          reservations={reservation}
                         />
                       </>
                     );

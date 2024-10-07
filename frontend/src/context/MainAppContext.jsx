@@ -33,7 +33,7 @@ export const MainAppProvider = ({ children }) => {
     );
     // Cleanup on unmount
     return () => {
-      socket.off("spaceStatusUpdated");
+      socket.off("spaceUpdated");
     };
   },[]);
   return (
@@ -55,7 +55,5 @@ export const MainAppProvider = ({ children }) => {
 // export default MainAppContext;
 
 export const useMainAppContext = () => {
-    console.log("context1",MainAppContextAPI)
-    console.log("context2",useContext(MainAppContextAPI))
   return useContext(MainAppContextAPI);
 };

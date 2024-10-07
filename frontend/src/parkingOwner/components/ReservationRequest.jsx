@@ -7,6 +7,7 @@ import {
   cancelReservation,
   confirmReservation,
 } from "../../services/reservationService";
+import { useParkingOwner } from "../../context/ReservationContext";
 
 const ReservationRequest = () => {
   const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const ReservationRequest = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOption, setSearchOption] = useState("title");
-
+const {reservation} = useParkingOwner()
   const handleSearchChange = (e) => {
     const { value } = e.target;
     setSearchTerm(value);
@@ -41,46 +42,48 @@ const ReservationRequest = () => {
   };
 
   const updateListView = (state) => {
+    console.log(state)
     setActiveFilter(state);
     if (state === "all") {
-      setFilteredData(data);
+      setFilteredData(reservation);
       return;
     }
-    setFilteredData(data.filter((reservation) => reservation.state === state));
+    setFilteredData(reservation.filter((reservation) => reservation.state === state));
+   
   };
 
-  const getreservationData = async () => {
-    try {
-      const response = await getReservation();
-      console.log(response);
-      setData(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getreservationData = async () => {
+  //   try {
+  //     const response = await getReservation();
+  //     console.log(response);
+  //     setData(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const handleCancelReservation = async (reservartionId) => {
     console.log(reservartionId);
     await cancelReservation(reservartionId);
-    getreservationData();
+    // getreservationData();
   };
   const handleConfirmReservation = async (reservartionId) => {
     console.log(reservartionId);
     await confirmReservation(reservartionId);
-    getreservationData();
+    // getreservationData();
   };
 
+  // useEffect(() => {
+  //   // getreservationData();
+  //   if (getReservation) {
+  //     setFilteredData(getReservation);
+  //   }
+  // }, []);
   useEffect(() => {
-    getreservationData();
-    if (data) {
-      setFilteredData(data);
+    if (reservation) {
+      setFilteredData(reservation);
     }
-  }, []);
-  useEffect(() => {
-    if (data) {
-      setFilteredData(data);
-    }
-  }, [data]);
+  }, [reservation]);
 
   return (
     <>
@@ -97,13 +100,13 @@ const ReservationRequest = () => {
           </div>
           <div className="total_request">
             <p>Total request</p>
-            <h2>{data?.length}</h2>
+            <h2>{reservation?.length}</h2>
           </div>
           <div className="pending_request">
             <p>Pending request</p>
             <h2>
               {
-                data?.filter((reservation) => reservation.state === "pending")
+                reservation?.filter((reservation) => reservation.state === "pending")
                   .length
               }
             </h2>
@@ -112,7 +115,7 @@ const ReservationRequest = () => {
             <p>Confirmed request</p>
             <h2>
               {
-                data?.filter((reservation) => reservation.state === "confirmed")
+                reservation?.filter((reservation) => reservation.state === "confirmed")
                   .length
               }
             </h2>
@@ -121,7 +124,7 @@ const ReservationRequest = () => {
             <p>Total completed request</p>
             <h2>
               {
-                data?.filter((reservation) => reservation.state === "completed")
+                reservation?.filter((reservation) => reservation.state === "completed")
                   .length
               }
             </h2>

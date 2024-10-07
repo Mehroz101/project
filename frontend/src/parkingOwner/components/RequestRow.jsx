@@ -46,24 +46,21 @@ const RequestRow = ({
         <td className="price">${reservationReq.totalPrice}</td>
         <td>
           {nonReservationReq && (
-            <span className={`status cancelled`}>
-              space deleted
-            </span>
+            <span className={`status cancelled`}>space deleted</span>
           )}
           {!nonReservationReq && (
             <span className={`status ${reservationReq.state}`}>
               {reservationReq.state}
             </span>
           )}
-
-         
         </td>
         <td className="actions">
           <Link title="view request" to={`view-request/${reservationReq._id}`}>
             <i className="fa-regular fa-eye"></i>
           </Link>
-          {reservationReq.state === "completed" ? null : (
-            // Otherwise, show the confirm and cancel links
+          {reservationReq.state === "completed" ||
+          reservationReq.state === "cancelled" ||
+          reservationReq.state === "confirmed" ? null : (
             <>
               <Link title="confirm" onClick={confirmReservation}>
                 <i className="fa-solid fa-check"></i>

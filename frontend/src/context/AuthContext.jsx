@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token) => {
     setIsAuthenticated(true);
+    
     navigate(-1); // Redirect to a protected route or dashboard
   };
 

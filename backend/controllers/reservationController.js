@@ -1,4 +1,5 @@
 const reservation = require("../models/Reservation");
+const Space = require("../models/Space");
 const space = require("../models/Space");
 
 const createCustomReservation = async (req, res) => {
@@ -53,8 +54,12 @@ const createCustomReservation = async (req, res) => {
       isCustom: true,
     });
     const response = await createReservation.save();
-    // req.io.emit("reservationsUpdated", response);
+    const io = req.app.get("io");
 
+    // Emit an event to notify clients about the space status change
+    io.emit("reservationUpdated", {
+      message: "reservation created",
+    });
     // console.log(createReservation)
     return res.status(201).json({
       message: "Reservation created successfully",
@@ -72,7 +77,7 @@ const getReservation = async (req, res) => {
     }
     const spaceIds = await space.find({ userId }).select("_id");
     const response = await reservation
-      .find({ userId, spaceId: { $in: spaceIds } })
+      .find({ spaceId: { $in: spaceIds } })
       .populate("spaceId", "title per_hour per_day")
       .populate("userId", "fName email");
 
@@ -111,7 +116,12 @@ const cancelReservation = async (req, res) => {
 
     // Save the updated reservation
     await getreservation.save();
+    const io = req.app.get("io");
 
+    // Emit an event to notify clients about the space status change
+    io.emit("reservationUpdated", {
+      message: "reservation canceled",
+    });
     return res
       .status(200)
       .json({ message: "Reservation cancelled successfully" });
@@ -147,10 +157,15 @@ const confirmReservation = async (req, res) => {
 
     // Save the updated reservation
     await getreservation.save();
+    const io = req.app.get("io");
 
+    // Emit an event to notify clients about the space status change
+    io.emit("reservationUpdated", {
+      message: "reservation confirmed",
+    });
     return res
       .status(200)
-      .json({ message: "Reservation cancelled successfully" });
+      .json({ message: "Reservation confirmed successfully" });
   } catch (error) {
     console.log(error.message);
     return res
@@ -179,8 +194,8 @@ const getReservationData = async (req, res) => {
   }
 };
 const createReservation = async (req, res) => {
-  console.log(req.user.id);
-  console.log(req.body);
+  // console.log(req.user.id);
+  // console.log(req.body);
   try {
     const user = req.user.id;
     if (!user) {
@@ -215,6 +230,14 @@ const createReservation = async (req, res) => {
     ) {
       return res.status(400).json();
     }
+    const space = await Space.findOne({ _id: spaceId }); // Match _id with spaceId from frontend
+
+    if (space) {
+      if (space.state !== "active") {
+        return res.status(404).json();
+      }
+    }
+
     const createReservation = new reservation({
       userId,
       spaceId,
@@ -230,9 +253,12 @@ const createReservation = async (req, res) => {
       isCustom: false,
     });
     const response = await createReservation.save();
-    // req.io.emit("reservationsUpdated", response);
+    const io = req.app.get("io");
 
-    // console.log(createReservation)
+    // Emit an event to notify clients about the space status change
+    io.emit("reservationUpdated", {
+      message: "reservation created by user",
+    });
     return res.status(201).json({
       message: "Reservation created successfully",
     });
@@ -263,8 +289,8 @@ const getUserReservation = async (req, res) => {
   }
 };
 
-const getAllReservation = async (req,res) => {
-  const userId = req.user.id
+const getAllReservation = async (req, res) => {
+  const userId = req.user.id;
   try {
     if (!userId) {
       return res.status(401).json({ message: "need to login" });
@@ -274,8 +300,7 @@ const getAllReservation = async (req,res) => {
         console.log("error");
         return res.status(404).json();
       }
-      return res.status(201).json({response})
-    
+      return res.status(201).json({ response });
     }
   } catch (error) {
     console.log(error.message);
