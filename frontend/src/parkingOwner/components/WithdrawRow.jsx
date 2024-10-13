@@ -33,7 +33,7 @@ const WithdrawRow = ({requests,index}) => {
             <span >{requests._id}</span>
         </td>
         <td>
-            <span>${requests.withdrawAmount}</span>
+            <span>Rs. {requests.withdrawAmount}</span>
         </td>
       </tr>
     </>

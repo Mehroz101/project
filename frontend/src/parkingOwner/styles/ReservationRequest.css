@@ -153,9 +153,9 @@ td.title {
   text-align: center;
 }
 
-.responsive_table .status.pending {
+/* .responsive_table .status.pending {
   background-color: #fff9c4;
-  color: #f9a825;
+    color: #f9a825;
 }
 
 .responsive_table .status.confirmed {
@@ -171,7 +171,7 @@ td.title {
 .responsive_table .status.completed {
   background-color: #b3e5fc;
   color: #0277bd;
-}
+} */
 
 td.actions {
   display: flex;
@@ -216,6 +216,7 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
   background-color: #f9f9f9;
 }
+
 
 .responsive_table img {
   width: 100px;

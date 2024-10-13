@@ -15,9 +15,9 @@ const ViewRequest = () => {
     try {
       setTimeout(async () => {
         const response = await getReservationdata(reservationId);
-        console.log(response.spaceId);
+        // console.log(response.spaceId);
         setSpace(response.spaceId);
-        console.log("Updated space state:", response.spaceId);
+        // console.log("Updated space state:", response.spaceId);
         const formatTimeTo12Hour = (time) => {
           let [hours, minutes] = time.split(":").map(Number);
           const ampm = hours >= 12 ? "PM" : "AM";
@@ -71,7 +71,7 @@ const ViewRequest = () => {
           leaveTime: formattedLeaveTime,
         });
       }, 500); // Simulate a delay
-      console.log(space);
+      // console.log(space);
     } catch (error) {
       console.error(error.message);
     }
@@ -84,13 +84,17 @@ const ViewRequest = () => {
   }, [reservationId]);
   useEffect(() => {
     if (space) {
-      console.log("Updated space state now:", space); // This will log the updated state
+      // console.log("Updated space state now:", space); // This will log the updated state
     }
   }, [space]);
   return (
     <>
       <div className="view_request">
-        <ReservationListingDetail spaceDetail={space} />
+        <ReservationListingDetail spaceDetail={space} data={data} />
+        <div className="request_status">
+          <h3>Request Status</h3>
+          <span className={`status ${data.state}`}>{data.state}</span>
+        </div>
         <div className="reservation_detail_container">
           <h3>Booking Detail</h3>
           <div className="reservation_detail">

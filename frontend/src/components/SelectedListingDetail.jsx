@@ -7,13 +7,13 @@ import {
 
 const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
-const ListingDetail = ({ onHideDetail, space, reservations }) => {
+const SelectedListingDetail = ({ space, reservation, review }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]); // Store images in state
   const [prices, setPrices] = useState("");
   const [totalCompleted, setTotalCompleted] = useState(0); // State to hold total confirmed bookings
 
-  const { totalHours } = useParams();
+  const totalHours = localStorage.getItem(`totalHours`);
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
@@ -25,7 +25,7 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
       prevIndex === 0 ? images?.length - 1 : prevIndex - 1
     );
   };
-
+  
   useEffect(() => {
     if (space?.images && space?.images?.length > 0) {
       // Set images from the space object
@@ -37,19 +37,16 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
   }, [space?.images]); // Effect depends on space.images
   useEffect(() => {
     if (space) {
+      console.log(reservation)
       const total = calculatePrice(totalHours, space?.per_hour, space.per_day);
       setPrices(total);
-      setTotalCompleted(totalBooking("completed", space, reservations));
+      setTotalCompleted(totalBooking("completed", space, reservation));
     }
   }, [space, totalHours]);
+ 
   return (
     <>
       <div className="listing_detail_container">
-        <div className="back_btn">
-          <span onClick={onHideDetail}>
-            <i className="fa-solid fa-xmark"></i>
-          </span>
-        </div>
         <div className="listing_detail_image_box">
           {images.length > 0 && (
             <>
@@ -74,13 +71,15 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
             <p className="address">{space?.address}</p>
           </div>
           <div className="badge_shortdesc">
-            <span className="short_description">{space?.short_description}</span>
+            <span className="short_description">
+              {space?.short_description}
+            </span>
           </div>
           <div className="listing_rating">
             <span className="rating">
-              <span className="rating_score">4.5</span>
+              <span className="rating_score">{space?.averageRating || 0}</span>
               <i className="fa-solid fa-star"></i>
-              <span className="total_reviews">(123)</span>
+              <span className="total_reviews">({review?.length})</span>
             </span>
             <span className="total_booking">{totalCompleted} booking</span>
           </div>
@@ -128,4 +127,4 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
   );
 };
 
-export default ListingDetail;
+export default SelectedListingDetail;

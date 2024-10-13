@@ -48,11 +48,11 @@ export const createSpace = async (formData) => {
             "Error creating space: " +
               (error.response?.data?.message || error.message)
           );
-          return
+          return;
       }
     } else {
       notify("error", "Network error. Please check your connection.");
-      return
+      return;
     }
   }
 };
@@ -243,5 +243,16 @@ export const getallspaces = async () => {
     } else {
       notify("error", "Network error. Please check your connection.");
     }
+  }
+};
+export const getSpaceReview = async (spaceId) => {
+  try {
+    const response = await axios.get(`${API_URL}/getspacereview/${spaceId}`);
+    console.log(response)
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };

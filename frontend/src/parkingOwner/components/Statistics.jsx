@@ -22,14 +22,16 @@ const OverviewStatistics = ({reservation,space}) => {
 
   // Update the statistics whenever `reservation` or `space` changes
   useEffect(() => {
-    const totalSpaces = space?.data?.data?.length || 0;
-    const availableSpaces = space?.data?.data?.filter((slot) => slot.state === 'active').length || 0;
+    const totalSpaces = space.length || 0;
+    const availableSpaces = space.filter((slot) => slot.state === 'active').length || 0;
     const pendingRequests = reservation?.filter((request) => request?.state === 'pending' && request.spaceId !== null).length || 0;
     const completedRequests = reservation?.filter((request) => request.state === 'completed').length || 0;
-// const totalSpaces =0
-// const availableSpaces =0
-// const pendingRequests =0
-// const completedRequests =0
+    console.log("reservation",reservation)
+    console.log("totalSpaces",totalSpaces)
+    console.log("availableSpaces",availableSpaces)
+    console.log("pendingRequests",pendingRequests)
+    console.log("completedRequests",completedRequests)
+
 console.log(reservation)
 console.log(space)
     // Set the updated stats

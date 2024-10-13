@@ -26,21 +26,26 @@ body{
 }
 
  .status.pending {
-  background-color: #fff9c4;
-  color: #f9a825;
+  background-color: #fff9c4 !important;
+  color: #f9a825 !important;
 }
 
- .status.complete {
-  background-color: #c8e6c9;
-  color: #2e7d32;
+ .status.confirmed {
+  background-color: #c8e6c9 !important;
+  color: #2e7d32 !important;
+}
+ .status.completed {
+  background-color: #b3e5fc !important;
+  color: #0277bd !important;
 }
 
- .status.canceled {
-  background-color: #ffcdd2;
-  color: #c62828;
+ .status.cancelled {
+  background-color: #ffcdd2 !important; 
+  color: #c62828 !important;
 }
 
- .status.running {
-  background-color: #b3e5fc;
-  color: #0277bd;
+ .status.reserved {
+  background-color: #b3e5fc !important;
+  color: #0277bd !important;
 }
+ 

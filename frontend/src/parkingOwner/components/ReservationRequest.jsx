@@ -96,7 +96,7 @@ const {reservation} = useParkingOwner()
         </div>
         <div className="requests_numbers requests_numbers_hide">
           <div className="request_day">
-            <h2>Today</h2>
+            <h2>Requests</h2>
           </div>
           <div className="total_request">
             <p>Total request</p>
@@ -135,17 +135,21 @@ const {reservation} = useParkingOwner()
             <li className={activeFilter === "all" ? "active" : ""}>
               <Link onClick={() => updateListView("all")}>All</Link>
             </li>
+            <li className={activeFilter === "pending" ? "active" : ""}>
+              <Link onClick={() => updateListView("pending")}>Pending</Link>
+            </li>
             <li className={activeFilter === "completed" ? "active" : ""}>
-              <Link onClick={() => updateListView("completed")}>completed</Link>
+              <Link onClick={() => updateListView("completed")}>Completed</Link>
             </li>
             <li className={activeFilter === "confirmed" ? "active" : ""}>
-              <Link onClick={() => updateListView("confirmed")}>confirmed</Link>
+              <Link onClick={() => updateListView("confirmed")}>Confirmed</Link>
             </li>
-            <li className={activeFilter === "pending" ? "active" : ""}>
-              <Link onClick={() => updateListView("pending")}>pending</Link>
+            <li className={activeFilter === "reserved" ? "active" : ""}>
+              <Link onClick={() => updateListView("reserved")}>Reserved</Link>
             </li>
+           
             <li className={activeFilter === "cancelled" ? "active" : ""}>
-              <Link onClick={() => updateListView("cancelled")}>cancelled</Link>
+              <Link onClick={() => updateListView("cancelled")}>Cancelled</Link>
             </li>
           </ul>
         </div>

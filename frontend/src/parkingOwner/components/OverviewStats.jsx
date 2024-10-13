@@ -7,15 +7,16 @@ import { useParkingOwner } from "../../context/ReservationContext";
 const OverviewStats = () => {
   const { reservation, space } = useParkingOwner();
 
-  // console.log("reservtion")
-  // console.log(reservation)
   const totalEarning = Array.isArray(reservation)
     ? reservation.reduce((acc, request) => {
-        if (request.state === "completed" || request.state === "confirmed") {
-          if(request.spaceId !== null && request.state === "confirmed"){
+        if (
+          request.spaceId !== null &&
+          (request.state === "completed" ||
+            request.state === "confirmed" ||
+            request.state === "reserved")
+        ) {
           const price = parseFloat(request.totalPrice); // Convert to number
           return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
-          }
         }
         return acc;
       }, 0)
@@ -24,13 +25,13 @@ const OverviewStats = () => {
     ? reservation.reduce((acc, req) => {
         if (
           req.state == "completed" ||
-          req.state === "confirmed" ||
-          req.state === "pending"
+          req.state === "reserved" ||
+          req.state === "confirmed"
         ) {
-          if (req.spaceId === null || req.state === "pending") {
-            if (req.spaceId === null || req.state === "confirmed")
-              return acc + 1;
+          if (req.spaceId === null && req.state === "confirmed") {
+            return acc;
           }
+          return acc + 1;
         }
         return acc;
       }, 0)
@@ -45,8 +46,7 @@ const OverviewStats = () => {
       }, 0)
     : 0;
 
-  // console.log("withdrawable");
-  // console.log(withdrawable);
+
 
   return (
     <div className="overview_stats">
@@ -64,7 +64,7 @@ const OverviewStats = () => {
             <span>Available Slots</span>
           </div>
           <div className="stat_value">
-            <h2>{space?.data?.data?.length}</h2>
+            <h2>{space.length}</h2>
           </div>
         </div>
         <div className="stat_item">
@@ -80,7 +80,7 @@ const OverviewStats = () => {
             <span>Withdrawable</span>
           </div>
           <div className="stat_value">
-            <h2>${withdrawable}</h2>
+            <h2>${withdrawable.toFixed(2)}</h2>
           </div>
         </div>
       </div>

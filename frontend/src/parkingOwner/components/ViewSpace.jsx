@@ -14,22 +14,26 @@ const ViewSpace = () => {
     const spaceData = await getSpace(spaceId);
     const spaceInfo = spaceData.data.space;
     setSpace(spaceInfo);
-    setImages(spaceInfo.images || []);
+    setImages(spaceInfo?.images || []);
     setCurrentImageIndex(0);
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const handlePreviousImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
   };
 
   useEffect(() => {
     getSpaceData();
   }, [spaceId]);
-
+  
   return (
     <div className="view-space-container">
       {/* Image Carousel */}
@@ -50,13 +54,13 @@ const ViewSpace = () => {
       {/* Listing Details */}
       <div className="listing-details">
         <div className="details-left">
-          <h2 className="space-title">{space.title}</h2>
+          <h2 className="space-title">{space?.title}</h2>
           <p className="space-address">
             <i className="fa-solid fa-location-dot"></i> {space.address}
           </p>
           <div className="rating-section">
             <div className="rating">
-              <span className="rating-score">4.5</span>
+              <span className="rating-score">{space.averageRating}</span>
               <i className="fa-solid fa-star"></i>
               <span className="total-reviews">(123 reviews)</span>
             </div>

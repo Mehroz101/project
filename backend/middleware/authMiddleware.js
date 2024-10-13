@@ -3,6 +3,7 @@ const { verifyToken } = require("../utils/generateToken");
 const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
+    console.log("token not foud")
     return res.status(401).json({ message: "Access Denied: No Token Provided" });
   }
 

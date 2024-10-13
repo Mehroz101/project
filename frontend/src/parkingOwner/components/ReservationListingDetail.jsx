@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-const ReservationListingDetail = ({onShowDetail, spaceDetail }) => {
-const [space,setSpace]= useState([])
-const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
+import { confirmReservation, reservedReservation } from "../../services/reservationService";
+const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
+  const [space, setSpace] = useState([]);
+  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
-
-useEffect(()=>{
-    if(spaceDetail){
-      console.log("space data")
-    setSpace(spaceDetail)
-    console.log(spaceDetail)
+  const confimed =async (id) =>{
+    // console.log(id)
+    await confirmReservation(id)
+  }
+  const reserved =async (id) =>{
+    await reservedReservation(id)
+  }
+  useEffect(() => {
+    if (spaceDetail) {
+      // console.log("space data");
+      setSpace(spaceDetail);
+      // console.log(spaceDetail);
     }
-  },[spaceDetail])
+  }, [spaceDetail]);
   return (
     <>
       <div className="listing">
@@ -28,27 +35,53 @@ useEffect(()=>{
           </div>
           <div className="listing_rating">
             <span className="rating">
-              <span className="rating_score">4.5</span>
+              <span className="rating_score">{space.averageRating}</span>
               <i class="fa-solid fa-star"></i>
               <span className="total_reviews">(123)</span>
-
             </span>
             <span className="total_booking">100+ booking</span>
           </div>
           <div className="listing_detail">
             <div className="listing_features">
-              <span title="secure"><i class="fa-solid fa-shield-halved"></i></span>
-              <span title="underground"><i class="fa-solid fa-arrow-down-short-wide"></i></span>
-              <span title="cctv"><i class="fa-solid fa-video"></i></span>
+              <span title="secure">
+                <i class="fa-solid fa-shield-halved"></i>
+              </span>
+              <span title="underground">
+                <i class="fa-solid fa-arrow-down-short-wide"></i>
+              </span>
+              <span title="cctv">
+                <i class="fa-solid fa-video"></i>
+              </span>
             </div>
             <span>
-              <Link to={`/dashboard/manage-space/view-space/${space._id}`} onClick={onShowDetail}>details</Link>
+              <Link
+                to={`/dashboard/manage-space/view-space/${space._id}`}
+                onClick={onShowDetail}
+              >
+                details
+              </Link>
             </span>
           </div>
           <div className="listing_btn">
-            <button>
-              <Link to="/reservation">Book in ${space.per_hour}</Link>
-            </button>
+            {data.state === "pending" && (
+              <Link to="/dashboard/reservation-request" onClick={()=>confimed(data._id)}>
+                <button>Confirmed Now</button>
+              </Link>
+            )}
+            
+            {data.state === "confirmed" && (
+              <Link to="/dashboard/reservation-request"  onClick={()=>reserved(data._id)}>
+                <button>Reserved Now</button>
+              </Link>
+            )}
+            {/* {data.state === "reserved" && (
+              <Link to="/dashboard/reservation-request" >
+                <button >Free Now</button>
+              </Link>
+            )} */}
+            {/* <Link to="/dashboard/reservation-request">
+              <button>Reserve Now</button>
+            </Link> */}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 const reservation = require("../models/Reservation");
+const review = require("../models/Review");
 const Space = require("../models/Space");
 const space = require("../models/Space");
 
@@ -197,12 +198,11 @@ const createReservation = async (req, res) => {
   // console.log(req.user.id);
   // console.log(req.body);
   try {
-    const user = req.user.id;
-    if (!user) {
+    const userId = req.user.id;
+    if (!userId) {
       console.log("User not found");
       return res.status(401).json();
     }
-    const userId = req.user.id;
     const {
       spaceId,
       name,
@@ -261,6 +261,7 @@ const createReservation = async (req, res) => {
     });
     return res.status(201).json({
       message: "Reservation created successfully",
+      response,
     });
   } catch (error) {
     console.log(error.message);
@@ -274,8 +275,9 @@ const getUserReservation = async (req, res) => {
       return res.status(401).json({ message: "need to login" });
     }
     const response = await reservation
-      .find({ userId, spaceId: { $ne: null }, isCustom: false }) // Only fetch documents where spaceId is not null
-      .populate("spaceId", "address images");
+      .find({ userId, spaceId: { $ne: null }, isCustom: false })
+      .populate("spaceId", "address images")
+      .populate("reviewId", "rating");
 
     if (!response) {
       console.log("error");
@@ -290,22 +292,120 @@ const getUserReservation = async (req, res) => {
 };
 
 const getAllReservation = async (req, res) => {
-  const userId = req.user.id;
+  // const userId = req.user.id;
   try {
-    if (!userId) {
-      return res.status(401).json({ message: "need to login" });
-    } else {
-      const response = await reservation.find();
-      if (!response) {
-        console.log("error");
-        return res.status(404).json();
-      }
-      return res.status(201).json({ response });
+    // if (!userId) {
+    //   return res.status(401).json({ message: "need to login" });
+    // } else {
+    const response = await reservation.find();
+    if (!response) {
+      console.log("error");
+      return res.status(404).json();
     }
+    return res.status(201).json({ response });
   } catch (error) {
+    // }
     console.log(error.message);
   }
 };
+const reservedReservation = async (req, res) => {
+  const { reservationId } = req.body; // Expecting the new state in the request body
+  try {
+    // Find the reservation by ID
+    const isReservation = await reservation.findById(reservationId);
+    console.log("reservationId");
+
+    if (!isReservation) {
+      return res.status(404).json({ message: "Reservation not found" });
+    }
+
+    // Update the reservation state
+    isReservation.state = "reserved";
+
+    // Save the updated reservation
+    await isReservation.save();
+    const io = req.app.get("io");
+
+    // Emit a socket event to notify clients of the update (if using Socket.io)
+    io.emit("reservationUpdated", {
+      message: "Reservation status updated",
+      isReservation: isReservation,
+    });
+
+    return res.status(200).json({
+      message: "Reservation status updated successfully",
+      isReservation,
+    });
+  } catch (error) {
+    console.error("Error updating reservation status:", error.message);
+    return res
+      .status(500)
+      .json({ message: "Error updating reservation status", error });
+  }
+};
+
+const getSpaceSpecificReservations = async (req, res) => {
+  const { spaceId } = req.params;
+  console.log("response");
+  console.log(spaceId);
+  try {
+    const response = await reservation.find({ spaceId: spaceId });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.messgae);
+  }
+};
+const postReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    if (!userId) {
+      return res.status(401).json();
+    }
+    const { rating, msg, reservationId, spaceId } = req.body;
+    console.log(req.body);
+    const isSpace = await space.findById(spaceId);
+    if (isSpace) {
+      const isReservation = await reservation.findById(reservationId);
+      if (isReservation) {
+        if (isReservation.reviewId === null) {
+          const Review = new review({
+            userId: userId,
+            spaceId: spaceId,
+            reservationId: reservationId,
+            rating: rating,
+            reviewMsg: msg,
+          });
+          const response = await Review.save();
+          await reservation.findByIdAndUpdate(reservationId, {
+            reviewId: Review._id,
+          });
+          const io = req.app.get("io");
+          io.emit("reviewUpdate", {
+            message: "Review is given",
+            spaceId: spaceId,
+            reservationId: reservationId,
+          });
+          return res.status(200).json({
+            message: "Review Submitted successfully",
+            response,
+          });
+        } else {
+          res.status(403).json({
+            message: "Review already submitted",
+          });
+        }
+      } else {
+        res.status(404).json({ message: "Reservation found error" });
+      }
+    } else {
+      res.status(404).json({ message: "Space found error or been deleted" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(501).json();
+  }
+};
+//
 module.exports = {
   createReservation,
   createCustomReservation,
@@ -315,4 +415,7 @@ module.exports = {
   getReservationData,
   getUserReservation,
   getAllReservation,
+  reservedReservation,
+  getSpaceSpecificReservations,
+  postReview,
 };

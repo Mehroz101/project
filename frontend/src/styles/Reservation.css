@@ -143,9 +143,7 @@
   flex: 1;
 }
 .reservation_detail_right_box {
-  position: absolute;
-  right: 0px;
-  width: 80%;
+  width: 100%;
   background-color: white;
   padding: 10px;
   border-radius: 20px;
@@ -158,6 +156,36 @@
 }
 .reservation_detail_right_box .listing_detail_container .listing_detail_btn {
   display: none;
+}
+.reservation_detail_right .reservation_detail_right_reviews{
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: rgba(17, 12, 46, 0.15);
+  background-color: white;
+  margin-top: 20px;
+}
+.reservation_detail_right .reservation_detail_right_reviews {
+  background-color: #dddddd;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+.reservation_detail_right .reservation_detail_right_reviews .review-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin: 5px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.reservation_detail_right .reservation_detail_right_reviews .review-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #666;
+}
+.reservation_detail_right .reservation_detail_right_reviews .review-meta i {
+  color: orange;
 }
 @media (max-width: 996px) {
   .reservation_detail_right {

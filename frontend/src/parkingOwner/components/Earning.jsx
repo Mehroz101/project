@@ -20,25 +20,28 @@ const Earning = () => {
     try {
       const response = await getWithdrawRequest();
       setEarningData(response);
-      console.log(earningData);
+      // console.log(earningData);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
   const { handleChange, handleSubmit, withdrawDetail, setWithdrawDetail } =
     useWithdrawForm();
   useEffect(() => {
-    const totalEarning = Array.isArray(reservation)
+    let totalEarning = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
-          if (request.state === "completed") {
+          if (request.state === "completed" && request.withdrawn === true) {
             const price = parseFloat(request.totalPrice); // Convert to number
             return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
           }
           return acc;
         }, 0)
       : 0;
-    const withdrawable = Array.isArray(reservation)
+
+    totalEarning = totalEarning.toFixed(2);
+   
+    let withdrawable = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
           if (request.state === "completed" && request.withdrawn === false) {
             const price = parseFloat(request.totalPrice);
@@ -47,7 +50,8 @@ const Earning = () => {
           return acc;
         }, 0)
       : 0;
-    const lastMonthEarning = Array.isArray(reservation)
+      withdrawable = withdrawable.toFixed(2)
+    let lastMonthEarning = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
           const requestDate = new Date(request.createdAt);
           const today = new Date();
@@ -58,7 +62,7 @@ const Earning = () => {
             lastMonth = 11;
             lastMonthYear = thisYear - 1;
           }
-          console.log(requestDate.getMonth() >= lastMonth);
+          // console.log(requestDate.getMonth() >= lastMonth);
           if (
             (requestDate.getMonth() >= lastMonth &&
               requestDate.getFullYear() >= lastMonthYear) ||
@@ -66,18 +70,16 @@ const Earning = () => {
               requestDate.getMonth() === 0 &&
               requestDate.getFullYear() === lastMonthYear)
           ) {
-            if (request.state === "completed") {
+            if (request.state === "completed" && request.withdrawn === true) {
               const price = parseFloat(request.totalPrice); // Convert to number
               return acc + (isNaN(price) ? 0 : price);
             }
-            // const price = parseFloat(request.totalPrice);
-            // return acc + (isNaN(price) ? 0 : price);
           }
 
           return acc;
         }, 0)
       : 0;
-
+      lastMonthEarning = lastMonthEarning.toFixed(2)
     setEarning({
       withdrawableBalane: withdrawable,
       lastMonth: lastMonthEarning,
@@ -100,7 +102,7 @@ const Earning = () => {
           <div className="current_balance">
             <div className="amount">
               <span>withdrawable balance</span>
-              <h2>${earning.withdrawableBalane}</h2>
+              <h2>Rs. {earning.withdrawableBalane}</h2>
             </div>
             <button onClick={() => setPopup(true)}>withdraw</button>
           </div>
@@ -108,13 +110,13 @@ const Earning = () => {
             <div className="last_month">
               <div className="amount">
                 <span>last month</span>
-                <h2>${earning.lastMonth}</h2>
+                <h2>Rs. {earning.lastMonth}</h2>
               </div>
             </div>
             <div className="life_time">
               <div className="amount">
-                <span>total earning</span>
-                <h2>${earning.totalEarning}</h2>
+                <span>total withdraw recieved</span>
+                <h2>Rs. {earning.totalEarning}</h2>
               </div>
             </div>
           </div>
@@ -193,7 +195,7 @@ const Earning = () => {
 
               <div className="input_box amount">
                 <span>Amount Withdraw</span>
-                <span>${earning.withdrawableBalane}</span>
+                <span>Rs. {earning.withdrawableBalane}</span>
               </div>
             </div>
             <input
@@ -216,8 +218,8 @@ const Earning = () => {
               </button>
             </div>
             <p className="note">
-              Please note withdraw minimum amount $25 per withdraw and cannot be
-              undone after withraw. it may take 7 business days to process
+              Please note withdraw minimum amount Rs. 25 per withdraw and cannot
+              be undone after withraw. it may take 7 business days to process
               payment.
             </p>
           </div>

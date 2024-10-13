@@ -185,7 +185,6 @@
   margin-bottom: var(--spacing-medium);
 }
 
-
 .reservation_history_container .filter_navbar {
   margin: var(--spacing-large) 0;
   border-bottom: 1px solid #dddddd;
@@ -213,7 +212,6 @@
   border-bottom: 1px solid #dddddd;
   padding-bottom: 20px;
 }
-
 
 .reservation_history_container .reservation_list {
   margin-top: var(--spacing-medium);
@@ -249,6 +247,17 @@
   height: 50px;
   object-fit: cover;
 }
+.reservation_list td .rating_score {
+  font-size: var(--font-size-medium);
+  color: var(--secondary);
+  font-size: 18px;
+  font-weight: 500;
+}
+.reservation_list td i {
+  color: orange;
+  font-size: 18px;
+
+}
 
 .reservation_history_container .reservation_list td button {
   background-color: var(--secondary);
@@ -271,25 +280,6 @@
   border-radius: 4px;
   display: inline-block;
   text-align: center;
-}
-
-.status.pending {
-  background-color: #ffeb3b; /* Light Yellow */
-  color: #f57f17; /* Darker Yellow Text */
-}
-
-.status.completed {
-  background-color: #b9fbc0; /* Light Green */
-  color: #388e3c; /* Darker Green Text */
-}
-
-.status.canceled {
-  background-color: #ffccbc; /* Light Red */
-  color: #c62828; /* Darker Red Text */
-}
-.status.confirm {
-  background-color: #c8e6c9; /* Light Green */
-  color: #2e7d32; /* Darker Green Text */
 }
 
 tbody tr:nth-child(even) {

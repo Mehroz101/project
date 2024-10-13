@@ -27,7 +27,7 @@ const RequestRow = ({
   };
   return (
     <>
-      <tr>
+      <tr className="request_row">
         <td>
           <span className="id">{index}</span>
         </td>
@@ -60,7 +60,9 @@ const RequestRow = ({
           </Link>
           {reservationReq.state === "completed" ||
           reservationReq.state === "cancelled" ||
-          reservationReq.state === "confirmed" ? null : (
+          reservationReq.state === "confirmed"||
+          reservationReq.state === "reserved"
+           ? "" : (
             <>
               <Link title="confirm" onClick={confirmReservation}>
                 <i className="fa-solid fa-check"></i>

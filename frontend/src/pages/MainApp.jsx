@@ -19,10 +19,7 @@ const MainApp = () => {
   const [showListingDetail, setShowListingDetail] = useState(false); // State to control ListingDetail visibility
   const [showSpace, setShowSpace] = useState(""); // To store selected space details
   const [isLoading, setIsLoading] = useState(true); // Loading state
-  // const [getAllReservations,setGetAllReservations] = useState([])
-  // const [getAllSpaces,setGetAllSpaces]= useState([])
-  // Accessing context
-  // console.log("context",useMainAppContext())
+ 
   const {
     getAllReservations,
     getAllSpaces,

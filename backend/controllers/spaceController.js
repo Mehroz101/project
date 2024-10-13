@@ -1,6 +1,7 @@
 const Space = require("../models/Space"); // Import your Space model
 const fs = require("fs");
 const path = require("path");
+const review = require("../models/Review");
 // const io = require("socket.io"); // Attach to your server
 // Get the Socket.io instance from the app
 // Create a new space
@@ -244,10 +245,10 @@ const deleteSpace = async (req, res) => {
 };
 const getallspaces = async (req, res) => {
   try {
-    const user = req.user.id;
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    // const user = req.user.id;
+    // if (!user) {
+    //   return res.status(401).json({ message: "Unauthorized" });
+    // }
 
     const spaces = await Space.find({ state: "active" });
     if (spaces.length === 0) {
@@ -285,6 +286,16 @@ const getspacedetailforreservation = async (req, res) => {
   }
 };
 
+const getSpaceReview = async (req,res)=>{
+  const {spaceId} = req.params;
+  try {
+    const response = await review.find({spaceId:spaceId}).populate("userId", "fName")
+    res.status(201).json(response)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 module.exports = {
   createSpace,
   showSpace,
@@ -294,4 +305,5 @@ module.exports = {
   deleteSpace,
   getallspaces,
   getspacedetailforreservation,
+  getSpaceReview,
 };

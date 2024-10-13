@@ -33,11 +33,13 @@ export const useReservationForm = () => {
       arrivalDate,
       leaveTime,
       leaveDate,
-      totalPrice,
       per_hour,
       per_day,
     } = reservation;
+    console.log("reservation: ")
+    console.log(reservation)
 
+    
     if (
       name === "" ||
       email === "" ||
@@ -57,20 +59,24 @@ export const useReservationForm = () => {
           leaveTime,
           leaveDate
         );
+       
         const price = calculatePrice(hour, per_hour, per_day);
+        console.log("price: ",price)
         const updatedRequest = {
           ...reservation,
           totalPrice: price, // Add the calculated price here
         };
-        console.log(reservation);
         const response = await createReservation(updatedRequest);
+        console.log("reservation");
+        console.log(reservation);
+        console.log("response");
+        console.log(response);
         if (response.status === 201) {
           notify("success", "Reservation created successfully");
           return 201;
         } else {
           notify("error", "something wents wrong");
         }
-        console.log(response);
       } catch (error) {
         notify("error", "something wents wrong");
         console.log(error.message);

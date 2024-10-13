@@ -11,6 +11,11 @@ const reservationSchema = new mongoose.Schema(
       ref: "Space",
       required: true,
     },
+    reviewId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+      default:null,
+    },
     name: {
       type: String,
       required: true,
@@ -58,7 +63,8 @@ const reservationSchema = new mongoose.Schema(
     withdrawn:{
       type:Boolean,
       default:false
-    }
+    },
+
   },
   {
     timestamps: true,

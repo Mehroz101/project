@@ -24,7 +24,7 @@ const Login = () => {
               <Link to="/">Parkify</Link>
             </div>
             <div className="login_details">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} method="post">
                 <h1>
                   Login to <span className="brand_name">Parkify</span>
                 </h1>

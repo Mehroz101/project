@@ -19,7 +19,7 @@ export const useResetForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(token);
+    // console.log(token);
     userDetail.token = token;
     e.preventDefault();
     console.log(userDetail.password);

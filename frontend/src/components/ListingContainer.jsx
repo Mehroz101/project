@@ -38,14 +38,25 @@ const ListingContainer = ({ onShowDetail, slotData, reservations }) => {
             <i className="fa-solid fa-location-dot"></i>
             <span>{space.address}</span>
           </div>
+          {/* {space.averageRating && (
+            <div className="listing_rating">
+              <span className="rating">
+                <span className="rating_score">{space.averageRating}</span>
+                <i className="fa-solid fa-star"></i>
+                <span className="total_reviews">(123)</span>
+              </span>
+              <span className="total_booking">{totalCompleted} booking</span>
+            </div>
+          )} */}
           <div className="listing_rating">
-            <span className="rating">
-              <span className="rating_score">4.5</span>
-              <i className="fa-solid fa-star"></i>
-              <span className="total_reviews">(123)</span>
-            </span>
-            <span className="total_booking">{totalCompleted} booking</span>
-          </div>
+              <span className="rating">
+                <span className="rating_score">{space.averageRating}</span>
+                <i className="fa-solid fa-star"></i>
+                <span className="total_reviews">(123)</span>
+              </span>
+              <span className="total_booking">{totalCompleted} booking</span>
+            </div>
+
           <div className="listing_detail">
             <div className="listing_features">
               {space.features?.map((feature, index) => {

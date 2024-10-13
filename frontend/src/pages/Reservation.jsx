@@ -1,50 +1,76 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Reservation.css";
 import Navbar from "../components/Navbar";
-import ListingDetail from "../components/ListingDetail";
 import { Link, useParams } from "react-router-dom";
-import { getSpaceForReservation } from "../services/spaceService";
+import {
+  getSpaceForReservation,
+  getSpaceReview,
+} from "../services/spaceService";
 import { useNavigate } from "react-router-dom";
 import { useReservationForm } from "../services/useReservationForm";
+import SelectedListingDetail from "../components/SelectedListingDetail";
+import { getSpaceSpecificReservation } from "../services/reservationService";
 const Reservation = () => {
   const [space, setSpace] = useState([]);
-  const [reservationTime, setResvationTime] = useState({
-    arrivalDate: "",
-    arrivalTime: "",
-    leaveDate: "",
-    leaveTime: "",
-    totalHours: "",
-  });
+  const [reviews, setReviews] = useState([]);
+  const [reservations, setReservations] = useState([]);
   const { spaceId } = useParams();
-  const navigate = useNavigate()
-  const { handleChange, reservation, setReservation,handleSubmit } = useReservationForm();
-  const handleSubmitForm =async (e) => {
+  const navigate = useNavigate();
+  const { handleChange, reservation, setReservation, handleSubmit } =
+    useReservationForm();
+  const handleSubmitForm = async (e) => {
+    console.log(space);
+
     e.preventDefault();
-    reservation.arrivalDate = reservationTime.arrivalDate;
-    reservation.arrivalTime = reservationTime.arrivalTime;
-    reservation.leaveDate = reservationTime.leaveDate;
-    reservation.leaveTime = reservationTime.leaveTime;
-    reservation.spaceId = spaceId;
-    reservation.per_hour = space.per_hour
-    reservation.per_day = space.per_day
-    const response = await handleSubmit()
-    if (response === 201){
-      navigate("/profile/booking")
+
+    const response = await handleSubmit();
+    if (response === 201) {
+      navigate("/profile/booking");
     }
   };
-  
+
   const getSpace = async () => {
     const response = await getSpaceForReservation(spaceId);
+    const response1 = await getSpaceReview(spaceId);
+    const response2 = await getSpaceSpecificReservation(spaceId);
     setSpace(response);
+    setReviews(response1);
+    console.log(response1);
+    setReservations(response2);
+  };
+  const reviewDate = (reviewdate) => {
+    //how old review like 2 days ago
+    //"2024-10-07T08:18:12.889Z" date i get in this format
+    const date = new Date(reviewdate);
+    console.log(date)
+    const today = new Date();
+    const timeDiff = Math.abs(today.getTime() - date.getTime());
+    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return diffDays;
   };
   useEffect(() => {
     getSpace();
-    reservationTime.arrivalDate = localStorage.getItem(`arrivalDate`);
-    reservationTime.arrivalTime = localStorage.getItem(`arrivalTime`);
-    reservationTime.leaveDate = localStorage.getItem(`leaveDate`);
-    reservationTime.leaveTime = localStorage.getItem(`leaveTime`);
-    reservationTime.totalHours = localStorage.getItem(`totalHours`);
+    setReservation((prev) => ({
+      ...prev,
+      spaceId: spaceId,
+      arrivalDate: localStorage.getItem(`arrivalDate`) || "",
+      arrivalTime: localStorage.getItem(`arrivalTime`) || "",
+      leaveDate: localStorage.getItem(`leaveDate`) || "",
+      leaveTime: localStorage.getItem(`leaveTime`) || "",
+      totalHours: localStorage.getItem(`totalHours`) || "",
+    }));
   }, [localStorage]);
+
+  useEffect(() => {
+    if (space) {
+      setReservation((prev) => ({
+        ...prev,
+        per_hour: space?.per_hour,
+        per_day: space?.per_day,
+      }));
+    }
+  }, [space]);
+
   return (
     <>
       <Navbar />
@@ -53,35 +79,39 @@ const Reservation = () => {
           <div className="booking_detail">
             <div className="booking_detail_top">
               <h2>Booking detail</h2>
-              <Link to="/searchResult">edit</Link>
+              <Link onClick={() => navigate(-1)}>edit</Link>
             </div>
             <div className="booking_detail_bottom">
               <div className="booking_location">
                 <i className="fa-solid fa-location-dot"></i>
                 <div className="data">
                   <h3 className="location">Location</h3>
-                  <p>{space.address}</p>
+                  <p>{space?.address}</p>
                 </div>
               </div>
               <div className="booking_arrival">
                 <i className="fa-solid fa-right-to-bracket"></i>
                 <div className="data">
                   <h3 className="arrival">Arrival</h3>
-                  <p>{reservationTime.arrivalDate} {reservationTime.arrivalTime}</p>
+                  <p>
+                    {reservation.arrivalDate} {reservation.arrivalTime}
+                  </p>
                 </div>
               </div>
               <div className="booking_leave">
                 <i className="fa-solid fa-right-from-bracket"></i>
                 <div className="data">
                   <h3 className="leave">Leave</h3>
-                  <p>{reservationTime.leaveDate} {reservationTime.leaveTime}</p>
+                  <p>
+                    {reservation.leaveDate} {reservation.leaveTime}
+                  </p>
                 </div>
               </div>
               <div className="booking_duration">
                 <i className="fa-solid fa-clock"></i>
                 <div className="data">
                   <h3 className="duration">Duration</h3>
-                  <p>{reservationTime.totalHours}h</p>
+                  <p>{reservation.totalHours}h</p>
                 </div>
               </div>
             </div>
@@ -175,14 +205,33 @@ const Reservation = () => {
                 </div>
               </div>
             </div>
-            <button className="paynow_reserve">
-              $7 - Pay now and reserve
-            </button>
+            <button className="paynow_reserve">$7 - Pay now and reserve</button>
           </form>
         </div>
         <div className="reservation_detail_right">
           <div className="reservation_detail_right_box">
-            <ListingDetail space={space} />
+            <SelectedListingDetail
+              space={space}
+              review={reviews}
+              reservation={reservations}
+            />
+          </div>
+          <div className="reservation_detail_right_reviews">
+            {reviews?.map((review, index) => {
+              return (
+                <>
+                  <div className="review-item" key={index}>
+                    <h4>{review?.userId.fName}</h4>
+                    <div className="review-meta">
+                      <i className="fa-solid fa-star"></i>
+                      <span>{review.rating}</span>
+                      <span> days ago</span>
+                    </div>
+                    <p>"{review.reviewMsg}"</p>
+                  </div>
+                </>
+              );
+            })}
           </div>
         </div>
       </div>

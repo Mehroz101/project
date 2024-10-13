@@ -26,6 +26,7 @@ export const calculateHours = (
   return hours;
 };
 export const totalBooking = (type, space, reservations) => {
+  if (!reservations) return 0;
 
   const totalCount = reservations
     ?.filter((reservation) => reservation.spaceId === space._id)
@@ -39,20 +40,22 @@ export const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const dLon = (lon2 - lon1) * (Math.PI / 180);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in kilometers
 };
-  // Filter locations within 5 km
-  export const getNearbySpaces = (userLat, userLong) => {
-    return spaces.filter((space) => {
-      const distance = calculateDistance(
-        userLat,
-        userLong,
-        space.latitude,
-        space.longitude
-      );
-      return distance <= 5; // Only show spaces within 5 km
-    });
-  };
+// Filter locations within 5 km
+export const getNearbySpaces = (userLat, userLong) => {
+  return spaces.filter((space) => {
+    const distance = calculateDistance(
+      userLat,
+      userLong,
+      space.latitude,
+      space.longitude
+    );
+    return distance <= 5; // Only show spaces within 5 km
+  });
+};

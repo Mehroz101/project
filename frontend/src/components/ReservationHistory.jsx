@@ -7,6 +7,8 @@ import {
   cancelReservation,
   getUserReservation,
 } from "../services/reservationService";
+import { postReview } from "../services/reservationService";
+
 const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 const socket = io(REACT_APP_API_URL); // Replace with your server URL
 
@@ -14,7 +16,18 @@ const ReservationHistory = () => {
   const [reviewBox, setReviewBox] = useState(false);
   const [data, setData] = useState([]);
   const [activeFilter, setActiveFilter] = useState("all"); // State to keep track of active filter
+  const [review, setReview] = useState({
+    rating: 0,
+    msg: "",
+    spaceId: "",
+    reservationId: "",
+  });
+  const handleSubmit = async () => {
+    console.log(review);
+    const response = await postReview(review);
+    setReviewBox(false);
 
+  };
   const hidePopupFun = () => {
     setReviewBox(false);
   };
@@ -33,7 +46,16 @@ const ReservationHistory = () => {
     await cancelReservation(reservartionId);
     getreservationData();
   };
-
+  const setReviewFun = (resvId, spaceId) => {
+    console.log("reservation id: ", resvId);
+    console.log("space id: ", spaceId);
+    setReviewBox(true);
+    setReview((prev) => ({
+      ...prev,
+      reservationId: resvId,
+      spaceId: spaceId,
+    }));
+  };
   useEffect(() => {
     getreservationData();
     // Set up socket listeners for real-time updates
@@ -80,6 +102,9 @@ const ReservationHistory = () => {
           <li className={`${activeFilter === "completed" ? "active" : ""}`}>
             <Link onClick={() => updateListView("completed")}>Completed</Link>
           </li>
+          <li className={`${activeFilter === "reserved" ? "active" : ""}`}>
+            <Link onClick={() => updateListView("reserved")}>Reserved</Link>
+          </li>
           <li className={`${activeFilter === "cancelled" ? "active" : ""}`}>
             <Link onClick={() => updateListView("cancelled")}>Cancelled</Link>
           </li>
@@ -122,31 +147,41 @@ const ReservationHistory = () => {
                   </td>
                   <td>Rs. {item.totalPrice}</td>
                   <td>
-                    <span className={`status ${item?.state}`}>{item?.state}</span>
+                    <span className={`status ${item?.state}`}>
+                      {item?.state}
+                    </span>
                   </td>
-                  {item.state === "confirmed" && (
-                    <td>
-                      <button>Direction</button>
-                    </td>
-                  )}
-                  {item.state === "pending" && (
-                    <>
-                      <td>
+                  <td>
+                    {item.state === "confirmed" ||
+                      (item.state === "reserved" && <button>Direction</button>)}
+                    {item.state === "pending" && (
+                      <>
                         <button>Direction</button>
                         <button
                           onClick={() => handleCancelReservation(item?._id)}
                         >
                           cancel
                         </button>
-                      </td>
-                    </>
-                  )}
-                  {item.state === "completed" && (
-                    <td>
-                      <button onClick={() => setReviewBox(true)}>Review</button>
-                    </td>
-                  )}
-                  {item.state === "cancelled" && <td></td>}
+                      </>
+                    )}
+                    {item.state === "completed" &&
+                      (!item.reviewId ? (
+                        <button
+                          onClick={() =>
+                            setReviewFun(item?._id, item?.spaceId?._id)
+                          }
+                        >
+                          Review
+                        </button>
+                      ) : (
+                        <>
+                          <span className="rating_score">
+                            {item?.reviewId?.rating}
+                          </span>
+                          <i className="fa-solid fa-star"></i>
+                        </>
+                      ))}
+                  </td>
                 </tr>
               ))
             ) : (
@@ -158,7 +193,14 @@ const ReservationHistory = () => {
         </table>
       </div>
 
-      {reviewBox && <ReviewPopup hidePopUp={hidePopupFun} />}
+      {reviewBox && (
+        <ReviewPopup
+          hidePopUp={hidePopupFun}
+          handleSubmit={handleSubmit}
+          review={review}
+          setReview={setReview}
+        />
+      )}
     </div>
   );
 };

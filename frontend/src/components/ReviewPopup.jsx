@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "../styles/ReviewPopup.css";
 
-const ReviewPopup = ({hidePopUp}) => {
-  const [rating, setRating] = useState(0);
+const ReviewPopup = ({ hidePopUp, handleSubmit, review, setReview }) => {
   const [hover, setHover] = useState(0);
 
   return (
@@ -18,23 +17,38 @@ const ReviewPopup = ({hidePopUp}) => {
               <i
                 key={index}
                 className={
-                  index <= (hover || rating)
+                  index <= (hover || review.rating)
                     ? "fa-solid fa-star filled"
                     : "fa-solid fa-star"
                 }
-                onClick={() => setRating(index)}
+                onClick={() =>
+                  setReview((prev) => ({
+                    ...prev,
+                    rating: index,
+                  }))
+                }
                 onMouseEnter={() => setHover(index)}
-                onMouseLeave={() => setHover(rating)}
+                onMouseLeave={() => setHover(review.rating)}
               ></i>
             );
           })}
         </div>
         <div className="review_desc">
           <label htmlFor="review">Review</label>
-          <textarea name="review" id="review"></textarea>
+          <textarea
+            name="review"
+            value={setReview.msg}
+            onChange={(e) =>
+              setReview((prev) => ({
+                ...prev,
+                msg: e.target.value,
+              }))
+            }
+            id="review"
+          ></textarea>
         </div>
         <div className="submit_btn">
-          <button>Submit</button>
+          <button onClick={handleSubmit}>Submit</button>
         </div>
       </div>
     </div>

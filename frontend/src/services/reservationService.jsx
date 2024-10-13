@@ -18,7 +18,7 @@ export const createCustomReservation = async (data) => {
       data,
       config
     );
-    console.log(response);
+    // console.log(response);
     if (response.status === 201) {
       notify("success", "Reservation created successfully!");
       return response.data.message;
@@ -34,22 +34,22 @@ export const getReservation = async () => {
   try {
     const response = await axios.get(`${API_URL}/get`, config);
     if (response.status === 200) {
-      console.log("response");
-      console.log(response);
+      // console.log("response");
+      // console.log(response);
       return response.data.response;
     } else {
       notify("error", `error: ${response.data.message}`);
     }
   } catch (error) {
     console.log(error.message);
-    notify("error", `error: ${error.message}`);
+    // notify("error", `error: ${error.message}`);
   }
 };
 export const cancelReservation = async (reservartionId) => {
   try {
     const data = { reservartionId };
     const response = await axios.patch(`${API_URL}/cancel`, data, config);
-    console.log(response);
+    // console.log(response);
     notify("success", "cancelled");
   } catch (error) {
     console.log(error.message);
@@ -60,17 +60,30 @@ export const confirmReservation = async (reservartionId) => {
   try {
     const data = { reservartionId };
     const response = await axios.patch(`${API_URL}/confirm`, data, config);
-    console.log(response);
+    // console.log(response);
     notify("success", "confirmed");
   } catch (error) {
     console.log(error.message);
     notify("error", "something wrong reservation is not canceled");
   }
 };
-
+export const reservedReservation = async (reservationId) => {
+  try {
+    
+    console.log("token : " + config);
+    const data = {reservationId}
+    const response = await axios.patch(`${API_URL}/reserved`, 
+      data,
+      config,
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 export const getReservationdata = async (reservartionId) => {
   try {
-    console.log(reservartionId);
+    // console.log(reservartionId);
     const response = await axios.get(
       `${API_URL}/get/${reservartionId}`,
       config
@@ -93,7 +106,7 @@ export const createReservation = async (data) => {
     );
     return response;
   } catch (error) {
-    console.log("error in service page");
+    // console.log("error in service page");
     console.log(error.message);
   }
 };
@@ -101,8 +114,8 @@ export const getUserReservation = async () => {
   try {
     const response = await axios.get(`${API_URL}/getuserreservation`, config);
     if (response.status === 200) {
-      // console.log("response");
-      // console.log(response.data);
+      console.log("response");
+      console.log(response.data);
       return response.data.response;
     } else {
       notify("error", `error: ${response.data.message}`);
@@ -145,3 +158,31 @@ export const getallreservation = async () => {
     }
   }
 };
+export const postReview = async (review) =>{
+  try {
+    const response = await axios.post(`${API_URL}/postreview`,review,config)
+    console.log(response.data)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+export const getReservationReviews = async ()=>{
+  try {
+    const response = await axios.get(`${API_URL}/getalluserreviews`);
+    if (response.status === 200) {
+      return response.data.response;
+    }
+
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+export const getSpaceSpecificReservation =async (spaceId) =>{
+  try {
+    const response = await axios.get(`${API_URL}/getspacespecificreservation/${spaceId}`)
+    return response.data
+  } catch (error) {
+    console.log(error.message)
+  }
+}
