@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getSpace } from "../../services/spaceService";
+import { getSpace, getSpaceReview } from "../../services/spaceService";
 import "../styles/ViewSpace.css";
+import { reviewDateCalculator } from "./Functions";
 
 const ViewSpace = () => {
   const [space, setSpace] = useState({});
+  const [review, setReview] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]);
   const { spaceId } = useParams();
@@ -29,11 +31,20 @@ const ViewSpace = () => {
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
-
+  const getReview = async () => {
+    try {
+      const response1 = await getSpaceReview(spaceId);
+      console.log(response1);
+      setReview(response1);
+    } catch (error) {
+      console.log(error.message)
+    }
+  };
   useEffect(() => {
     getSpaceData();
+    getReview();
   }, [spaceId]);
-  
+
   return (
     <div className="view-space-container">
       {/* Image Carousel */}
@@ -89,15 +100,21 @@ const ViewSpace = () => {
           <div className="reviews-section">
             <h3>Reviews</h3>
             <div className="review-list">
-              <div className="review-item">
-                <h4>John Doe</h4>
-                <div className="review-meta">
-                  <i className="fa-solid fa-star"></i>
-                  <span>5.0</span>
-                  <span>2 days ago</span>
-                </div>
-                <p>"Great place, very clean and convenient!"</p>
-              </div>
+              {review?.map((review, index) => {
+                return (
+                  <>
+                    <div className="review-item" key={index}>
+                      <h4>{review?.userId?.fName}</h4>
+                      <div className="review-meta">
+                        <span>{review?.rating}</span>
+                        <i className="fa-solid fa-star"></i>
+                        <span>{reviewDateCalculator(review)}</span>
+                      </div>
+                      <p>"{review?.reviewMsg}"</p>
+                    </div>
+                  </>
+                );
+              })}
               {/* Add more review items here */}
             </div>
           </div>

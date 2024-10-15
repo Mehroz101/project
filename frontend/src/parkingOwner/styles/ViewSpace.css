@@ -93,6 +93,8 @@
 /* Reviews */
 .reviews-section {
   margin-top: 30px;
+  max-height: 600px;
+  overflow: scroll;
 }
 .review-list {
   display: flex;

@@ -27,6 +27,7 @@ const SelectedListingDetail = ({ space, reservation, review }) => {
   };
   
   useEffect(() => {
+    console.log(space)
     if (space?.images && space?.images?.length > 0) {
       // Set images from the space object
       const formattedImages = space?.images?.map(
@@ -37,7 +38,6 @@ const SelectedListingDetail = ({ space, reservation, review }) => {
   }, [space?.images]); // Effect depends on space.images
   useEffect(() => {
     if (space) {
-      console.log(reservation)
       const total = calculatePrice(totalHours, space?.per_hour, space.per_day);
       setPrices(total);
       setTotalCompleted(totalBooking("completed", space, reservation));

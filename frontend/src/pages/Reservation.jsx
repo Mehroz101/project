@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useReservationForm } from "../services/useReservationForm";
 import SelectedListingDetail from "../components/SelectedListingDetail";
 import { getSpaceSpecificReservation } from "../services/reservationService";
+import { reviewDateCalculator } from "../parkingOwner/components/Functions";
 const Reservation = () => {
   const [space, setSpace] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -35,6 +36,7 @@ const Reservation = () => {
     const response2 = await getSpaceSpecificReservation(spaceId);
     setSpace(response);
     setReviews(response1);
+    console.log("reviews");
     console.log(response1);
     setReservations(response2);
   };
@@ -221,17 +223,18 @@ const Reservation = () => {
               return (
                 <>
                   <div className="review-item" key={index}>
-                    <h4>{review?.userId.fName}</h4>
+                    <h4>{review?.userId?.fName}</h4>
                     <div className="review-meta">
+                      <span>{review?.rating}</span>
                       <i className="fa-solid fa-star"></i>
-                      <span>{review.rating}</span>
-                      <span> days ago</span>
+                      <span>{reviewDateCalculator(review)}</span>
                     </div>
-                    <p>"{review.reviewMsg}"</p>
+                    <p>"{review?.reviewMsg}"</p>
                   </div>
                 </>
               );
             })}
+            
           </div>
         </div>
       </div>

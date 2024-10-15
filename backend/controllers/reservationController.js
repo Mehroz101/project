@@ -1,6 +1,5 @@
 const reservation = require("../models/Reservation");
 const review = require("../models/Review");
-const Space = require("../models/Space");
 const space = require("../models/Space");
 
 const createCustomReservation = async (req, res) => {
@@ -230,10 +229,10 @@ const createReservation = async (req, res) => {
     ) {
       return res.status(400).json();
     }
-    const space = await Space.findOne({ _id: spaceId }); // Match _id with spaceId from frontend
+    const isSpace = await space.findOne({ _id: spaceId }); // Match _id with spaceId from frontend
 
-    if (space) {
-      if (space.state !== "active") {
+    if (isSpace) {
+      if (isSpace.state !== "active") {
         return res.status(404).json();
       }
     }
@@ -379,6 +378,19 @@ const postReview = async (req, res) => {
           await reservation.findByIdAndUpdate(reservationId, {
             reviewId: Review._id,
           });
+          //calculate average review  
+          const reviews = await review.find({spaceId:spaceId});
+          let total = 0;
+          for(let i = 0; i < reviews.length; i++){
+            total += reviews[i].rating;
+          }
+          const avg = total / reviews.length;
+
+          await space.findByIdAndUpdate(spaceId, {
+            averageRating: avg
+            });
+
+          
           const io = req.app.get("io");
           io.emit("reviewUpdate", {
             message: "Review is given",

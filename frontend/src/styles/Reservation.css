@@ -158,11 +158,13 @@
   display: none;
 }
 .reservation_detail_right .reservation_detail_right_reviews{
-  padding: 10px;
+  padding: 0px;
   border-radius: 20px;
   box-shadow: rgba(17, 12, 46, 0.15);
   background-color: white;
   margin-top: 20px;
+  max-height: 770px;
+  overflow: scroll;
 }
 .reservation_detail_right .reservation_detail_right_reviews {
   background-color: #dddddd;

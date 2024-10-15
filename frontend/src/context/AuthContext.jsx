@@ -14,10 +14,14 @@ export const AuthProvider = ({ children }) => {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       if (decodedToken.exp * 1000 < Date.now()) {
         localStorage.removeItem('token'); 
+        localStorage.removeItem('user');
+
       }
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
+      localStorage.removeItem('user');
+
     }
   }, []);
 
