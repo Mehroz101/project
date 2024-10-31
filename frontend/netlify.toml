@@ -1,4 +1,8 @@
 [[redirects]]
 from: "/*"
 to:"/index.html"
+<<<<<<< HEAD
 status:200
+=======
+status:200
+>>>>>>> 1c97dbe918b5a161d058551226ed55435cf28288
