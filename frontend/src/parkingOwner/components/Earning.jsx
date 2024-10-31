@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Earning.css";
-import SpaceRow from "./SpaceRow";
 import WithdrawRow from "./WithdrawRow";
 import { useParkingOwner } from "../../context/ReservationContext";
 import { useWithdrawForm } from "../../services/useWithdrawForm";
-import { getWithdrawRequest } from "../../services/withDrawService";
 const Earning = () => {
   const [popup, setPopup] = useState(false);
   const [earning, setEarning] = useState({
@@ -12,26 +10,20 @@ const Earning = () => {
     lastMonth: "",
     totalEarning: "",
   });
-  const [earningData, setEarningData] = useState([]);
 
-  const { reservation, space } = useParkingOwner();
-
-  const getWithdrawData = async () => {
-    try {
-      const response = await getWithdrawRequest();
-      setEarningData(response);
-      // console.log(earningData);
-    } catch (error) {
-      // console.log(error.message);
-    }
-  };
+  const { reservation, earningReq } = useParkingOwner();
 
   const { handleChange, handleSubmit, withdrawDetail, setWithdrawDetail } =
     useWithdrawForm();
+  const handlePopupSubmit =async (e) => {
+    e.preventDefault();
+    const response =await handleSubmit();
+    if (response === 200) setPopup(false);
+  };
   useEffect(() => {
     let totalEarning = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
-          if (request.state === "completed" && request.withdrawn === true) {
+          if (request.state === "completed" && request.withdrawn === true && earningReq === "completed" ) {
             const price = parseFloat(request.totalPrice); // Convert to number
             return acc + (isNaN(price) ? 0 : price); // Handle invalid numbers
           }
@@ -40,7 +32,7 @@ const Earning = () => {
       : 0;
 
     totalEarning = totalEarning.toFixed(2);
-   
+
     let withdrawable = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
           if (request.state === "completed" && request.withdrawn === false) {
@@ -50,13 +42,13 @@ const Earning = () => {
           return acc;
         }, 0)
       : 0;
-      withdrawable = withdrawable.toFixed(2)
+    withdrawable = withdrawable.toFixed(2);
     let lastMonthEarning = Array.isArray(reservation)
       ? reservation.reduce((acc, request) => {
           const requestDate = new Date(request.createdAt);
           const today = new Date();
-          const lastMonth = today.getMonth() - 1;
-          const lastMonthYear = today.getFullYear();
+          let lastMonth = today.getMonth() - 1;
+          let lastMonthYear = today.getFullYear();
 
           if (lastMonth < 0) {
             lastMonth = 11;
@@ -70,7 +62,7 @@ const Earning = () => {
               requestDate.getMonth() === 0 &&
               requestDate.getFullYear() === lastMonthYear)
           ) {
-            if (request.state === "completed" && request.withdrawn === true) {
+            if (request.state === "completed" && request.withdrawn === true ) {
               const price = parseFloat(request.totalPrice); // Convert to number
               return acc + (isNaN(price) ? 0 : price);
             }
@@ -79,7 +71,7 @@ const Earning = () => {
           return acc;
         }, 0)
       : 0;
-      lastMonthEarning = lastMonthEarning.toFixed(2)
+    lastMonthEarning = lastMonthEarning.toFixed(2);
     setEarning({
       withdrawableBalane: withdrawable,
       lastMonth: lastMonthEarning,
@@ -91,7 +83,6 @@ const Earning = () => {
       ...prevState,
       withdrawAmount: earning.withdrawableBalane, // Pass the earning's withdrawable balance to the form state
     }));
-    getWithdrawData();
   }, [earning, setWithdrawDetail]);
 
   return (
@@ -137,7 +128,7 @@ const Earning = () => {
               </tr>
             </thead>
             <tbody>
-              {earningData
+              {earningReq
                 ?.slice()
                 .reverse()
                 .map((request, index) => {
@@ -213,7 +204,11 @@ const Earning = () => {
               >
                 Cancel
               </button>
-              <button type="submit" className="withdraw" onClick={handleSubmit}>
+              <button
+                type="submit"
+                className="withdraw"
+                onClick={handlePopupSubmit}
+              >
                 Confirm & Withdraw
               </button>
             </div>

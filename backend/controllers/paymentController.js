@@ -9,7 +9,7 @@ const withdrawRequest = async (req, res) => {
     const { accountType, accountName, accountNumber, withdrawAmount } =
       req.body;
     const user_Id = req.user.id;
-
+    console.log(user_Id);
     // Check for missing fields
     if (!accountType || !accountName || !accountNumber || !withdrawAmount) {
       return res.status(400).json({
@@ -21,6 +21,7 @@ const withdrawRequest = async (req, res) => {
     // Fetch the user by ID
     const user = await User.findById(user_Id);
     if (!user) {
+      console.log("user not found");
       return res.status(404).json({
         message: "User not found.",
       });
@@ -72,7 +73,7 @@ const withdrawRequest = async (req, res) => {
 
     // Create a new payment request
     const newWithdrawRequest = new Payment({
-      userId:user_Id,
+      userId: user_Id,
       accountType,
       accountName,
       accountNumber,
@@ -87,8 +88,14 @@ const withdrawRequest = async (req, res) => {
       { _id: { $in: reservations.map((res) => res._id) } },
       { $set: { withdrawn: true } }
     );
-    console.log("update");
-    console.log(update);
+    const io = req.app.get("io");
+
+    io.emit("paymentUpdated", {
+      title:"payment",
+      message: "Payment request send",
+      data:withdrawAmount,
+      time:update.createdAt
+    });
 
     // Return success response
     return res.status(200).json({

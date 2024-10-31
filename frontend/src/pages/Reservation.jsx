@@ -36,20 +36,11 @@ const Reservation = () => {
     const response2 = await getSpaceSpecificReservation(spaceId);
     setSpace(response);
     setReviews(response1);
-    console.log("reviews");
-    console.log(response1);
+    console.log("response");
+    console.log(response);
     setReservations(response2);
   };
-  const reviewDate = (reviewdate) => {
-    //how old review like 2 days ago
-    //"2024-10-07T08:18:12.889Z" date i get in this format
-    const date = new Date(reviewdate);
-    console.log(date)
-    const today = new Date();
-    const timeDiff = Math.abs(today.getTime() - date.getTime());
-    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    return diffDays;
-  };
+  
   useEffect(() => {
     getSpace();
     setReservation((prev) => ({

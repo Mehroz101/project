@@ -520,10 +520,11 @@
 .listing_detail_container .listing_detail_btn a:hover{
   color: var(--primary) !important;
 }
-.listing_detail_container .listing_detail_btn button.all_day_book_btn {
-  background-color: var(--secondary);
+.listing_detail_container .listing_detail_btn span{
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid #d0cfcf;
 }
-
 .listing_detail_container .listing_detail_btn button.book_btn {
   background-color: var(--secondary);
 }

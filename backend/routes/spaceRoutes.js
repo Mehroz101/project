@@ -12,6 +12,7 @@ const {
   getallspaces,
   getspacedetailforreservation,
   getSpaceReview,
+  getAllReviews,
 } = require("../controllers/spaceController");
 const authenticateToken = require("../middleware/authMiddleware");
 
@@ -24,7 +25,6 @@ router.patch("/update", authenticateToken, toggleSpaceStatus);
 router.get("/getspacedetail/:spaceId", authenticateToken, getspacedetail);
 router.get(
   "/getspacedetailforreservation/:spaceId",
-  authenticateToken,
   getspacedetailforreservation
 );
 router.put(
@@ -37,5 +37,6 @@ router.delete("/deletespace/:spaceId", authenticateToken, deleteSpace);
 
 router.get("/getallspaces", getallspaces);
 router.get("/getspacereview/:spaceId", getSpaceReview);
+router.get("/getallspacereview", getAllReviews);
 
 module.exports = router;

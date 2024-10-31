@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import listingImg from "../assets/listingImg-1.png";
 import { Link, useParams } from "react-router-dom";
 import {
   calculatePrice,
   totalBooking,
 } from "../parkingOwner/components/Functions";
-const ListingContainer = ({ onShowDetail, slotData, reservations }) => {
+const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
+const ListingContainer = ({
+  onShowDetail,
+  slotData,
+  reservations,
+  reviews,
+}) => {
   const [space, setSpace] = useState([]);
   const [price, setPrice] = useState("");
   const [totalCompleted, setTotalCompleted] = useState(0); // State to hold total confirmed bookings
-
-  const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
+  const [totalReviews, setTotalReviews] = useState(0);
   const { totalHours } = useParams();
 
   useEffect(() => {
@@ -22,6 +26,14 @@ const ListingContainer = ({ onShowDetail, slotData, reservations }) => {
         setPrice(total);
       }
       setTotalCompleted(totalBooking("completed", slotData, reservations));
+      console.log("slotData._id");
+      console.log(slotData._id);
+      console.log("review spaceId");
+      reviews?.map((review) => console.log(review.spaceId));
+      const matchingReviewsCount =
+        reviews?.filter((review) => review?.spaceId === slotData._id)?.length ||
+        0;
+        setTotalReviews(matchingReviewsCount)
     }
   }, [space, totalHours]);
   return (
@@ -38,24 +50,14 @@ const ListingContainer = ({ onShowDetail, slotData, reservations }) => {
             <i className="fa-solid fa-location-dot"></i>
             <span>{space.address}</span>
           </div>
-          {/* {space.averageRating && (
-            <div className="listing_rating">
-              <span className="rating">
-                <span className="rating_score">{space.averageRating}</span>
-                <i className="fa-solid fa-star"></i>
-                <span className="total_reviews">(123)</span>
-              </span>
-              <span className="total_booking">{totalCompleted} booking</span>
-            </div>
-          )} */}
           <div className="listing_rating">
-              <span className="rating">
-                <span className="rating_score">{space.averageRating}</span>
-                <i className="fa-solid fa-star"></i>
-                <span className="total_reviews">(123)</span>
-              </span>
-              <span className="total_booking">{totalCompleted} booking</span>
-            </div>
+            <span className="rating">
+              <span className="rating_score">{space.averageRating}</span>
+              <i className="fa-solid fa-star"></i>
+              <span className="total_reviews">({totalReviews})</span>
+            </span>
+            <span className="total_booking">{totalCompleted} booking</span>
+          </div>
 
           <div className="listing_detail">
             <div className="listing_features">

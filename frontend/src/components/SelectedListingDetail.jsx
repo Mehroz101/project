@@ -93,10 +93,7 @@ const SelectedListingDetail = ({ space, reservation, review }) => {
             <span>Rs. {prices}</span>
             <span>parking fee</span>
           </div>
-          <div className="booking_details_destination">
-            <span>7min</span>
-            <span>destination</span>
-          </div>
+          
         </div>
         <div className="listing_detail_features">
           {space?.features?.map((feature, index) => {

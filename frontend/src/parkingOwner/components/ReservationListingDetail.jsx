@@ -35,7 +35,7 @@ const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
           </div>
           <div className="listing_rating">
             <span className="rating">
-              <span className="rating_score">{space.averageRating}</span>
+              <span className="rating_score">{(space.averageRating)}</span>
               <i class="fa-solid fa-star"></i>
               <span className="total_reviews">(123)</span>
             </span>

@@ -80,7 +80,6 @@ const checkReservationStatus = async (req, res) => {
       }
     });
     reservationsReserved.forEach(async (reservation) => {
-      console.log("check")
       const leaveTime = new Date(
         `${reservation.leaveDate}T${reservation.leaveTime}`
       );
@@ -108,7 +107,7 @@ const checkReservationStatus = async (req, res) => {
   }
 };
 // You could run this function every minute (using setInterval or a cron job)
-setInterval(checkReservationStatus, 60000); // Run every 1 minute
+setInterval(checkReservationStatus, 1000); // Run every 1 minute
 
 // Apply the attachSocketIo middleware for specific routes
 app.use("/api/spaces", spaceRoutes);

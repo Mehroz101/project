@@ -1,5 +1,5 @@
-import React, { createContext,useContext, useEffect, useState } from "react";
-import { getallspaces } from "../services/spaceService";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { getAllReviews, getallspaces } from "../services/spaceService";
 import io from "socket.io-client"; // Import socket.io-client
 import { getallreservation } from "../services/reservationService";
 const MainAppContextAPI = createContext();
@@ -10,12 +10,16 @@ const socket = io(REACT_APP_API_URL); // Replace with your server URL
 export const MainAppProvider = ({ children }) => {
   const [getAllSpaces, setGetAllSpaces] = useState([]);
   const [getAllReservations, setGetAllReservations] = useState([]);
+  const [reviews, setReviews] = useState([]);
+
   const getData = async () => {
     const spaceResponse = await getallspaces();
     const reservationResponse = await getallreservation();
+    const reviewResponse = await getAllReviews();
+
     setGetAllSpaces(spaceResponse);
     setGetAllReservations(reservationResponse);
-    console.log(spaceResponse, reservationResponse);
+    setReviews(reviewResponse);
   };
   useEffect(() => {
     getData();
@@ -35,16 +39,18 @@ export const MainAppProvider = ({ children }) => {
     return () => {
       socket.off("spaceUpdated");
     };
-  },[]);
+  }, []);
   return (
     <>
       <MainAppContextAPI.Provider
-        value={
-         { getAllReservations,
+        value={{
+          getAllReservations,
           getAllSpaces,
           setGetAllReservations,
-          setGetAllSpaces}
-        }
+          setGetAllSpaces,
+          reviews,
+          setReviews,
+        }}
       >
         {children}
       </MainAppContextAPI.Provider>

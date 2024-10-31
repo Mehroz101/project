@@ -194,10 +194,9 @@ const getReservationData = async (req, res) => {
   }
 };
 const createReservation = async (req, res) => {
-  // console.log(req.user.id);
-  // console.log(req.body);
   try {
     const userId = req.user.id;
+    console.log("userId: ", userId)
     if (!userId) {
       console.log("User not found");
       return res.status(401).json();
@@ -384,7 +383,7 @@ const postReview = async (req, res) => {
           for(let i = 0; i < reviews.length; i++){
             total += reviews[i].rating;
           }
-          const avg = total / reviews.length;
+          const avg = (total / reviews.length).toFixed(1);
 
           await space.findByIdAndUpdate(spaceId, {
             averageRating: avg

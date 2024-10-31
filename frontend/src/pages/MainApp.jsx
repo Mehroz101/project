@@ -25,6 +25,7 @@ const MainApp = () => {
     getAllSpaces,
     setGetAllReservations,
     setGetAllSpaces,
+    reviews
   } = useMainAppContext();
 
   // Extracting route parameters (for search input, dates, etc.)
@@ -53,8 +54,6 @@ const MainApp = () => {
     try {
       const response = await getallspaces()
       const Resrepsonse = await getallreservation()
-      // console.log(response)
-      // console.log(Resrepsonse)
       setGetAllSpaces(response)
       setGetAllReservations(Resrepsonse)
       if (searchInput) {
@@ -178,6 +177,7 @@ const MainApp = () => {
                     key={slot._id}
                     slotData={slot}
                     reservations={getAllReservations}
+                    reviews={reviews}
                     onShowDetail={handleShowDetail}
                   />
                 ))
@@ -189,6 +189,7 @@ const MainApp = () => {
               <ListingDetail
                 space={showSpace}
                 reservations={getAllReservations}
+                reviews={reviews}
                 onHideDetail={handleCloseDetail}
               />
             </div>
@@ -207,6 +208,7 @@ const MainApp = () => {
               key={showSpace._id}
               slotData={showSpace}
               reservations={getAllReservations}
+              reviews={reviews}
               onShowDetail={handleShowDetail}
             />
           )}

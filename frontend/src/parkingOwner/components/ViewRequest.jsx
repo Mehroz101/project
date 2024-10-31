@@ -9,8 +9,10 @@ const ViewRequest = () => {
   const [space, setSpace] = useState([]);
   const [duration, setDuration] = useState(""); // State for storing duration
   const [totalPrice, setTotalPrice] = useState(0); // State for total price
+  const [totalReviews, setTotalReviews] = useState(0);
   const { reservationId } = useParams();
 
+ 
   const getReservationDetail = async () => {
     try {
       setTimeout(async () => {

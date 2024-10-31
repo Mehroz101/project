@@ -1,18 +1,21 @@
 import axios from "axios";
 import { notify } from "./errorHandlerService";
+const API_URL_Link = import.meta.env.REACT_APP_API_URL;
 
-const API_URL = "http://localhost:5000/api/reservation"; // Adjust to your API endpoint
-const token = localStorage.getItem("token");
+const API_URL = `${API_URL_Link}/api/reservation`; // Adjust to your API endpoint
 
-const config = {
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  },
-};
+
 
 export const createCustomReservation = async (data) => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const response = await axios.post(
       `${API_URL}/createCustomReservation`,
       data,
@@ -32,6 +35,14 @@ export const createCustomReservation = async (data) => {
 };
 export const getReservation = async () => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const response = await axios.get(`${API_URL}/get`, config);
     if (response.status === 200) {
       // console.log("response");
@@ -47,6 +58,14 @@ export const getReservation = async () => {
 };
 export const cancelReservation = async (reservartionId) => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const data = { reservartionId };
     const response = await axios.patch(`${API_URL}/cancel`, data, config);
     // console.log(response);
@@ -58,6 +77,14 @@ export const cancelReservation = async (reservartionId) => {
 };
 export const confirmReservation = async (reservartionId) => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const data = { reservartionId };
     const response = await axios.patch(`${API_URL}/confirm`, data, config);
     // console.log(response);
@@ -69,13 +96,17 @@ export const confirmReservation = async (reservartionId) => {
 };
 export const reservedReservation = async (reservationId) => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
     
     console.log("token : " + config);
-    const data = {reservationId}
-    const response = await axios.patch(`${API_URL}/reserved`, 
-      data,
-      config,
-    );
+    const data = { reservationId };
+    const response = await axios.patch(`${API_URL}/reserved`, data, config);
     return response.data;
   } catch (error) {
     console.log(error.message);
@@ -83,6 +114,14 @@ export const reservedReservation = async (reservationId) => {
 };
 export const getReservationdata = async (reservartionId) => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     // console.log(reservartionId);
     const response = await axios.get(
       `${API_URL}/get/${reservartionId}`,
@@ -99,19 +138,39 @@ export const getReservationdata = async (reservartionId) => {
 };
 export const createReservation = async (data) => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const response = await axios.post(
       `${API_URL}/createReservation`,
       data,
       config
     );
+    console.log("response in service page");
+    console.log(response);
     return response;
   } catch (error) {
-    // console.log("error in service page");
-    console.log(error.message);
+    console.log(error);
+    if (error.response.status === 403) {
+      return notify("error", "Login to your account first");
+    }
   }
 };
 export const getUserReservation = async () => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const response = await axios.get(`${API_URL}/getuserreservation`, config);
     if (response.status === 200) {
       console.log("response");
@@ -126,6 +185,14 @@ export const getUserReservation = async () => {
 };
 export const getallreservation = async () => {
   try {
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
     const response = await axios.get(`${API_URL}/getallreservation`, config);
     if (response.status === 404) {
       return notify("error", "no space found");
@@ -158,31 +225,39 @@ export const getallreservation = async () => {
     }
   }
 };
-export const postReview = async (review) =>{
+export const postReview = async (review) => {
   try {
-    const response = await axios.post(`${API_URL}/postreview`,review,config)
-    console.log(response.data)
+    const token = localStorage.getItem("token");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+    
+    const response = await axios.post(`${API_URL}/postreview`, review, config);
+    console.log(response.data);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
-export const getReservationReviews = async ()=>{
+};
+export const getReservationReviews = async () => {
   try {
     const response = await axios.get(`${API_URL}/getalluserreviews`);
     if (response.status === 200) {
       return response.data.response;
     }
-
-    
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
-export const getSpaceSpecificReservation =async (spaceId) =>{
+};
+export const getSpaceSpecificReservation = async (spaceId) => {
   try {
-    const response = await axios.get(`${API_URL}/getspacespecificreservation/${spaceId}`)
-    return response.data
+    const response = await axios.get(
+      `${API_URL}/getspacespecificreservation/${spaceId}`
+    );
+    return response.data;
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
+};

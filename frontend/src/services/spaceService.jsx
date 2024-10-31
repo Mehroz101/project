@@ -1,7 +1,8 @@
 import axios from "axios";
 import { notify } from "./errorHandlerService"; // Import notify function
+const API_URL_Link = import.meta.env.REACT_APP_API_URL;
 
-const API_URL = "http://localhost:5000/api/spaces"; // Adjust to your API endpoint
+const API_URL = `${API_URL_Link}/api/spaces`; // Adjust to your API endpoint
 const token = localStorage.getItem("token"); // Retrieve the token from localStorage
 const config = {
   headers: {
@@ -111,6 +112,7 @@ export const getSpace = async (spaceId = null) => {
         `${API_URL}/getspacedetail/${spaceId}`,
         config
       );
+   
       return response;
     } catch (error) {
       console.log(error.message);
@@ -122,9 +124,10 @@ export const getSpaceForReservation = async (spaceId) => {
   try {
     console.log("req page:=> " + spaceId);
     const response = await axios.get(
-      `${API_URL}/getspacedetailforreservation/${spaceId}`,
-      config
+      `${API_URL}/getspacedetailforreservation/${spaceId}`
     );
+    console.log("response")
+    console.log(response)
     return response.data.data;
   } catch (error) {
     console.log(error.message);
@@ -256,3 +259,12 @@ export const getSpaceReview = async (spaceId) => {
     console.log(error.message);
   }
 };
+
+export const getAllReviews = async () =>{
+  try {
+    const response = await axios.get(`${API_URL}/getallspacereview`)
+    return response.data
+  } catch (error) {
+    console.log(error.message)
+  }
+}

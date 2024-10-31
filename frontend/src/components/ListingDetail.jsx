@@ -7,11 +7,12 @@ import {
 
 const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
-const ListingDetail = ({ onHideDetail, space, reservations }) => {
+const ListingDetail = ({ onHideDetail, space, reservations, reviews }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]); // Store images in state
   const [prices, setPrices] = useState("");
   const [totalCompleted, setTotalCompleted] = useState(0); // State to hold total confirmed bookings
+  const [totalReviews, setTotalReviews] = useState(0);
 
   const { totalHours } = useParams();
   const handleNextImage = () => {
@@ -41,6 +42,11 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
       setPrices(total);
       setTotalCompleted(totalBooking("completed", space, reservations));
     }
+    const matchingReviewsCount =
+        reviews?.filter((review) => review?.spaceId === space?._id)?.length ||
+        0;
+        console.log(space._id)
+        setTotalReviews(matchingReviewsCount)
   }, [space, totalHours]);
   return (
     <>
@@ -74,13 +80,15 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
             <p className="address">{space?.address}</p>
           </div>
           <div className="badge_shortdesc">
-            <span className="short_description">{space?.short_description}</span>
+            <span className="short_description">
+              {space?.short_description}
+            </span>
           </div>
           <div className="listing_rating">
             <span className="rating">
-              <span className="rating_score">4.5</span>
+              <span className="rating_score">{space?.averageRating}</span>
               <i className="fa-solid fa-star"></i>
-              <span className="total_reviews">(123)</span>
+              <span className="total_reviews">({totalReviews})</span>
             </span>
             <span className="total_booking">{totalCompleted} booking</span>
           </div>
@@ -93,10 +101,6 @@ const ListingDetail = ({ onHideDetail, space, reservations }) => {
           <div className="booking_details_fee">
             <span>Rs. {prices}</span>
             <span>parking fee</span>
-          </div>
-          <div className="booking_details_destination">
-            <span>7min</span>
-            <span>destination</span>
           </div>
         </div>
         <div className="listing_detail_features">

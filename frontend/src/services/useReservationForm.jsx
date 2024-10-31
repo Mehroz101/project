@@ -66,11 +66,10 @@ export const useReservationForm = () => {
           ...reservation,
           totalPrice: price, // Add the calculated price here
         };
+        console.log("reservation is creating");
         const response = await createReservation(updatedRequest);
-        console.log("reservation");
-        console.log(reservation);
-        console.log("response");
-        console.log(response);
+        console.log("response")
+        console.log(response)
         if (response.status === 201) {
           notify("success", "Reservation created successfully");
           return 201;
@@ -78,7 +77,7 @@ export const useReservationForm = () => {
           notify("error", "something wents wrong");
         }
       } catch (error) {
-        notify("error", "something wents wrong");
+        console.log(error)
         console.log(error.message);
       }
     }

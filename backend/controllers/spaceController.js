@@ -265,12 +265,9 @@ const getallspaces = async (req, res) => {
 };
 const getspacedetailforreservation = async (req, res) => {
   const { spaceId } = req.params;
+
   try {
-    const user = req.user.id;
-    console.log(user);
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    
 
     const spaces = await Space.findById(spaceId);
     if (spaces.length === 0) {
@@ -295,6 +292,15 @@ const getSpaceReview = async (req,res)=>{
     console.log(error.message)
   }
 }
+const getAllReviews = async (req,res)=>{
+  try {
+    const response = await review.find();
+    res.status(201).json(response);
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 module.exports = {
   createSpace,
@@ -306,4 +312,5 @@ module.exports = {
   getallspaces,
   getspacedetailforreservation,
   getSpaceReview,
+  getAllReviews
 };

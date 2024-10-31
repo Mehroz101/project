@@ -18,8 +18,7 @@ export const useWithdrawForm = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       const { accountType, accountName, accountNumber, withdrawAmount } =
         withdrawDetail;
@@ -37,10 +36,10 @@ export const useWithdrawForm = () => {
         return;
       } else {
         const response = await withDrawRequest(withdrawDetail);
-        console.log("response");
-        console.log(response);
+       console.log("response in form: ",response)
         if (response.status === 200) {
           notify("success", "Withdraw request send successfully");
+          return 200
         } else {
           switch (response.status) {
             case 400:
