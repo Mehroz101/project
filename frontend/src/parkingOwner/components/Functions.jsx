@@ -27,7 +27,6 @@ export const calculateHours = (
 };
 export const totalBooking = (type, space, reservations) => {
   if (!reservations) return 0;
-
   const totalCount = reservations
     ?.filter((reservation) => reservation.spaceId === space._id)
     .filter((reservation) => reservation.state === type).length;
@@ -59,7 +58,7 @@ export const getNearbySpaces = (userLat, userLong) => {
     return distance <= 5; // Only show spaces within 5 km
   });
 };
-export const reviewDateCalculator = (review) => {
+export const reviewDateCalculator = (review=[]) => {
   const date = new Date(review.createdAt);
   const today = new Date();
   const timeDiff = Math.abs(today - date);

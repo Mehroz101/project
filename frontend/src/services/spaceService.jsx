@@ -248,9 +248,9 @@ export const getallspaces = async () => {
     }
   }
 };
-export const getSpaceReview = async (spaceId) => {
+export const getSpaceReviews = async (spaceId) => {
   try {
-    const response = await axios.get(`${API_URL}/getspacereview/${spaceId}`);
+    const response = await axios.get(`${API_URL}/getspacereviews/${spaceId}`);
     console.log(response)
     if (response.status === 201) {
       return response.data;

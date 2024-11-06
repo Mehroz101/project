@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "../styles/ViewRequest.css";
 import { useParams } from "react-router-dom";
-import { getReservationdata } from "../../services/reservationService";
+import {
+  getReservationReview,
+  getReservationdata,
+} from "../../services/reservationService";
 import ReservationListingDetail from "./ReservationListingDetail";
+import { reviewDateCalculator } from "./Functions";
+import { useParkingOwner } from "../../context/ReservationContext";
 
 const ViewRequest = () => {
   const [data, setData] = useState([]);
   const [space, setSpace] = useState([]);
   const [duration, setDuration] = useState(""); // State for storing duration
   const [totalPrice, setTotalPrice] = useState(0); // State for total price
-  const [totalReviews, setTotalReviews] = useState(0);
-  const { reservationId } = useParams();
+  const [review, setReview] = useState([]);
 
- 
+  const { reservationId } = useParams();
+  const { reservation } = useParkingOwner();
+
   const getReservationDetail = async () => {
     try {
       setTimeout(async () => {
@@ -81,12 +87,28 @@ const ViewRequest = () => {
 
   useEffect(() => {
     if (reservationId) {
+      const count = reservation
+        ?.filter((reservation) => reservation.state === "completed")
+        .filter(
+          (reservation) => reservation.spaceId?._id === space?._id
+        ).length;
+      
       getReservationDetail();
     }
-  }, [reservationId]);
+  }, [reservationId, reservation]);
+
+  const getreservationreview = async () => {
+    try {
+      const response = await getReservationReview(reservationId);
+
+      setReview(response);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   useEffect(() => {
     if (space) {
-      // console.log("Updated space state now:", space); // This will log the updated state
+      getreservationreview();
     }
   }, [space]);
   return (
@@ -97,6 +119,21 @@ const ViewRequest = () => {
           <h3>Request Status</h3>
           <span className={`status ${data.state}`}>{data.state}</span>
         </div>
+        {review && (
+          <>
+            <div className="review-item">
+              <div className="review-meta">
+                <span>
+                  {review?.rating}
+                  <i className="fa-solid fa-star"></i>
+                </span>
+                <span>{reviewDateCalculator(review)}</span>
+              </div>
+              <p>"{review?.reviewMsg}"</p>
+            </div>
+          </>
+        )}
+
         <div className="reservation_detail_container">
           <h3>Booking Detail</h3>
           <div className="reservation_detail">

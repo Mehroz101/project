@@ -11,10 +11,8 @@ const authenticateToken = (req, res, next) => {
 
     const user = verifyToken(token);
     if (!user) {
-      console.log("user not logged in")
       return res.status(403).json({ message: "Invalid Token" });
     }
-    console.log("user is logged in")
 
     req.user = user;
     next();

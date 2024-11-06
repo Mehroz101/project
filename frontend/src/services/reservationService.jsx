@@ -241,11 +241,12 @@ export const postReview = async (review) => {
     console.log(error.message);
   }
 };
-export const getReservationReviews = async () => {
+export const getReservationReview = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/getalluserreviews`);
-    if (response.status === 200) {
-      return response.data.response;
+    const response = await axios.get(`${API_URL}/getreservationreview/${id}`);
+    if (response.status === 201) {
+      // console.log(response.data)
+      return response.data;
     }
   } catch (error) {
     console.log(error.message);

@@ -11,6 +11,7 @@ const {
   reservedReservation,
   getSpaceSpecificReservations,
   postReview,
+  getReservationReview
 } = require("../controllers/reservationController");
 const authenticateToken = require("../middleware/authMiddleware");
 
@@ -27,6 +28,7 @@ router.get("/getallreservation", getAllReservation);
 router.get("/getuserreservation", authenticateToken, getUserReservation);
 router.get("/get/:reservationId", authenticateToken, getReservationData);
 router.get("/getspacespecificreservation/:spaceId", getSpaceSpecificReservations);
+router.get("/getreservationreview/:reservationId", getReservationReview);
 router.patch("/cancel", authenticateToken, cancelReservation);
 router.patch("/confirm", authenticateToken, confirmReservation);
 router.patch("/reserved", authenticateToken, reservedReservation);

@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getSpace, getSpaceReview } from "../../services/spaceService";
+import { getSpace, getSpaceReviews } from "../../services/spaceService";
 import "../styles/ViewSpace.css";
 import { reviewDateCalculator } from "./Functions";
+import { useParkingOwner } from "../../context/ReservationContext";
 
 const ViewSpace = () => {
-  const [space, setSpace] = useState({});
+  const [space, setSpace] = useState(null);
   const [review, setReview] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [images, setImages] = useState([]);
   const { spaceId } = useParams();
   const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
-
+  const [reservationCount, setReservationCount] = useState(0);
+  const { reservation, space: spaceData } = useParkingOwner();
   const getSpaceData = async () => {
-    const spaceData = await getSpace(spaceId);
-    const spaceInfo = spaceData.data.space;
-    setSpace(spaceInfo);
-    setImages(spaceInfo?.images || []);
-    setCurrentImageIndex(0);
+    const spaceInfo = spaceData?.filter((space) => space?._id === spaceId);
+    console.log("Filtered Space Info:", spaceInfo); // Log the filtered space info
+    if (spaceInfo.length > 0) {
+      setSpace(spaceInfo[0]);
+      setImages(spaceInfo[0]?.images || []);
+      setCurrentImageIndex(0);
+    } else {
+      console.error("No space found for the given spaceId:", spaceId);
+    }
   };
-
   const handleNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
@@ -33,17 +38,21 @@ const ViewSpace = () => {
   };
   const getReview = async () => {
     try {
-      const response1 = await getSpaceReview(spaceId);
+      const response1 = await getSpaceReviews(spaceId);
       console.log(response1);
       setReview(response1);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
   useEffect(() => {
     getSpaceData();
     getReview();
-  }, [spaceId]);
+    const count = reservation
+      ?.filter((reservation) => reservation.spaceId?._id === space?._id)
+      .filter((reservation) => reservation.state === "completed").length;
+    setReservationCount(count);
+  }, [spaceId, spaceData, reservation]); // Add spaceData and reservation as dependencies
 
   return (
     <div className="view-space-container">
@@ -54,7 +63,7 @@ const ViewSpace = () => {
         </button>
         <img
           src={`${REACT_APP_API_URL}/${images[currentImageIndex]}`}
-          alt={space.title}
+          alt={space?.title}
           className="carousel-image"
         />
         <button className="carousel-btn next-btn" onClick={handleNextImage}>
@@ -67,22 +76,22 @@ const ViewSpace = () => {
         <div className="details-left">
           <h2 className="space-title">{space?.title}</h2>
           <p className="space-address">
-            <i className="fa-solid fa-location-dot"></i> {space.address}
+            <i className="fa-solid fa-location-dot"></i> {space?.address}
           </p>
           <div className="rating-section">
             <div className="rating">
-              <span className="rating-score">{space.averageRating}</span>
+              <span className="rating-score">{space?.averageRating}</span>
               <i className="fa-solid fa-star"></i>
-              <span className="total-reviews">(123 reviews)</span>
+              <span className="total-reviews">({review.length} reviews)</span>
             </div>
-            <div className="total-booking">100+ bookings</div>
+            <div className="total-booking">{reservationCount} bookings</div>
           </div>
 
           <div className="description-section">
             <h3>Short Description</h3>
-            <p>{space.short_description}</p>
+            <p>{space?.short_description}</p>
             <h3>Full Description</h3>
-            <p>{space.description}</p>
+            <p>{space?.description}</p>
           </div>
 
           {/* Google Map Location */}
@@ -91,8 +100,7 @@ const ViewSpace = () => {
             <iframe
               width="100%"
               height="250"
-              frameBorder="0"
-              src={`https://www.google.com/maps?q=${space.latitude},${space.longitude}&z=15&output=embed`}
+              src={`https://www.google.com/maps?q=${space?.latitude},${space?.longitude}&z=15&output=embed`}
             ></iframe>
           </div>
 
@@ -125,7 +133,7 @@ const ViewSpace = () => {
           <div className="features-section">
             <h4>Features</h4>
             <div className="feature-list">
-              {space.features?.map((feature, index) => (
+              {space?.features?.map((feature, index) => (
                 <span key={index} className="feature-item">
                   {feature}
                 </span>
@@ -137,11 +145,11 @@ const ViewSpace = () => {
             <h4>Pricing</h4>
             <div className="pricing-item">
               <span>Per Day:</span>
-              <span>${space.per_day}</span>
+              <span>${space?.per_day}</span>
             </div>
             <div className="pricing-item">
               <span>Per Hour:</span>
-              <span>${space.per_hour}</span>
+              <span>${space?.per_hour}</span>
             </div>
           </div>
         </div>

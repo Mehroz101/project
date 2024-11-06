@@ -117,9 +117,18 @@
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
-  margin-top: 20px !important;
+  margin-top: 20px !important; 
 }
-
+.view_request .review-item{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.view_request .review-item .review-meta{
+  display: flex;
+  justify-content: space-between;
+}
 .reservation_detail_container h3 {
   font-size: 24px;
   font-weight: 600;

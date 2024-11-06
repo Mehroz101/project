@@ -16,26 +16,33 @@ const ReservationRequest = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOption, setSearchOption] = useState("title");
 const {reservation} = useParkingOwner()
-  const handleSearchChange = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
+const handleSearchChange = (e) => {
+  const { value } = e.target;
+  setSearchTerm(value);
 
-    const lowerCasedTerm = value.toLowerCase();
+  // If search term is empty, reset to full data list
+  if (!value.trim()) {
+    setFilteredData(reservation);
+    return;
+  }
 
-    const filtered = data.filter((reservation) => {
-      let searchValue = "";
+  const lowerCasedTerm = value.toLowerCase();
+  
+  const filtered = reservation.filter((reservation) => {
+    let searchValue = "";
 
-      if (searchOption === "title") {
-        searchValue = reservation.spaceId?.title?.toLowerCase() || "";
-      } else if (searchOption === "name") {
-        searchValue = reservation.name?.toLowerCase() || "";
-      }
+    if (searchOption === "title") {
+      searchValue = reservation.spaceId?.title?.toLowerCase() || "";
+    } else if (searchOption === "name") {
+      searchValue = reservation.name?.toLowerCase() || "";
+    }
 
-      return searchValue.includes(lowerCasedTerm);
-    });
+    return searchValue.includes(lowerCasedTerm);
+  });
 
-    setFilteredData(filtered);
-  };
+  setFilteredData(filtered);
+};
+
 
   const handleSearchOptionChange = (e) => {
     setSearchOption(e.target.value);
@@ -52,15 +59,7 @@ const {reservation} = useParkingOwner()
    
   };
 
-  // const getreservationData = async () => {
-  //   try {
-  //     const response = await getReservation();
-  //     console.log(response);
-  //     setData(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  
 
   const handleCancelReservation = async (reservartionId) => {
     console.log(reservartionId);
@@ -73,14 +72,11 @@ const {reservation} = useParkingOwner()
     // getreservationData();
   };
 
-  // useEffect(() => {
-  //   // getreservationData();
-  //   if (getReservation) {
-  //     setFilteredData(getReservation);
-  //   }
-  // }, []);
+ 
   useEffect(() => {
     if (reservation) {
+      console.log("reservation")
+      console.log(reservation)
       setFilteredData(reservation);
     }
   }, [reservation]);

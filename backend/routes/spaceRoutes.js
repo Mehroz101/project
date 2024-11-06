@@ -11,7 +11,7 @@ const {
   deleteSpace,
   getallspaces,
   getspacedetailforreservation,
-  getSpaceReview,
+  getSpaceReviews,
   getAllReviews,
 } = require("../controllers/spaceController");
 const authenticateToken = require("../middleware/authMiddleware");
@@ -36,7 +36,7 @@ router.put(
 router.delete("/deletespace/:spaceId", authenticateToken, deleteSpace);
 
 router.get("/getallspaces", getallspaces);
-router.get("/getspacereview/:spaceId", getSpaceReview);
+router.get("/getspacereviews/:spaceId", getSpaceReviews);
 router.get("/getallspacereview", getAllReviews);
 
 module.exports = router;

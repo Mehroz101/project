@@ -416,7 +416,26 @@ const postReview = async (req, res) => {
     res.status(501).json();
   }
 };
-//
+const getReservationReview = async (req,res) =>{
+  try {
+      const {reservationId} = req.params
+      console.log("reservationId")
+      console.log(reservationId)
+      const response =await review.findOne({reservationId:reservationId})  
+      if(response){
+        console.log("review found")
+        console.log(response)
+        res.status(201).json(response)
+      } 
+      else{
+        console.log("review not found")
+        res.status(404).json()
+      }
+  } catch (error) {
+    res.status(500).json()
+    console.log(error.message)
+  }
+}
 module.exports = {
   createReservation,
   createCustomReservation,
@@ -429,4 +448,5 @@ module.exports = {
   reservedReservation,
   getSpaceSpecificReservations,
   postReview,
+  getReservationReview
 };

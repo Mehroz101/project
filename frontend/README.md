@@ -1,8 +1,27 @@
-# React + Vite
+# Current Errors in React Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. SpaceView.jsx: Total Bookings Not Showing on First Reload
 
-Currently, two official plugins are available:
+**File:** `spaceView.jsx`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Issue:** The total number of bookings is not displayed when the page is first loaded or reloaded.
+
+
+## 2. viewRequest.jsx: Total Booking Not Showing On First Reload
+**File:** `viewRequest.jsx`
+**Issue:** The total number of bookings is not displayed when the page is first loaded or reloaded
+## 3. Earning.jsx: While Withdraw it Show Error
+**File:** `Earning.jsx`
+**Issue:** When withdrawing money, an error is displayed instead of the successful withdrawal message.
+
+#
+# Remaining Functionality to Add in this Application
+
+**1. Real Time Notification on both owner and user side**
+
+**2. Overall rating of account**
+
+**3. Delete account**
+
+**4. Payment method while booking reservation**
+

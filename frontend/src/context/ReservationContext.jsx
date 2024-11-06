@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { getReservation } from "../services/reservationService";
-import { getSpace } from "../services/spaceService";
+import { getSpace,  getSpaceReviews } from "../services/spaceService";
 import io from "socket.io-client"; // Import socket.io-client
 import { getWithdrawRequest } from "../services/withDrawService";
 const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
@@ -14,7 +14,7 @@ export const ParkingOwnerProvider = ({ children }) => {
   const [space, setSpace] = useState([]);
   const [earningReq, setEarningReq] = useState([]);
   const [notifications, setNotifications] = useState([]); // State for notifications
-const [reviews,setReviews] = useState([])
+const [spaceReviews,setSpaceReviews] = useState([])
   const getReservationData = async () => {
     try {
       const response = await getReservation();
@@ -40,15 +40,16 @@ const [reviews,setReviews] = useState([])
       console.log(error.message);
     }
   };
-  const getReviewsData = async () =>{
+  const getSpaceReviewsData = async (spaceId) =>{
     try {
-      const response = await getReviews();
-      setReviews(response);
+      const response = await getSpaceReviews(spaceId);
+      setSpaceReviews(response);
     }
     catch(error){
       console.log(error.message)
     }
 
+  
   }
 
   const addNotification = (message) => {
@@ -94,6 +95,8 @@ const [reviews,setReviews] = useState([])
       socket.off("reservationUpdated");
       socket.off("spaceUpdated");
       socket.off("paymentUpdated")
+      socket.off("reviewUpdate")
+
     };
   }, []);
 
@@ -107,7 +110,10 @@ const [reviews,setReviews] = useState([])
         setReservation,
         setEarningReq,
         getEarningData,
-        notifications
+        notifications,
+        getSpaceReviewsData,
+        spaceReviews,
+        getReservationData
       }}
     >
       {children}

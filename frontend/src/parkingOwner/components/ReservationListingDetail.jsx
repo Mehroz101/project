@@ -1,22 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { confirmReservation, reservedReservation } from "../../services/reservationService";
+import {
+  confirmReservation,
+  reservedReservation,
+} from "../../services/reservationService";
+import { useParkingOwner } from "../../context/ReservationContext";
+import { totalBooking } from "./Functions";
 const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
   const [space, setSpace] = useState([]);
+  const [reservationCount, setReservationCount] = useState(0);
+  const { getSpaceReviewsData, spaceReviews, reservation } = useParkingOwner();
+
   const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
-  const confimed =async (id) =>{
+  const confimed = async (id) => {
     // console.log(id)
-    await confirmReservation(id)
-  }
-  const reserved =async (id) =>{
-    await reservedReservation(id)
-  }
+    await confirmReservation(id);
+  };
+  const reserved = async (id) => {
+    await reservedReservation(id);
+  };
   useEffect(() => {
     if (spaceDetail) {
-      // console.log("space data");
       setSpace(spaceDetail);
-      // console.log(spaceDetail);
+      getSpaceReviewsData(spaceDetail._id);
+     
+      const count = reservation
+        ?.filter((reservation) => reservation.spaceId?._id === space?._id)
+        .filter((reservation) => reservation.state === "completed").length;
+      setReservationCount(count);
     }
   }, [spaceDetail]);
   return (
@@ -35,11 +47,11 @@ const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
           </div>
           <div className="listing_rating">
             <span className="rating">
-              <span className="rating_score">{(space.averageRating)}</span>
+              <span className="rating_score">{space.averageRating}</span>
               <i class="fa-solid fa-star"></i>
-              <span className="total_reviews">(123)</span>
+              <span className="total_reviews">({spaceReviews.length})</span>
             </span>
-            <span className="total_booking">100+ booking</span>
+            <span className="total_booking">{reservationCount} booking</span>
           </div>
           <div className="listing_detail">
             <div className="listing_features">
@@ -64,13 +76,19 @@ const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
           </div>
           <div className="listing_btn">
             {data.state === "pending" && (
-              <Link to="/dashboard/reservation-request" onClick={()=>confimed(data._id)}>
+              <Link
+                to="/dashboard/reservation-request"
+                onClick={() => confimed(data._id)}
+              >
                 <button>Confirmed Now</button>
               </Link>
             )}
-            
+
             {data.state === "confirmed" && (
-              <Link to="/dashboard/reservation-request"  onClick={()=>reserved(data._id)}>
+              <Link
+                to="/dashboard/reservation-request"
+                onClick={() => reserved(data._id)}
+              >
                 <button>Reserved Now</button>
               </Link>
             )}

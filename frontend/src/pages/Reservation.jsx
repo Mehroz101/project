@@ -3,8 +3,8 @@ import "../styles/Reservation.css";
 import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import {
-  getSpaceForReservation,
-  getSpaceReview,
+  getSpaceForReservation, getSpaceReviews,
+
 } from "../services/spaceService";
 import { useNavigate } from "react-router-dom";
 import { useReservationForm } from "../services/useReservationForm";
@@ -32,7 +32,7 @@ const Reservation = () => {
 
   const getSpace = async () => {
     const response = await getSpaceForReservation(spaceId);
-    const response1 = await getSpaceReview(spaceId);
+    const response1 = await getSpaceReviews(spaceId);
     const response2 = await getSpaceSpecificReservation(spaceId);
     setSpace(response);
     setReviews(response1);

@@ -283,7 +283,7 @@ const getspacedetailforreservation = async (req, res) => {
   }
 };
 
-const getSpaceReview = async (req,res)=>{
+const getSpaceReviews = async (req,res)=>{
   const {spaceId} = req.params;
   try {
     const response = await review.find({spaceId:spaceId}).populate("userId", "fName")
@@ -311,6 +311,6 @@ module.exports = {
   deleteSpace,
   getallspaces,
   getspacedetailforreservation,
-  getSpaceReview,
+  getSpaceReviews,
   getAllReviews
 };
