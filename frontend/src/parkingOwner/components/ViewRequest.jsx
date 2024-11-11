@@ -23,9 +23,9 @@ const ViewRequest = () => {
     try {
       setTimeout(async () => {
         const response = await getReservationdata(reservationId);
-        // console.log(response.spaceId);
+        // //console.log(response.spaceId);
         setSpace(response.spaceId);
-        // console.log("Updated space state:", response.spaceId);
+        // //console.log("Updated space state:", response.spaceId);
         const formatTimeTo12Hour = (time) => {
           let [hours, minutes] = time.split(":").map(Number);
           const ampm = hours >= 12 ? "PM" : "AM";
@@ -79,7 +79,7 @@ const ViewRequest = () => {
           leaveTime: formattedLeaveTime,
         });
       }, 500); // Simulate a delay
-      // console.log(space);
+      // //console.log(space);
     } catch (error) {
       console.error(error.message);
     }
@@ -103,7 +103,7 @@ const ViewRequest = () => {
 
       setReview(response);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
     }
   };
   useEffect(() => {

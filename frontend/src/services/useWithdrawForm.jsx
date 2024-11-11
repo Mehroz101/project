@@ -22,7 +22,7 @@ export const useWithdrawForm = () => {
     try {
       const { accountType, accountName, accountNumber, withdrawAmount } =
         withdrawDetail;
-      console.log(withdrawDetail);
+      //console.log(withdrawDetail);
       if (
         accountType === "" ||
         accountName == "" ||
@@ -36,7 +36,7 @@ export const useWithdrawForm = () => {
         return;
       } else {
         const response = await withDrawRequest(withdrawDetail);
-       console.log("response in form: ",response)
+       //console.log("response in form: ",response)
         if (response.status === 200) {
           notify("success", "Withdraw request send successfully");
           return 200

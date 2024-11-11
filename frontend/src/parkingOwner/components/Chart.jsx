@@ -34,7 +34,7 @@ const aggregateDataByDate = (data) => {
     }
     result[date].request += 1; // Increment request count
     if (item.state === "completed") {
-      console.log("reservation is completed");
+      //console.log("reservation is completed");
       result[date].earning += parseFloat(item.totalPrice); // Sum up earnings
     }
   });

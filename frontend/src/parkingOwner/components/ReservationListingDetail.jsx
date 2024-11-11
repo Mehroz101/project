@@ -14,7 +14,7 @@ const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
   const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
 
   const confimed = async (id) => {
-    // console.log(id)
+    // //console.log(id)
     await confirmReservation(id);
   };
   const reserved = async (id) => {
@@ -42,13 +42,13 @@ const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
             <h3>{space.title}</h3>
           </div>
           <div className="location">
-            <i class="fa-solid fa-location-dot"></i>
+            <i className="fa-solid fa-location-dot"></i>
             <span>{space.address}</span>
           </div>
           <div className="listing_rating">
             <span className="rating">
               <span className="rating_score">{space.averageRating}</span>
-              <i class="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
               <span className="total_reviews">({spaceReviews.length})</span>
             </span>
             <span className="total_booking">{reservationCount} booking</span>
@@ -56,13 +56,13 @@ const ReservationListingDetail = ({ onShowDetail, spaceDetail, data }) => {
           <div className="listing_detail">
             <div className="listing_features">
               <span title="secure">
-                <i class="fa-solid fa-shield-halved"></i>
+                <i className="fa-solid fa-shield-halved"></i>
               </span>
               <span title="underground">
-                <i class="fa-solid fa-arrow-down-short-wide"></i>
+                <i className="fa-solid fa-arrow-down-short-wide"></i>
               </span>
               <span title="cctv">
-                <i class="fa-solid fa-video"></i>
+                <i className="fa-solid fa-video"></i>
               </span>
             </div>
             <span>

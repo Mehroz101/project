@@ -15,7 +15,7 @@ const Login = () => {
       <div className="login_page">
         <div className="back_page_btn">
           <span onClick={() => goBack()}>
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </span>
         </div>
         <div className="login_container">
@@ -29,7 +29,7 @@ const Login = () => {
                   Login to <span className="brand_name">Parkify</span>
                 </h1>
                 <button className="google_btn">
-                  <i class="fa-brands fa-google"></i>
+                  <i className="fa-brands fa-google"></i>
                   <span>Signin with Google</span>
                 </button>
                 <div className="bottom_line">
@@ -43,7 +43,7 @@ const Login = () => {
                 <div className="email_box box">
                   <label htmlFor="email">Email</label>
                   <div className="field">
-                    <i class="fa-solid fa-envelope"></i>
+                    <i className="fa-solid fa-envelope"></i>
                     <input
                       type="email"
                       name="email"
@@ -56,7 +56,7 @@ const Login = () => {
                 <div className="password_box box">
                   <label htmlFor="password">Password</label>
                   <div className="field">
-                    <i class="fa-solid fa-key"></i>
+                    <i className="fa-solid fa-key"></i>
                     <input
                       type="password"
                       name="password"

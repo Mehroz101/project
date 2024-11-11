@@ -11,10 +11,10 @@ const RequestRow = ({
   const [nonReservationReq, setNonReservationReq] = useState();
   useEffect(() => {
     if (reservation?.spaceId !== null) {
-      console.log(reservation?.spaceId?.title);
+      //console.log(reservation?.spaceId?.title);
       setReservationReq(reservation);
     } else {
-      console.log(reservation);
+      //console.log(reservation);
       setNonReservationReq(reservation);
     }
   }, [reservation]); // Run this effect when the reservation prop changes

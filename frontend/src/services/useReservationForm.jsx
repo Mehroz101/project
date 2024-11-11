@@ -36,8 +36,6 @@ export const useReservationForm = () => {
       per_hour,
       per_day,
     } = reservation;
-    console.log("reservation: ")
-    console.log(reservation)
 
     
     if (

@@ -37,7 +37,7 @@ export const customReservationRequest = () => {
       price_perhour,
       price_perday,
     } = customRequest;
-    console.log(customRequest);
+    //console.log(customRequest);
 
     if (
       spaceId === "" ||
@@ -80,7 +80,7 @@ export const customReservationRequest = () => {
       notify("warning", "Leave Date or time is less than arrival date");
       return;
     }
-    console.log(leaveDateTime - arrivalDateTime);
+    //console.log(leaveDateTime - arrivalDateTime);
     const minParkingDuration = 60 * 60 * 1000; // Minimum duration: 30 minutes
     if (leaveDateTime - arrivalDateTime < minParkingDuration) {
       notify("warning", "Parking time must be at least 1 hour.");
@@ -95,7 +95,7 @@ export const customReservationRequest = () => {
       leaveDate
     );
     const price = calculatePrice(hours, price_perhour, price_perday);
-    console.log(price);
+    //console.log(price);
    
 
     const updatedRequest = {
@@ -103,7 +103,7 @@ export const customReservationRequest = () => {
       totalPrice: price, // Add the calculated price here
     };
     const response = await createCustomReservation(updatedRequest);
-    console.log(response);
+    //console.log(response);
     return response;
   };
 

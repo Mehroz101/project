@@ -28,7 +28,7 @@ const ForgetPass = () => {
       <div className="login_page forgetpass_page">
         <div className="back_page_btn">
           <span onClick={() => goBack()}>
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </span>
         </div>
         <div className="login_container">
@@ -47,7 +47,7 @@ const ForgetPass = () => {
                     <div className="email_box box">
                       <label htmlFor="email">Email</label>
                       <div className="field">
-                        <i class="fa-solid fa-envelope"></i>
+                        <i className="fa-solid fa-envelope"></i>
                         <input
                           type="email"
                           onChange={handleChange}

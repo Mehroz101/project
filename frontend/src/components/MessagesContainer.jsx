@@ -6,12 +6,12 @@ const MessagesContainer = () => {
 
   return (
     <div className="messages_container">
-      <h2>Messages</h2>
+      <h2>Notification</h2>
       <div className="messages_box">
         <div className={`message_box_left ${openChat ? "hide_left" : ""}`}>
           <div className="user_chat" onClick={() => setOpenChat(true)}>
             <div className="username">
-              <span>Mehroz</span>
+              <span>Mall of Multan</span>
             </div>
             <div className="user_lastmessage">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita,
@@ -31,7 +31,7 @@ const MessagesContainer = () => {
         </div>
         <div className={`message_box_right ${openChat ? "" : "hide_right"}`}>
           <span className="back_btn" onClick={() => setOpenChat(false)}>
-            <i class="fa-solid fa-arrow-left"></i>
+            <i className="fa-solid fa-arrow-left"></i>
           </span>
           <div className="message">
             <span>

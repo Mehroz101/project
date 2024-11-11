@@ -20,7 +20,6 @@ const {reservation,space,setSpace} = useParkingOwner()
       //   getReservation(),
       //   getSpace(),
       // ]);
-      console.log(space)
       // const spacesArray = spacesResponse.data.data;
       // setSpaces(spacesArray); // Save the fetched spaces data
       setFilteredData(space); // Initialize filteredData with all spaces
@@ -191,19 +190,8 @@ const {reservation,space,setSpace} = useParkingOwner()
                     const reservationForSpace = reservation?.find(
                       (slot) => slot.spaceId === item.spaceId
                     );
-
-                    // Check if the current reservation's spaceId is null
-                    if (reservationForSpace?.spaceId === null) {
-                      console.log(
-                        "SpaceId is null for reservation of item",
-                        reservationForSpace
-                      );
-                      return null; // Skip this iteration
-                    }
-
                     return (
                       <>
-                        {console.log("SpaceId is valid for item", item)}
                         <SpaceRow
                           key={index}
                           spaceInfo={item}

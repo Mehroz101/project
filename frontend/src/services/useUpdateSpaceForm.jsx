@@ -34,29 +34,29 @@ export const useUpdateSpaceForm = () => {
         [name]: value,
       }));
     }
-    console.log("handle change function");
-    console.log(JSON.stringify(spaceDetails.features));
-    console.log(spaceDetails.features);
+    //console.log("handle change function");
+    //console.log(JSON.stringify(spaceDetails.features));
+    //console.log(spaceDetails.features);
   };
 
   const handleSubmit = async (newFiles, removeImages, fetchedImg, spaceId) => {
     try {
-      //   console.log("handle submit function")
-      // console.log(" new images files");
-      // console.log(newFiles);
-      // console.log(" removeImg");
-      // console.log(removeImages);
-      // console.log(" Fetched images");
-      // console.log(fetchedImg);
-      // console.log("form data");
-      // console.log(spaceDetails);
+      //   //console.log("handle submit function")
+      // //console.log(" new images files");
+      // //console.log(newFiles);
+      // //console.log(" removeImg");
+      // //console.log(removeImages);
+      // //console.log(" Fetched images");
+      // //console.log(fetchedImg);
+      // //console.log("form data");
+      // //console.log(spaceDetails);
       const commonElements = fetchedImg.filter((value) =>
         removeImages.includes(value)
       );
-      console.log("common images to remove");
-      console.log(commonElements);
-      // console.log("features")
-      // console.log(spaceDetails.features)
+      //console.log("common images to remove");
+      //console.log(commonElements);
+      // //console.log("features")
+      // //console.log(spaceDetails.features)
       const formData = new FormData();
 
       formData.append("title", spaceDetails.title);
@@ -76,11 +76,11 @@ export const useUpdateSpaceForm = () => {
       commonElements.forEach((image) => formData.append("removeImg", image));
 
       // // Debugging FormData
-      console.log("spaceId");
-      console.log(spaceId);
+      //console.log("spaceId");
+      //console.log(spaceId);
 
       const response = await updateSpaceDetails(formData, spaceId);
-      console.log(response);
+      //console.log(response);
       if (response === 201) {
         return 201;
       } else {

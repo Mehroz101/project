@@ -67,7 +67,7 @@ export const useParkingFinderCardForm = () => {
       notify("warning", "Leave Date or time is less than arrival date");
       return 400;
     }
-    console.log(leaveDateTime - arrivalDateTime);
+    //console.log(leaveDateTime - arrivalDateTime);
     const minParkingDuration = 60 * 60 * 1000; // Minimum duration: 30 minutes
     if (leaveDateTime - arrivalDateTime < minParkingDuration) {
       notify("warning", "Parking time must be at least 1 hour.");
@@ -80,7 +80,7 @@ export const useParkingFinderCardForm = () => {
       leaveDate
     );
     findParking.totalHours = hours.toFixed(2);
-    console.log(hours);
+    //console.log(hours);
     localStorage.setItem("arrivalDate",arrivalDate)
     localStorage.setItem("arrivalTime",arrivalTime)
     localStorage.setItem("leaveDate",leaveDate)

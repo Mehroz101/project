@@ -23,8 +23,9 @@ const ReservationHistory = () => {
     reservationId: "",
   });
   const handleSubmit = async () => {
-    console.log(review);
+    //console.log(review);
     const response = await postReview(review);
+    getreservationData()
     setReviewBox(false);
 
   };
@@ -35,20 +36,20 @@ const ReservationHistory = () => {
   const getreservationData = async () => {
     try {
       const response = await getUserReservation();
-      console.log(response);
+      //console.log(response);
       setData(response);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
   const handleCancelReservation = async (reservartionId) => {
-    console.log(reservartionId);
+    //console.log(reservartionId);
     await cancelReservation(reservartionId);
     getreservationData();
   };
   const setReviewFun = (resvId, spaceId) => {
-    console.log("reservation id: ", resvId);
-    console.log("space id: ", spaceId);
+    //console.log("reservation id: ", resvId);
+    //console.log("space id: ", spaceId);
     setReviewBox(true);
     setReview((prev) => ({
       ...prev,
@@ -62,7 +63,7 @@ const ReservationHistory = () => {
     socket.on(
       "reservationUpdated",
       (data) => {
-        console.log("socket", data.message);
+        //console.log("socket", data.message);
         getreservationData();
       },
       []

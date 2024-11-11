@@ -20,16 +20,16 @@ const ListingContainer = ({
   useEffect(() => {
     if (slotData) {
       setSpace(slotData);
-      // console.log(slotData)
+      // //console.log(slotData)
       if (space) {
         const total = calculatePrice(totalHours, space.per_hour, space.per_day);
         setPrice(total);
       }
       setTotalCompleted(totalBooking("completed", slotData, reservations));
-      console.log("slotData._id");
-      console.log(slotData._id);
-      console.log("review spaceId");
-      reviews?.map((review) => console.log(review.spaceId));
+      //console.log("slotData._id");
+      //console.log(slotData._id);
+      //console.log("review spaceId");
+      // reviews?.map((review) => console.log(review.spaceId));
       const matchingReviewsCount =
         reviews?.filter((review) => review?.spaceId === slotData._id)?.length ||
         0;

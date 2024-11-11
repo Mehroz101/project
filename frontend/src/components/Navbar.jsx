@@ -53,21 +53,21 @@ const Navbar = () => {
           <div className="nav_right_list">
             {/* <span onClick={() => setNavbar(!navbar)}>a</span> */}
             <ul>
-              <li>
+              {/* <li>
                 <Link to="/" onClick={() => setNavbar(false)}>
                   Home
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link to="/searchResult" onClick={() => setNavbar(false)}>
                   Find Parking
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link to="/aboutus" onClick={() => setNavbar(false)}>
                   About
                 </Link>
-              </li>
+              </li> */}
               <li className="profile">
                 {email == "Login" ? (
                   <Link

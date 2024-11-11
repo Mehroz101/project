@@ -54,7 +54,7 @@ const Earning = () => {
             lastMonth = 11;
             lastMonthYear = thisYear - 1;
           }
-          // console.log(requestDate.getMonth() >= lastMonth);
+          // //console.log(requestDate.getMonth() >= lastMonth);
           if (
             (requestDate.getMonth() >= lastMonth &&
               requestDate.getFullYear() >= lastMonthYear) ||

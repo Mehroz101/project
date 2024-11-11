@@ -10,7 +10,7 @@ const UpdateSpace = () => {
     useUpdateSpaceForm();
   const REACT_APP_API_URL = import.meta.env.REACT_APP_API_URL;
   const { spaceId } = useParams();
-  console.log("space id:" + spaceId);
+  //console.log("space id:" + spaceId);
   const [images, setImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
   const [removeImages, setRemoveImages] = useState([]);
@@ -27,10 +27,10 @@ const UpdateSpace = () => {
       setNewImagePreviews(
         data.space.images.map((image) => `${REACT_APP_API_URL}/${image}`)
       );
-      // console.log("Fetch images in updatespace file");
-      // console.log(data.space.images);
-      // console.log("space data fetch: ");
-      // console.log(data.space);
+      // //console.log("Fetch images in updatespace file");
+      // //console.log(data.space.images);
+      // //console.log("space data fetch: ");
+      // //console.log(data.space);
     };
     fetchListing();
   }, [spaceId]);
@@ -40,9 +40,9 @@ const UpdateSpace = () => {
     setRemoveImages(
       removeImages.map((url) => url.replace(REACT_APP_API_URL, ""))
     );
-    // console.log("form submitted");
-    // console.log("removeImages in update file");
-    // console.log(removeImages);
+    // //console.log("form submitted");
+    // //console.log("removeImages in update file");
+    // //console.log(removeImages);
 
    const response = await handleSubmit(images, removeImages, fetchedImg, spaceId);
    if (response === 201){
@@ -53,11 +53,11 @@ const UpdateSpace = () => {
   const handleImageRemove = (image) => {
     image = image.replace(REACT_APP_API_URL, "");
     setRemoveImages([...removeImages, image]);
-    // console.log("remove image in updatespace file");
-    // console.log(removeImages);
+    // //console.log("remove image in updatespace file");
+    // //console.log(removeImages);
     setExistingImages(existingImages.filter((img) => img !== image));
-    // console.log("existingImages after delete");
-    // console.log(existingImages);
+    // //console.log("existingImages after delete");
+    // //console.log(existingImages);
   };
   const handleNewImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -73,8 +73,8 @@ const UpdateSpace = () => {
     setNewImagePreviews([...newImagePreviews, ...previews]);
   };
   useEffect(() => {
-    // console.log("new images added in updatespace file");
-    // console.log(images);
+    // //console.log("new images added in updatespace file");
+    // //console.log(images);
   }, [handleNewImageChange]);
 
   return (

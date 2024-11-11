@@ -16,7 +16,7 @@ const ViewSpace = () => {
   const { reservation, space: spaceData } = useParkingOwner();
   const getSpaceData = async () => {
     const spaceInfo = spaceData?.filter((space) => space?._id === spaceId);
-    console.log("Filtered Space Info:", spaceInfo); // Log the filtered space info
+    //console.log("Filtered Space Info:", spaceInfo); // Log the filtered space info
     if (spaceInfo.length > 0) {
       setSpace(spaceInfo[0]);
       setImages(spaceInfo[0]?.images || []);
@@ -39,10 +39,10 @@ const ViewSpace = () => {
   const getReview = async () => {
     try {
       const response1 = await getSpaceReviews(spaceId);
-      console.log(response1);
+      //console.log(response1);
       setReview(response1);
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
     }
   };
   useEffect(() => {
@@ -116,7 +116,7 @@ const ViewSpace = () => {
                       <div className="review-meta">
                         <span>{review?.rating}</span>
                         <i className="fa-solid fa-star"></i>
-                        <span>{reviewDateCalculator(review)}</span>
+                        <span>{reviewDateCalculator(review.createdAt)}</span>
                       </div>
                       <p>"{review?.reviewMsg}"</p>
                     </div>

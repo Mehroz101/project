@@ -45,7 +45,7 @@ const ListingDetail = ({ onHideDetail, space, reservations, reviews }) => {
     const matchingReviewsCount =
         reviews?.filter((review) => review?.spaceId === space?._id)?.length ||
         0;
-        console.log(space._id)
+        //console.log(space._id)
         setTotalReviews(matchingReviewsCount)
   }, [space, totalHours]);
   return (
@@ -107,11 +107,11 @@ const ListingDetail = ({ onHideDetail, space, reservations, reviews }) => {
           {space?.features?.map((feature, index) => {
             switch (feature) {
               case "secure":
-                return <span className="feature">CCTV</span>;
+                return <span key={index} className="feature">CCTV</span>;
               case "underground":
-                return <span className="feature">Underground</span>;
+                return <span key={index} className="feature">Underground</span>;
               case "cctv":
-                return <span className="feature">Secure</span>;
+                return <span key={index} className="feature">Secure</span>;
               default:
                 return null;
             }

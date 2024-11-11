@@ -58,8 +58,8 @@ export const getNearbySpaces = (userLat, userLong) => {
     return distance <= 5; // Only show spaces within 5 km
   });
 };
-export const reviewDateCalculator = (review=[]) => {
-  const date = new Date(review.createdAt);
+export const reviewDateCalculator = (dateData) => {
+  const date = new Date(dateData);
   const today = new Date();
   const timeDiff = Math.abs(today - date);
 

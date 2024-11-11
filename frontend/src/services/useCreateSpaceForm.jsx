@@ -38,8 +38,8 @@ export const useCreateSpaceForm = () => {
 
   const handleSubmit = async (files) => {
     try {
-      console.log(" recieved");
-      console.log(files);
+      //console.log(" recieved");
+      //console.log(files);
       const formData = new FormData();
 
       formData.append("title", spaceDetails.title);
@@ -61,7 +61,7 @@ export const useCreateSpaceForm = () => {
       // Debugging FormData
 
       const response = await createSpace(formData);
-      console.log(response);
+      //console.log(response);
       if (response === 201) {
         // notify("success", "Space created successfully!");
         return 201;

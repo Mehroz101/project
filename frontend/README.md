@@ -9,19 +9,17 @@
 
 ## 2. viewRequest.jsx: Total Booking Not Showing On First Reload
 **File:** `viewRequest.jsx`
+
 **Issue:** The total number of bookings is not displayed when the page is first loaded or reloaded
-## 3. Earning.jsx: While Withdraw it Show Error
-**File:** `Earning.jsx`
-**Issue:** When withdrawing money, an error is displayed instead of the successful withdrawal message.
+
+## 2. Need to change the UI of messages of userside
+**File:** `messageContainer.jsx`
+
+**Issue:** chnage the UI to same as the ower side  to make it simple
 
 #
 # Remaining Functionality to Add in this Application
 
-**1. Real Time Notification on both owner and user side**
+**1. Real Time Notification on user side remain**
 
-**2. Overall rating of account**
-
-**3. Delete account**
-
-**4. Payment method while booking reservation**
-
+**2. Payment method while booking reservation**

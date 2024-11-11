@@ -26,7 +26,7 @@ const AccountInformation = () => {
     showAccountInformation()
       .then((response) => {
         const user = response.data.user;
-        console.log(user)
+        //console.log(user)
         updateUserDetails({
           fname: user.fName || "" ,
           lname: user.lName || "",
@@ -123,7 +123,7 @@ const AccountInformation = () => {
           <button type="submit">Forget Password</button>
         </form>
       </div>
-      <button className="delete_account_btn">Delete my Account</button>
+      {/* <button className="delete_account_btn">Delete my Account</button> */}
     </>
   );
 };

@@ -29,8 +29,8 @@ export const MainAppProvider = ({ children }) => {
       "spaceUpdated",
       (data) => {
         const { spaceId, status } = data;
-        console.log("socket", spaceId);
-        console.log("socket", status);
+        //console.log("socket", spaceId);
+        //console.log("socket", status);
         getData();
       },
       []

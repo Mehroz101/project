@@ -67,8 +67,8 @@ export const useAccountInformationForm = () => {
   };
 
   const handleCatchErrors = (error) => {
-    if (error.response) {
-      handleResponseErrors(error.response);
+    if (error) {
+      handleResponseErrors(error);
     } else if (error.request) {
       notify("error", "Network error: Please check your connection and try again.");
     } else {

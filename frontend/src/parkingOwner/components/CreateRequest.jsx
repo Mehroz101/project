@@ -22,11 +22,11 @@ const CreateRequest = () => {
   };
   const getSpaces = async () => {
     const response = await getSpace();
-    console.log(response.data.data);
+    //console.log(response.data.data);
     const activeListing = response.data.data.filter(
       (state) => state.state === "active"
     );
-    console.log(activeListing);
+    //console.log(activeListing);
     if (activeListing) {
       setData(activeListing); // Initialize the full data in the search service
     }
@@ -36,7 +36,7 @@ const CreateRequest = () => {
   }, []);
   useEffect(() => {
     if (selectedSpace) {
-      console.log(selectedSpace.per_hour);
+      //console.log(selectedSpace.per_hour);
 
       customRequest.price_perhour = selectedSpace.per_hour;
       customRequest.price_perday = selectedSpace.per_day;
@@ -44,7 +44,7 @@ const CreateRequest = () => {
   }, [selectedSpace]);
   const handleSubmitFun = async () => {
     const response = await handleSubmit();
-    console.log("response", response);
+    //console.log("response", response);
     if (response === "Reservation created successfully") {
       navigate(-1);
     }
@@ -65,7 +65,7 @@ const CreateRequest = () => {
                   name="search"
                   onChange={handleSearchChange}
                 />
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <i className="fa-solid fa-magnifying-glass"></i>
               </div>
             ) : (
               <div className="selected_space">
@@ -75,7 +75,7 @@ const CreateRequest = () => {
                 </div>
 
                 <i
-                  class="fa-solid fa-xmark"
+                  className="fa-solid fa-xmark"
                   onClick={() => setIsSpaceSelect(false)}
                 ></i>
               </div>

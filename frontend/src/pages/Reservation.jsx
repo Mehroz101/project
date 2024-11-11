@@ -36,8 +36,6 @@ const Reservation = () => {
     const response2 = await getSpaceSpecificReservation(spaceId);
     setSpace(response);
     setReviews(response1);
-    console.log("response");
-    console.log(response);
     setReservations(response2);
   };
   

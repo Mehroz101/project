@@ -10,14 +10,14 @@ const CreateSpace = () => {
   const navigate = useNavigate()
   const handleFilesChange = (files) => {
     setUploadedFiles(files);
-    console.log("Files received from FileUpload:", files); // Log the files to the console
+    //console.log("Files received from FileUpload:", files); // Log the files to the console
   };
 
   const handleFormSubmit =async (e) => {
     e.preventDefault();
-    console.log(spaceDetails);
-    console.log("uploadedFiles");
-    console.log(uploadedFiles);
+    //console.log(spaceDetails);
+    //console.log("uploadedFiles");
+    //console.log(uploadedFiles);
     const response = await handleSubmit(uploadedFiles);
     if(response === 201){
       navigate(-1)

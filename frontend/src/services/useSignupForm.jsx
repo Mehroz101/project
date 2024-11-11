@@ -17,13 +17,13 @@ export const useSignupForm = () => {
         ...prevState,
         [name]: value,
       };
-      // console.log(updatedState); // Log the updated state here
+      // //console.log(updatedState); // Log the updated state here
       return updatedState;
     });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(userDetail)
+    // //console.log(userDetail)
 
     try {
       const response = await signupUser({

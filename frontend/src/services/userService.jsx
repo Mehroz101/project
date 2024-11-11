@@ -4,8 +4,8 @@ const API_URL = import.meta.env.REACT_APP_API_URL;
 
 
 export const updateAccountInformation = async (userData) => {
-    // console.log("updateAccountInformation call");
-    // console.log(userData);
+    // //console.log("updateAccountInformation call");
+    // //console.log(userData);
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
   
     const config = {
@@ -26,9 +26,9 @@ export const updateAccountInformation = async (userData) => {
     }
   };
   export const showAccountInformation = async () => {
-    console.log("showAccountInformation call");
+    //console.log("showAccountInformation call");
     const token = localStorage.getItem("token"); // Retrieve the token from localStorage
-    // console.log("token : ", token);
+    // //console.log("token : ", token);
     const config = {
       headers: {
         Authorization: `Bearer ${token}`, // Add the token to the Authorization header
@@ -41,7 +41,7 @@ export const updateAccountInformation = async (userData) => {
         `${API_URL}/api/user/showaccountinformation`,
         config // Pass the config with headers
       );
-      // console.log(response);
+      // //console.log(response);
       return response;
     } catch (error) {
       throw error.response;

@@ -124,63 +124,63 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <section class="features">
-        <div class="section-header">
+      <section className="features">
+        <div className="section-header">
           <h2>Why Choose Us</h2>
           <p>Explore the advantages of our smart parking solution and how it enhances your parking experience.</p>
-        </div> <div className="feature_boxs">  <div class="feature-box">
-          <div class="icon">
-            <i class="fas fa-search"></i>
+        </div> <div className="feature_boxs">  <div className="feature-box">
+          <div className="icon">
+            <i className="fas fa-search"></i>
           </div>
           <h3>Real-Time Availability</h3>
           <p>Get up-to-date information on available parking spots.</p>
         </div>
-          <div class="feature-box">
-            <div class="icon">
-              <i class="fas fa-lock"></i>
+          <div className="feature-box">
+            <div className="icon">
+              <i className="fas fa-lock"></i>
             </div>
             <h3>Secure Payments</h3>
             <p>Enjoy secure transactions with our integrated payment system.</p>
           </div>
-          <div class="feature-box">
-            <div class="icon">
-              <i class="fas fa-mobile-alt"></i>
+          <div className="feature-box">
+            <div className="icon">
+              <i className="fas fa-mobile-alt"></i>
             </div>
             <h3>User-Friendly Interface</h3>
             <p>Easy navigation and quick searches for your convenience.</p>
           </div>
-          <div class="feature-box">
-            <div class="icon">
-              <i class="fas fa-calendar-day"></i>
+          <div className="feature-box">
+            <div className="icon">
+              <i className="fas fa-calendar-day"></i>
             </div>
             <h3>Flexible Options</h3>
             <p>Reserve for a few hours or several days, based on your needs.</p>
           </div>
         </div>
       </section>
-      <section class="feature-highlight">
-        <div class="feature-image">
+      <section className="feature-highlight">
+        <div className="feature-image">
           <img src={userImg} alt="Feature Image" />
         </div>
-        <div class="feature-content">
-          <p class="supporting-line">Discover Our Key Feature</p>
+        <div className="feature-content">
+          <p className="supporting-line">Discover Our Key Feature</p>
           <h2>Unlock the Best Parking Experience</h2>
           <p>Our innovative system makes parking and renting spaces more convenient than ever. Sign up to experience seamless parking management and discover new opportunities to list your space.</p>
-          <a href="#signup" class="cta-button">Get Started</a>
+          <a href="#signup" className="cta-button">Get Started</a>
         </div>
       </section>
-      <section class="testimonials">
-        <div class="section-header">
+      <section className="testimonials">
+        <div className="section-header">
           <h2>What Our Users Say</h2>
           <p>Hear from satisfied users who have transformed how they park and rent out their spaces.</p>
         </div>
-        <div class="testimonials-container">
-          <div class="testimonial">
+        <div className="testimonials-container">
+          <div className="testimonial">
             
-            <div class="testimonial-content">
+            <div className="testimonial-content">
               <p>"This service has completely changed the way I park. It's so convenient to reserve a spot ahead of time!"</p>
               <h4>- Alex J.</h4>
-              <div class="rating">
+              <div className="rating">
                 <span>&#9733;</span>
                 <span>&#9733;</span>
                 <span>&#9733;</span>
@@ -189,12 +189,12 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div class="testimonial">
+          <div className="testimonial">
             
-            <div class="testimonial-content">
+            <div className="testimonial-content">
               <p>"Listing my parking space has been a great way to earn some extra income. Highly recommend!"</p>
               <h4>- Maria S.</h4>
-              <div class="rating">
+              <div className="rating">
                 <span>&#9733;</span>
                 <span>&#9733;</span>
                 <span>&#9733;</span>
@@ -203,12 +203,12 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div class="testimonial">
+          <div className="testimonial">
             
-            <div class="testimonial-content">
+            <div className="testimonial-content">
               <p>"Finding a parking spot is no longer a hassle. The app is easy to use and very reliable."</p>
               <h4>- John D.</h4>
-              <div class="rating">
+              <div className="rating">
                 <span>&#9733;</span>
                 <span>&#9733;</span>
                 <span>&#9733;</span>
@@ -220,11 +220,11 @@ const Home = () => {
         </div>
       </section>
 
-      <section class="call-to-action">
-        <div class="cta-content">
+      <section className="call-to-action">
+        <div className="cta-content">
           <h2>Get Started Today</h2>
           <p>Sign up now to find your perfect parking spot or list your space for rent. Experience the future of parking with our smart solution.</p>
-          <a href="#signup" class="cta-button">Sign Up Now</a>
+          <a href="#signup" className="cta-button">Sign Up Now</a>
         </div>
       </section>
 
@@ -251,64 +251,64 @@ const Home = () => {
           ))}
         </div>
       </section>
-      <section class="partners">
-        <div class="section-header">
+      <section className="partners">
+        <div className="section-header">
           <h2>Our Partners</h2>
           <p>We collaborate with industry leaders to bring you the best parking solutions.</p>
         </div>
-        <div class="partners-scroll">
-          <div class="partners-list">
-            <div class="partner-item">
+        <div className="partners-scroll">
+          <div className="partners-list">
+            <div className="partner-item">
               <img src={Partner1} alt="Partner 1" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner2} alt="Partner 2" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner3} alt="Partner 3" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner4} alt="Partner 4" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner1} alt="Partner 1" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner2} alt="Partner 2" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner3} alt="Partner 3" />
             </div>
-            <div class="partner-item">
+            <div className="partner-item">
               <img src={Partner4} alt="Partner 4" />
             </div>
           </div>
         </div>
       </section>
 
-      <section class="contact-us">
-        <div class="section-header">
+      {/* <section className="contact-us">
+        <div className="section-header">
           <h2>Contact Us</h2>
           <p>We're here to help. Reach out to us with any questions or concerns.</p>
         </div>
-        <div class="contact-form-container">
-          <form class="contact-form">
-            <div class="form-group">
-              <label for="name">Name</label>
+        <div className="contact-form-container">
+          <form className="contact-form">
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
               <input type="text" id="name" name="name" required />
             </div>
-            <div class="form-group">
-              <label for="email">Email</label>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
               <input type="email" id="email" name="email" required />
             </div>
-            <div class="form-group">
-              <label for="message">Message</label>
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
               <textarea id="message" name="message" rows="5" required></textarea>
             </div>
             <button type="submit">Send Message</button>
           </form>
         </div>
-      </section>
+      </section> */}
 
       <Footer/>
     </>

@@ -4,14 +4,14 @@ import "../styles/Footer.css";
 const Footer = () => {
   return (
     <>
-      <footer class="footer">
-        <div class="footer-container">
-          <div class="footer-logo">
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-logo">
             <h1>Parkify</h1>
             <p>Your smart solution for parking.</p>
           </div>
-          <div class="footer-links">
-            <div class="footer-section">
+          <div className="footer-links">
+            <div className="footer-section">
               <h3>Quick Links</h3>
               <ul>
                 <li>
@@ -22,15 +22,15 @@ const Footer = () => {
                 </li>
 
                 <li>
-                  <Link to="">List your Space</Link>
+                  <Link to="/profile/listyourspace">List your Space</Link>
                 </li>
               </ul>
             </div>
-            <div class="footer-section">
+            <div className="footer-section">
               <h3>Contact Us</h3>
               <ul>
                 <li>
-                  <Link to="">info@example.com</Link>
+                  <Link to="" mailTo>info@example.com</Link>
                 </li>
                 <li>
                   <Link to="123456789">+123 456 789</Link>
@@ -38,26 +38,26 @@ const Footer = () => {
                 <li>123 Main Street, City</li>
               </ul>
             </div>
-            <div class="footer-section">
+            <div className="footer-section">
               <h3>Follow Us</h3>
-              <div class="social-media">
+              <div className="social-media">
                 <Link to="">
-                  <i class="fab fa-facebook-f"></i>
+                  <i className="fab fa-facebook-f"></i>
                 </Link>
                 <Link to="">
-                  <i class="fab fa-twitter"></i>
+                  <i className="fab fa-twitter"></i>
                 </Link>
                 <Link to="">
-                  <i class="fab fa-instagram"></i>
+                  <i className="fab fa-instagram"></i>
                 </Link>
                 <Link to="">
-                  <i class="fab fa-linkedin-in"></i>
+                  <i className="fab fa-linkedin-in"></i>
                 </Link>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer-bottom">
+        <div className="footer-bottom">
           <p>&copy; 2024 Smart Parking. All rights reserved.</p>
         </div>
       </footer>

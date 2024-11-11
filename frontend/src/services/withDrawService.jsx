@@ -10,7 +10,7 @@ export const withDrawRequest = async (data) => {
         Authorization: `Bearer ${token}`, // Add the token to the Authorization header
       },
     };
-    console.log(config)
+    //console.log(config)
     // const response = await axios.post(
     //   `${API_URL}/request`,
     //   data,
@@ -18,12 +18,12 @@ export const withDrawRequest = async (data) => {
     // );
     const response = await axios.post(`${API_URL}/request`,data,config);
 
-    console.log("response in service");
-    console.log(response);
+    //console.log("response in service");
+    //console.log(response);
     return response;
   } catch (error) {
-    console.log("error");
-    console.log(error);
+    //console.log("error");
+    //console.log(error);
   }
 };
 
@@ -41,6 +41,6 @@ export const getWithdrawRequest = async () => {
       return response.data;
     }
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
   }
 };

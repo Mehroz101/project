@@ -51,7 +51,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
   //   // Add double-click event listener to map
   //   mapRef.current.on("click", (e) => {
   //     const { lng, lat } = e.lngLat; // Get longitude and latitude of the clicked point
-  //     console.log("Double-clicked at:", lng, lat); // Log for debugging
+  //     //console.log("Double-clicked at:", lng, lat); // Log for debugging
 
   //     // Update the search location and fetch nearby spaces
   //     setSearchLocation({ latitude: lat, longitude: lng });
@@ -94,7 +94,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
     // Add single-click event listener to the map
     mapRef.current.on("click", (e) => {
       const { lng, lat } = e.lngLat; // Get longitude and latitude of the clicked point
-      console.log("Clicked at:", lng, lat); // Log for debugging
+      //console.log("Clicked at:", lng, lat); // Log for debugging
   
       // Remove the previous marker if it exists
       if (currentMarker) {
@@ -130,7 +130,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
   // Fetch location based on user input
   useEffect(() => {
     const fetchLocation = async () => {
-      if (!searchInput.trim()) return;
+      if (!searchInput?.trim()) return;
 
       try {
         const response = await axios.get(

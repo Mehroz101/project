@@ -19,10 +19,10 @@ export const useResetForm = () => {
   };
 
   const handleSubmit = async (e) => {
-    // console.log(token);
+    // //console.log(token);
     userDetail.token = token;
     e.preventDefault();
-    console.log(userDetail.password);
+    //console.log(userDetail.password);
     try {
       const response = await resetPass({
         token: userDetail.token,
@@ -132,7 +132,7 @@ export const useResetForm = () => {
         }
       } else if (error.request) {
         // Handle network errors
-        console.log(error);
+        //console.log(error);
         notify(
           "error",
           `Network error: Please check your connection and try again. `

@@ -29,11 +29,11 @@ const UpdateFile = ({ onFilesChange, initialFiles }) => {
   // Handle new image selection, ensuring total images don't exceed 4
   const handleNewImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    console.log("selectedFiles");
-    console.log(selectedFiles.map((file)=>file.name));
-    console.log(selectedFiles);
-    console.log("initialFiles");
-    console.log(initialFiles);
+    //console.log("selectedFiles");
+    //console.log(selectedFiles.map((file)=>file.name));
+    //console.log(selectedFiles);
+    //console.log("initialFiles");
+    //console.log(initialFiles);
     // Combine existing and new images, ensuring the total does not exceed 4
     const newImages = selectedFiles.slice(0, 4 - existingImages.length);
 

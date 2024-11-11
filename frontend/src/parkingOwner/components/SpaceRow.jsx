@@ -25,9 +25,9 @@ const SpaceRow = ({
   //   const totalPending = 0;
   //   const totalBookings = 0;
   // const totalConfirmed = 0;
-  console.log("reservations");
-  console.log("spaceInfo");
-  console.log(spaceInfo);
+  //console.log("reservations");
+  //console.log("spaceInfo");
+  //console.log(spaceInfo);
   // Toggle space status
   const toggleStatus = async (e) => {
     e.preventDefault(); // Prevent default link behavior

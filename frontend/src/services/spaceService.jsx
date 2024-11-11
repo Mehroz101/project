@@ -27,7 +27,7 @@ export const createSpace = async (formData) => {
     }
     // return response;
   } catch (error) {
-    // console.log(error)
+    // //console.log(error)
     // Handle specific status codes or default to general error
     if (error.response) {
       switch (error.response.status) {
@@ -60,13 +60,13 @@ export const createSpace = async (formData) => {
 
 export const getSpace = async (spaceId = null) => {
   if (spaceId == null) {
-    console.log("service page: " + spaceId);
+    //console.log("service page: " + spaceId);
     try {
       const response = await axios.get(`${API_URL}/show`, config);
 
       // Check the status code and notify accordingly
       if (response.status === 200) {
-        console.log(response.data.data);
+        //console.log(response.data.data);
         return response;
       } else if (response.status === 204) {
         notify("info", "No spaces found.");
@@ -107,7 +107,7 @@ export const getSpace = async (spaceId = null) => {
     }
   } else {
     try {
-      console.log("req page:=> " + spaceId);
+      //console.log("req page:=> " + spaceId);
       const response = await axios.get(
         `${API_URL}/getspacedetail/${spaceId}`,
         config
@@ -115,22 +115,22 @@ export const getSpace = async (spaceId = null) => {
    
       return response;
     } catch (error) {
-      console.log(error.message);
+      //console.log(error.message);
       notify("error" + error.message);
     }
   }
 };
 export const getSpaceForReservation = async (spaceId) => {
   try {
-    console.log("req page:=> " + spaceId);
+    //console.log("req page:=> " + spaceId);
     const response = await axios.get(
       `${API_URL}/getspacedetailforreservation/${spaceId}`
     );
-    console.log("response")
-    console.log(response)
+    //console.log("response")
+    //console.log(response)
     return response.data.data;
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     notify("error" + error.message);
   }
 };
@@ -152,7 +152,7 @@ export const toggleSpaceStatus = async (spaceId) => {
       config // Pass the config with headers
     );
     if (response.status === 200) {
-      console.log(response.data.message);
+      //console.log(response.data.message);
       notify("success", "Space status updated successfully!");
       return response.data.message;
     } else {
@@ -195,7 +195,7 @@ export const updateSpaceDetails = async (formData, spaceId) => {
       formData,
       config
     );
-    console.log(response);
+    //console.log(response);
     if (response.status === 201) {
       notify("success", "Space update successfully");
       return 201;
@@ -216,7 +216,7 @@ export const handleDelete = async (spaceId) => {
     }
     return response.data;
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     notify("error" + error.message);
   }
 };
@@ -224,7 +224,7 @@ export const handleDelete = async (spaceId) => {
 export const getallspaces = async () => {
   try {
     const response = await axios.get(`${API_URL}/getallspaces`, config);
-    console.log(response);
+    //console.log(response);
     if (response.status === 201) return response.data.data;
     // return response.data.data;
   } catch (error) {
@@ -251,12 +251,12 @@ export const getallspaces = async () => {
 export const getSpaceReviews = async (spaceId) => {
   try {
     const response = await axios.get(`${API_URL}/getspacereviews/${spaceId}`);
-    console.log(response)
+    //console.log(response)
     if (response.status === 201) {
       return response.data;
     }
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
   }
 };
 
@@ -265,6 +265,6 @@ export const getAllReviews = async () =>{
     const response = await axios.get(`${API_URL}/getallspacereview`)
     return response.data
   } catch (error) {
-    console.log(error.message)
+    //console.log(error.message)
   }
 }

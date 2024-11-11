@@ -49,7 +49,7 @@ const handleSearchChange = (e) => {
   };
 
   const updateListView = (state) => {
-    console.log(state)
+    //console.log(state)
     setActiveFilter(state);
     if (state === "all") {
       setFilteredData(reservation);
@@ -62,12 +62,12 @@ const handleSearchChange = (e) => {
   
 
   const handleCancelReservation = async (reservartionId) => {
-    console.log(reservartionId);
+    //console.log(reservartionId);
     await cancelReservation(reservartionId);
     // getreservationData();
   };
   const handleConfirmReservation = async (reservartionId) => {
-    console.log(reservartionId);
+    //console.log(reservartionId);
     await confirmReservation(reservartionId);
     // getreservationData();
   };
@@ -75,8 +75,8 @@ const handleSearchChange = (e) => {
  
   useEffect(() => {
     if (reservation) {
-      console.log("reservation")
-      console.log(reservation)
+      //console.log("reservation")
+      //console.log(reservation)
       setFilteredData(reservation);
     }
   }, [reservation]);
