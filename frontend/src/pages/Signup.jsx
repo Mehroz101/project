@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSignupForm } from "../services/useSignupForm";
 import { notifyPromise } from "../services/errorHandlerService";
 
@@ -18,6 +18,11 @@ const Signup = () => {
   //     error: "Failed to signup!",
   //   });
   // };
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1); // This will navigate to the previous page
+  };
 
   return (
     <>
