@@ -1,17 +1,19 @@
+const { default: mongoose } = require("mongoose");
 const reservation = require("../models/Reservation");
 const review = require("../models/Review");
 const space = require("../models/Space");
+const emitReservationMessage = require("../utils/emitReservationMessage");
+const { ObjectId } = require("mongodb"); // or mongoose if you're using mongoose
 
 const createCustomReservation = async (req, res) => {
-  console.log(req.user.id);
-  console.log(req.body);
+  //console.log(req.user.id);
+  //console.log(req.body);
   try {
-    const user = req.user.id;
-    if (!user) {
-      console.log("User not found");
+    const userId = req.user.id;
+    if (!userId) {
+      //console.log("User not found");
       return res.status(401).json();
     }
-    const userId = req.user.id;
     const {
       spaceId,
       name,
@@ -24,7 +26,7 @@ const createCustomReservation = async (req, res) => {
       leaveDate,
       totalPrice,
     } = req.body;
-    console.log(req.body);
+    //console.log(req.body);
     if (
       !spaceId ||
       !name ||
@@ -53,19 +55,30 @@ const createCustomReservation = async (req, res) => {
       totalPrice,
       isCustom: true,
     });
+
     const response = await createReservation.save();
     const io = req.app.get("io");
+    var spaces = await space.findById(spaceId);
+    spaces = spaces.userId;
+    const objectId = new ObjectId(spaces);
+    spaces = objectId.toString();
 
     // Emit an event to notify clients about the space status change
-    io.emit("reservationUpdated", {
-      message: "reservation created",
-    });
-    // console.log(createReservation)
+
+    await emitReservationMessage(
+      io,
+      userId,
+      spaces,
+      "reservationUpdated",
+      "Your custom reservation has been created.",
+      ""
+    );
+    // //console.log(createReservation)
     return res.status(201).json({
       message: "Reservation created successfully",
     });
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     return res.status(500).json();
   }
 };
@@ -82,49 +95,56 @@ const getReservation = async (req, res) => {
       .populate("userId", "fName email");
 
     if (!response) {
-      console.log("error");
+      //console.log("error");
       return res.status(404).json();
     }
     return res.status(200).json({ response });
   } catch (error) {
-    console.log(error);
-    console.log(error.message);
+    //console.log(error);
+    //console.log(error.message);
     return res.status(500).json();
   }
 };
 const cancelReservation = async (req, res) => {
   try {
-    // Extract reservationId from req.body
-    const { reservartionId } = req.body;
-    console.log("reservationId");
-    console.log(reservartionId);
+    const io = req.app.get("io");
+    const { reservationId } = req.body;
 
-    // Check if reservationId is provided
-    if (!reservartionId) {
+    if (!reservationId) {
       return res.status(400).json({ message: "Reservation ID is required" });
     }
 
-    // Find reservation by ID
-    const getreservation = await reservation.findById(reservartionId); // Use the correct model name
-    // Check if reservation exists
-    if (!getreservation) {
+    const reservations = await reservation.findById(reservationId);
+    if (!reservations) {
       return res.status(404).json({ message: "Reservation not found" });
     }
 
-    // Update reservation state
-    getreservation.state = "cancelled";
+    const spaces = await space.findById(reservations.spaceId);
+    if (!spaces) {
+      return res.status(404).json({ message: "Space not found" });
+    }
 
-    // Save the updated reservation
-    await getreservation.save();
-    const io = req.app.get("io");
+    reservations.state = "cancelled";
+    await reservations.save();
 
-    // Emit an event to notify clients about the space status change
-    io.emit("reservationUpdated", {
-      message: "reservation canceled",
+    var reservationUserId = reservations.userId;
+    var spaceOwnerId = spaces.userId;
+    reservationUserId = new ObjectId(reservationUserId);
+    reservationUserId = reservationUserId.toString();
+    spaceOwnerId = new ObjectId(spaceOwnerId);
+    spaceOwnerId = spaceOwnerId.toString();
+    await emitReservationMessage(
+      io,
+      reservationUserId,
+      spaceOwnerId,
+      "reservationUpdated",
+      "Your reservation has been cancelled.",
+      "A reservation for your space has been cancelled."
+    );
+
+    return res.status(200).json({
+      message: "Reservation cancelled successfully, notifications sent.",
     });
-    return res
-      .status(200)
-      .json({ message: "Reservation cancelled successfully" });
   } catch (error) {
     console.log(error.message);
     return res
@@ -134,10 +154,11 @@ const cancelReservation = async (req, res) => {
 };
 const confirmReservation = async (req, res) => {
   try {
+    const userId = req.user.id;
     // Extract reservationId from req.body
     const { reservartionId } = req.body;
-    console.log("reservationId");
-    console.log(reservartionId);
+    //console.log("reservationId");
+    //console.log(reservartionId);
 
     // Check if reservationId is provided
     if (!reservartionId) {
@@ -159,15 +180,27 @@ const confirmReservation = async (req, res) => {
     await getreservation.save();
     const io = req.app.get("io");
 
+    var spaceOwnerId = await space.findById(getreservation.spaceId);
+    spaceOwnerId = spaceOwnerId.userId.toString();
+
+    var reservationuserId = new ObjectId(getreservation.userId);
+    reservationuserId = reservationuserId.toString();
+
     // Emit an event to notify clients about the space status change
-    io.emit("reservationUpdated", {
-      message: "reservation confirmed",
-    });
+    await emitReservationMessage(
+      io,
+      reservationuserId,
+      spaceOwnerId,
+      "reservationUpdated",
+      "Your reservation is confirmed. Please arrived on time",
+      "Reservation is confirmed"
+    );
+
     return res
       .status(200)
       .json({ message: "Reservation confirmed successfully" });
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     return res
       .status(500)
       .json({ message: "An error occurred while cancelling the reservation" });
@@ -189,16 +222,16 @@ const getReservationData = async (req, res) => {
     }
     return res.status(200).json({ response });
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     return res.status(500).json({ message: "Server error" });
   }
 };
 const createReservation = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log("userId: ", userId)
+    //console.log("userId: ", userId)
     if (!userId) {
-      console.log("User not found");
+      //console.log("User not found");
       return res.status(401).json();
     }
     const {
@@ -213,7 +246,7 @@ const createReservation = async (req, res) => {
       leaveDate,
       totalPrice,
     } = req.body;
-    console.log(req.body);
+    //console.log(req.body);
     if (
       !spaceId ||
       !name ||
@@ -252,17 +285,24 @@ const createReservation = async (req, res) => {
     });
     const response = await createReservation.save();
     const io = req.app.get("io");
-
     // Emit an event to notify clients about the space status change
-    io.emit("reservationUpdated", {
-      message: "reservation created by user",
-    });
+    var spaceOwnerId = new ObjectId(isSpace.userId);
+    spaceOwnerId = spaceOwnerId.toString();
+    await emitReservationMessage(
+      io,
+      userId,
+      spaceOwnerId,
+      "reservationUpdated",
+      "Reservation is created. We will notify you after confirmation",
+      "New reservation resquest is recieved"
+    );
+
     return res.status(201).json({
       message: "Reservation created successfully",
       response,
     });
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
     return res.status(500).json();
   }
 };
@@ -278,13 +318,13 @@ const getUserReservation = async (req, res) => {
       .populate("reviewId", "rating");
 
     if (!response) {
-      console.log("error");
+      //console.log("error");
       return res.status(404).json();
     }
     return res.status(200).json({ response });
   } catch (error) {
-    console.log(error);
-    console.log(error.message);
+    //console.log(error);
+    //console.log(error.message);
     return res.status(500).json();
   }
 };
@@ -297,21 +337,22 @@ const getAllReservation = async (req, res) => {
     // } else {
     const response = await reservation.find();
     if (!response) {
-      console.log("error");
+      //console.log("error");
       return res.status(404).json();
     }
     return res.status(201).json({ response });
   } catch (error) {
     // }
-    console.log(error.message);
+    //console.log(error.message);
   }
 };
 const reservedReservation = async (req, res) => {
   const { reservationId } = req.body; // Expecting the new state in the request body
   try {
+    const userId = req.user.id;
     // Find the reservation by ID
     const isReservation = await reservation.findById(reservationId);
-    console.log("reservationId");
+    //console.log("reservationId");
 
     if (!isReservation) {
       return res.status(404).json({ message: "Reservation not found" });
@@ -324,11 +365,18 @@ const reservedReservation = async (req, res) => {
     await isReservation.save();
     const io = req.app.get("io");
 
+    var spaceOwnerId = await space.findById(isReservation.spaceId);
+    spaceOwnerId = new ObjectId(spaceOwnerId.userId);
+    spaceOwnerId = spaceOwnerId.toString();
+    await emitReservationMessage(
+      io,
+      userId,
+      spaceOwnerId,
+      "reservationUpdated",
+      "Reservation is reserved. Your times start now.",
+      "Reservation is reserved by user"
+    );
     // Emit a socket event to notify clients of the update (if using Socket.io)
-    io.emit("reservationUpdated", {
-      message: "Reservation status updated",
-      isReservation: isReservation,
-    });
 
     return res.status(200).json({
       message: "Reservation status updated successfully",
@@ -344,23 +392,24 @@ const reservedReservation = async (req, res) => {
 
 const getSpaceSpecificReservations = async (req, res) => {
   const { spaceId } = req.params;
-  console.log("response");
-  console.log(spaceId);
+  //console.log("response");
+  //console.log(spaceId);
   try {
     const response = await reservation.find({ spaceId: spaceId });
     res.status(200).json(response);
   } catch (error) {
-    console.log(error.messgae);
+    //console.log(error.messgae);
   }
 };
 const postReview = async (req, res) => {
   try {
+    console.log("review function called");
+
     const userId = req.user.id;
     if (!userId) {
       return res.status(401).json();
     }
     const { rating, msg, reservationId, spaceId } = req.body;
-    console.log(req.body);
     const isSpace = await space.findById(spaceId);
     if (isSpace) {
       const isReservation = await reservation.findById(reservationId);
@@ -377,25 +426,30 @@ const postReview = async (req, res) => {
           await reservation.findByIdAndUpdate(reservationId, {
             reviewId: Review._id,
           });
-          //calculate average review  
-          const reviews = await review.find({spaceId:spaceId});
+
+          //calculate average review
+          const reviews = await review.find({ spaceId: spaceId });
           let total = 0;
-          for(let i = 0; i < reviews.length; i++){
+          for (let i = 0; i < reviews.length; i++) {
             total += reviews[i].rating;
           }
           const avg = (total / reviews.length).toFixed(1);
 
           await space.findByIdAndUpdate(spaceId, {
-            averageRating: avg
-            });
-
-          
-          const io = req.app.get("io");
-          io.emit("reviewUpdate", {
-            message: "Review is given",
-            spaceId: spaceId,
-            reservationId: reservationId,
+            averageRating: avg,
           });
+          const spaceResponse = await space.findById(spaceId);
+          var ownerSpaceId = new ObjectId(spaceResponse.userId);
+          ownerSpaceId = ownerSpaceId.toString();
+
+          const io = req.app.get("io");
+          await io.emit("reviewUpdate", {
+            userId: ownerSpaceId,
+            message: `A new ${rating}.0 star review is given`,
+            rating: rating,
+            reviewMsg: msg,
+          });
+
           return res.status(200).json({
             message: "Review Submitted successfully",
             response,
@@ -416,26 +470,25 @@ const postReview = async (req, res) => {
     res.status(501).json();
   }
 };
-const getReservationReview = async (req,res) =>{
+const getReservationReview = async (req, res) => {
   try {
-      const {reservationId} = req.params
-      console.log("reservationId")
-      console.log(reservationId)
-      const response =await review.findOne({reservationId:reservationId})  
-      if(response){
-        console.log("review found")
-        console.log(response)
-        res.status(201).json(response)
-      } 
-      else{
-        console.log("review not found")
-        res.status(404).json()
-      }
+    const { reservationId } = req.params;
+    //console.log("reservationId")
+    //console.log(reservationId)
+    const response = await review.findOne({ reservationId: reservationId });
+    if (response) {
+      //console.log("review found")
+      //console.log(response)
+      res.status(201).json(response);
+    } else {
+      //console.log("review not found")
+      res.status(404).json();
+    }
   } catch (error) {
-    res.status(500).json()
-    console.log(error.message)
+    res.status(500).json();
+    //console.log(error.message)
   }
-}
+};
 module.exports = {
   createReservation,
   createCustomReservation,
@@ -448,5 +501,5 @@ module.exports = {
   reservedReservation,
   getSpaceSpecificReservations,
   postReview,
-  getReservationReview
+  getReservationReview,
 };

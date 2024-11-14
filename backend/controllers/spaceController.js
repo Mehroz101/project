@@ -2,19 +2,19 @@ const Space = require("../models/Space"); // Import your Space model
 const fs = require("fs");
 const path = require("path");
 const review = require("../models/Review");
+const emitReservationMessage = require("../utils/emitReservationMessage");
 // const io = require("socket.io"); // Attach to your server
 // Get the Socket.io instance from the app
 // Create a new space
 const createSpace = async (req, res) => {
   try {
-    const user = req.user.id;
-    if (!user) {
-      console.log("User not found");
+    const userId = req.user.id;
+    if (!userId) {
+      //console.log("User not found");
       return res.status(401).json();
     }
-    console.log(req);
+    //console.log(req);
 
-    const userId = user;
     const {
       title,
       short_description,
@@ -64,10 +64,14 @@ const createSpace = async (req, res) => {
     const data = await newSpace.save();
     const io = req.app.get("io");
 
-    // Emit an event to notify clients about the space status change
-    io.emit("spaceUpdated", {
-      message: "Space status updated",
-    });
+    await emitReservationMessage(
+      io,
+      userId,
+      userId,
+      "spaceUpdated",
+      "",
+      "New space is live now"
+    );
     return res.status(201).json({ data });
   } catch (error) {
     console.error("Server error:", error.message);
@@ -77,7 +81,7 @@ const createSpace = async (req, res) => {
 const showSpace = async (req, res) => {
   try {
     const user = req.user.id;
-    console.log(user);
+    //console.log(user);
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -98,7 +102,8 @@ const showSpace = async (req, res) => {
 const toggleSpaceStatus = async (req, res) => {
   try {
     const { spaceId } = req.body;
-    console.log("Space ID:", req);
+    const userId = req.user.id;
+    console.log("user ID:", userId);
 
     const space = await Space.findById(spaceId);
     if (!space) {
@@ -107,15 +112,17 @@ const toggleSpaceStatus = async (req, res) => {
 
     // Toggle the state
     space.state = space.state === "active" ? "deactivated" : "active";
-    await space.save();
     const io = req.app.get("io");
+    await emitReservationMessage(
+      io,
+      userId,
+      userId,
+      "spaceUpdated",
+      "",
+      `Space is ${space.state === "active" ? "active" : "deactived"} now`
+    );
+    await space.save();
 
-    // Emit an event to notify clients about the space status change
-    io.emit("spaceUpdated", {
-      spaceId: spaceId,
-      status: space.state,
-      message: "Space status updated",
-    });
     res.status(200).json({ message: "Space status updated", data: space });
   } catch (error) {
     console.error("Error toggling space status:", error);
@@ -124,14 +131,14 @@ const toggleSpaceStatus = async (req, res) => {
 };
 const getspacedetail = async (req, res) => {
   const { spaceId } = req.params;
-  console.log(spaceId);
+  //console.log(spaceId);
   try {
     const space = await Space.findById(spaceId);
     if (space) {
       return res.status(201).json({ space });
     }
   } catch (error) {
-    console.log(error.message);
+    //console.log(error.message);
   }
 };
 
@@ -188,11 +195,11 @@ const updateSpaceDetails = async (req, res) => {
             if (err) {
               console.error(`Failed to delete image ${img}:`, err);
             } else {
-              console.log(`Deleted image: ${img}`);
+              //console.log(`Deleted image: ${img}`);
             }
           });
         } else {
-          console.log(`File ${imagePath} does not exist, skipping deletion.`);
+          //console.log(`File ${imagePath} does not exist, skipping deletion.`);
         }
       }
 
@@ -210,12 +217,15 @@ const updateSpaceDetails = async (req, res) => {
     const response = await space.save();
     const io = req.app.get("io");
 
-    // Emit an event to notify clients about the space status change
-    io.emit("spaceUpdated", {
-      spaceId: spaceId,
-      status: space.state,
-      message: "Space detail updated",
-    });
+    await emitReservationMessage(
+      io,
+      userId,
+      userId,
+      "spaceUpdated",
+      "",
+      `Space detail updated successfully`
+    );
+
     res.status(201).json({ message: "Space updated successfully", response });
   } catch (error) {
     console.error("Error updating space details:", error.message);
@@ -231,12 +241,15 @@ const deleteSpace = async (req, res) => {
     }
     const io = req.app.get("io");
 
-    // Emit an event to notify clients about the space status change
-    io.emit("spaceUpdated", {
-      spaceId: spaceId,
-      status: space.state,
-      message: "Space deleted",
-    });
+    await emitReservationMessage(
+      io,
+      userId,
+      userId,
+      "spaceUpdated",
+      "",
+      `Space deleted successfully`
+    );
+
     res.status(200).json({ message: "Space deleted successfully" });
   } catch (error) {
     console.error("Error deleting space:", error.message);
@@ -267,8 +280,6 @@ const getspacedetailforreservation = async (req, res) => {
   const { spaceId } = req.params;
 
   try {
-    
-
     const spaces = await Space.findById(spaceId);
     if (spaces.length === 0) {
       return res.status(404).json();
@@ -283,24 +294,25 @@ const getspacedetailforreservation = async (req, res) => {
   }
 };
 
-const getSpaceReviews = async (req,res)=>{
-  const {spaceId} = req.params;
+const getSpaceReviews = async (req, res) => {
+  const { spaceId } = req.params;
   try {
-    const response = await review.find({spaceId:spaceId}).populate("userId", "fName")
-    res.status(201).json(response)
+    const response = await review
+      .find({ spaceId: spaceId })
+      .populate("userId", "fName");
+    res.status(201).json(response);
   } catch (error) {
-    console.log(error.message)
+    //console.log(error.message)
   }
-}
-const getAllReviews = async (req,res)=>{
+};
+const getAllReviews = async (req, res) => {
   try {
     const response = await review.find();
     res.status(201).json(response);
-
   } catch (error) {
-    console.log(error.message)
+    //console.log(error.message)
   }
-}
+};
 
 module.exports = {
   createSpace,
@@ -312,5 +324,5 @@ module.exports = {
   getallspaces,
   getspacedetailforreservation,
   getSpaceReviews,
-  getAllReviews
+  getAllReviews,
 };

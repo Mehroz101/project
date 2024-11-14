@@ -44,11 +44,11 @@ const uploadMiddleware = (req, res, next) => {
       }
        else {
         // Other errors
-        console.log(err.message);
+        //console.log(err.message);
         return res.status(500).json({ message: 'An error occurred while uploading files.' });
       }
     }
-    // console.log("uploaded")
+    // //console.log("uploaded")
     next();
   });
 }

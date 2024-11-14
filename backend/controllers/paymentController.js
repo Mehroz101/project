@@ -2,6 +2,7 @@ const Reservation = require("../models/Reservation");
 const User = require("../models/User");
 const Payment = require("../models/Payment");
 const Space = require("../models/Space");
+const emitReservationMessage = require("../utils/emitReservationMessage");
 
 const withdrawRequest = async (req, res) => {
   try {
@@ -9,7 +10,7 @@ const withdrawRequest = async (req, res) => {
     const { accountType, accountName, accountNumber, withdrawAmount } =
       req.body;
     const user_Id = req.user.id;
-    console.log(user_Id);
+    //console.log(user_Id);
     // Check for missing fields
     if (!accountType || !accountName || !accountNumber || !withdrawAmount) {
       return res.status(400).json({
@@ -21,7 +22,7 @@ const withdrawRequest = async (req, res) => {
     // Fetch the user by ID
     const user = await User.findById(user_Id);
     if (!user) {
-      console.log("user not found");
+      //console.log("user not found");
       return res.status(404).json({
         message: "User not found.",
       });
@@ -42,7 +43,7 @@ const withdrawRequest = async (req, res) => {
       spaceId: { $in: spaceIds },
     });
 
-    console.log(reservations.map((res) => res));
+    //console.log(reservations.map((res) => res));
     // If no reservations found
     if (reservations.length === 0) {
       return res.status(404).json({
@@ -61,8 +62,8 @@ const withdrawRequest = async (req, res) => {
       }
       return acc;
     }, 0);
-    console.log(totalPrice);
-    console.log(parseFloat(withdrawAmount));
+    //console.log(totalPrice);
+    //console.log(parseFloat(withdrawAmount));
     // Ensure the requested withdraw amount matches the total withdrawable amount
     if (totalPrice !== parseFloat(withdrawAmount)) {
       return res.status(400).json({
@@ -89,14 +90,15 @@ const withdrawRequest = async (req, res) => {
       { $set: { withdrawn: true } }
     );
     const io = req.app.get("io");
-
-    io.emit("paymentUpdated", {
-      title:"payment",
-      message: "Payment request send",
-      data:withdrawAmount,
-      time:update.createdAt
-    });
-
+    await emitReservationMessage(
+      io,
+      user_Id,
+      user_Id,
+      "paymentUpdated",
+      "",
+      `Payment request send successfully`
+    );
+    
     // Return success response
     return res.status(200).json({
       message: "Withdraw request submitted successfully.",

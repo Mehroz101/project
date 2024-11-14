@@ -9,11 +9,8 @@ const { connectDB, checkDatabaseConnection } = require("./config/db");
 const path = require("path");
 const http = require("http");
 const socketIo = require("socket.io");
-// const attachSocketIo = require("./middleware/socketMiddleware"); // Import the middleware
 const reservation = require("./models/Reservation");
-// const {
-//   checkReservationStatus,
-// } = require("./controllers/reservationController");
+
 require("dotenv").config();
 
 const app = express();
@@ -33,7 +30,15 @@ app.use(express.json());
 connectDB();
 app.use(checkDatabaseConnection);
 app.set("io", io);
-// console.log("Socket.io initialized:", io);  // Log here to confirm io is initialized
+io.on("connection", (socket) => {
+// console.log("connected")
+// console.log(socket)
+
+  socket.on("disconnect", () => {
+      // Clean up on disconnect
+      // console.log("disconnected");
+  });
+});
 // Serve static files
 app.use(express.static(path.join(__dirname, "uploads")));
 // Expose the io instance to the whole app for use in routes/controllers
@@ -121,6 +126,3 @@ app.use("/api/user", userRoutes);
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-// server.listen(PORT,HOST, () => {
-//   console.log(`Server is running on port ${PORT} ${HOST}`);
-// });
