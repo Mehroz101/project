@@ -134,8 +134,8 @@ const MainApp = () => {
             </div>
           </div>
           <div className="app_listings">
-            {/* <div className="listing_filter_sort">
-              <select name="sort" id="sort">
+            <div className="listing_filter_sort">
+              {/* <select name="sort" id="sort">
                 <option>sort by</option>
                 <option value="price">Price</option>
                 <option value="distance">Distance</option>
@@ -144,14 +144,14 @@ const MainApp = () => {
                 <option>filter</option>
                 <option value="CCTV">CCTV</option>
                 <option value="guard">Guard</option>
-              </select>
+              </select> */}
               <button
                 className="toggle_btn"
                 onClick={() => setToggelbtn(!togglebtn)}
               >
                 {togglebtn ? "list" : "map"}
               </button>
-            </div> */}
+            </div>
             <div
               className={`${
                 togglebtn
