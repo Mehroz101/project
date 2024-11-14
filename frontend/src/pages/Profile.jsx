@@ -50,7 +50,7 @@ const Profile = () => {
                 to="message"
                 onClick={() => profileLinkClick("message")}
               >
-                Message
+                Notifications
               </Link>
             </li>
             <li>

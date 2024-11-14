@@ -63,7 +63,11 @@ const AppRoutes = () => {
         <Route index element={<AccountInformation />} />
         <Route path="booking" element={<ReservationHistory />} />
         <Route path="listyourspace" element={<ListyourSpace />} />
-        <Route path="message" element={<MessagesContainer />} />
+        <Route path="message" element={
+        <ParkingOwnerProvider>
+        <MessagesContainer />
+        </ParkingOwnerProvider>
+        }/>
       </Route>
 
       <Route path="/reservation/:spaceId" element={<Reservation />} />

@@ -159,20 +159,11 @@ export const ParkingOwnerProvider = ({ children }) => {
         getSpaceData();
       }
     });
-    // socket.on('reservationCancelled', (data) => {
-    //   console.log('Reservation cancelled event received:', data);
-    //   // Handle the message and update the UI
-    //   addNotification(data.message);
-    //   getReservationData();
-    //   getSpaceData();      
-    //   // Optionally, you can trigger a modal or update other components based on this message
-    //   alert(data.message);  // This will show the alert message
-    // });
 
     socket.on("spaceUpdated", (data) => {
-     console.log("updated")
-     console.log(data.userId)
-     console.log(docdedId)
+      console.log("updated");
+      console.log(data.userId);
+      console.log(docdedId);
       if (docdedId === data.userId) {
         addNotification(data.message);
       }
