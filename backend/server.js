@@ -59,6 +59,7 @@ const checkReservationStatus = async (req, res) => {
   try {
     const now = new Date();
     // console.log("checkReservationStatus run");
+    
     const reservationsConfirmed = await reservation.find({ state: "confirmed" });
     const reservationsReserved = await reservation.find({ state: "reserved" });
     reservationsConfirmed.forEach(async (reservation) => {

@@ -45,7 +45,6 @@
   flex-direction: row-reverse;
   border-radius: 10px;
   overflow: hidden;
-  background-color: red;
 
   box-shadow: rgba(17, 12, 0, 0.15) 0 48px 100px 0;
 }
@@ -58,6 +57,7 @@
   flex: 2;
   flex-direction: column;
   position: relative;
+  overflow: auto;
 }
 .login_logo a {
   position: absolute;
