@@ -158,7 +158,7 @@ const Reservation = () => {
                 </div>
               </div>
             </div>
-            <div className="payment_information">
+            {/* <div className="payment_information">
               <h2>Payment information</h2>
               <p>All Payment are Secure and Encrypted</p>
               <div className="payment_form">
@@ -195,7 +195,7 @@ const Reservation = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <button className="paynow_reserve">$7 - Pay now and reserve</button>
           </form>
         </div>
