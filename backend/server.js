@@ -58,12 +58,7 @@ const checkReservationStatus = async (req, res) => {
 
   try {
     const now = new Date();
-    // console.log("checkReservationStatus run");
-    const collectionExists = await reservation.collection.exists();
-    if (!collectionExists) {
-      // console.log("Reservation collection does not exist.");
-      return; // Exit if collection doesn't exist
-    }
+  
     const reservationsConfirmed = await reservation.find({ state: "confirmed" });
     const reservationsReserved = await reservation.find({ state: "reserved" });
     reservationsConfirmed.forEach(async (reservation) => {
