@@ -33,8 +33,20 @@ const checkDatabaseConnection = (req, res, next) => {
  
   next();
 };
+// Check if a collection exists by querying it
+const collectionExists = async (collectionName) => {
+  try {
+    // Use Mongoose to check if the collection exists by querying it
+    const count = await mongoose.connection.db.collection(collectionName).countDocuments();
+    return count > 0; // If count is greater than 0, the collection exists and has data
+  } catch (error) {
+    console.error("Error checking collection existence:", error);
+    return false; // In case of error, assume the collection does not exist
+  }
+};
 
 module.exports = {
   connectDB,
   checkDatabaseConnection,
+  collectionExists
 };

@@ -5,7 +5,7 @@ const userRoutes = require("./routes/userRoutes");
 const spaceRoutes = require("./routes/spaceRoutes");
 const reservationRoutes = require("./routes/reservationRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
-const { connectDB, checkDatabaseConnection } = require("./config/db");
+const { connectDB, checkDatabaseConnection, collectionExists } = require("./config/db");
 const path = require("path");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -51,14 +51,18 @@ const checkReservationStatus = async (req, res) => {
   // const io = req.app.get("io"); // Access io here
 
   if (!io) {
-    console.error("Socket.io instance is not available");
+    // console.error("Socket.io instance is not available");
     return res.status(500).json({ message: "Socket.io not initialized" });
   } // Log here to confirm io is initialized
   // console.log("Socket.io initialized:", io);
 
   try {
     const now = new Date();
-    // console.log("checkReservationStatus run");
+    // const exists = await collectionExists(reservation);
+    // if(!exists){
+    //   return
+    // }
+
     
     const reservationsConfirmed = await reservation.find({ state: "confirmed" });
     const reservationsReserved = await reservation.find({ state: "reserved" });
@@ -71,7 +75,7 @@ const checkReservationStatus = async (req, res) => {
       if (now >= arrivalTime) {
         reservation.state = "reserved"; // Update state to 'reserved'
         await reservation.save();
-        console.log("reserved");
+        // console.log("reserved");
         // Emit real-time updates using Socket.io (if applicable)
         if (io) {
           // Check if io exists before emitting
@@ -79,9 +83,9 @@ const checkReservationStatus = async (req, res) => {
             message: "Reservation status updated",
             reservation,
           });
-          console.log("update emit");
+          // console.log("update emit");
         } else {
-          console.error("Socket.io instance is undefined");
+          // console.error("Socket.io instance is undefined");
         }
       }
     });
@@ -94,7 +98,7 @@ const checkReservationStatus = async (req, res) => {
       if (now >= leaveTime) {
         reservation.state = "completed"; // Update state to 'reserved'
         await reservation.save();
-        console.log("completed");
+        // console.log("completed");
         // Emit real-time updates using Socket.io (if applicable)
         if (io) {
           // Check if io exists before emitting
@@ -102,14 +106,14 @@ const checkReservationStatus = async (req, res) => {
             message: "Reservation status updated",
             reservation,
           });
-          console.log("update emit");
+          // console.log("update emit");
         } else {
           console.error("Socket.io instance is undefined");
         }
       }
     });
   } catch (error) {
-    console.error("Error checking reservation status:", error);
+    // console.error("Error checking reservation status:", error);
   }
 };
 // You could run this function every minute (using setInterval or a cron job)

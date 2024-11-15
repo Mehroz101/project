@@ -143,6 +143,7 @@ const getspacedetail = async (req, res) => {
 };
 
 const updateSpaceDetails = async (req, res) => {
+  const userId= req.user.id;
   const { spaceId } = req.params;
   const {
     title,

@@ -34,48 +34,7 @@ const MapBox = ({ spaces, onShowDetail, getSpace }) => {
       return distance <= 5; // Only show spaces within 5 km
     });
   };
-
-  // Initialize Mapbox only once
-  // useEffect(() => {
-  //   mapboxgl.accessToken = TOKEN;
-
-  //   mapRef.current = new mapboxgl.Map({
-  //     container: mapContainerRef.current,
-  //     style: "mapbox://styles/mehrozfarooq/cm0g6qi11000z01pihk088cvz",
-  //     center: [viewPort.longitude, viewPort.latitude],
-  //     zoom: viewPort.zoom,
-  //   });
-
-  //   mapRef.current.addControl(new mapboxgl.NavigationControl());
-
-  //   // Add double-click event listener to map
-  //   mapRef.current.on("click", (e) => {
-  //     const { lng, lat } = e.lngLat; // Get longitude and latitude of the clicked point
-  //     //console.log("Double-clicked at:", lng, lat); // Log for debugging
-
-  //     // Update the search location and fetch nearby spaces
-  //     setSearchLocation({ latitude: lat, longitude: lng });
-  //     getSpace({ latitude: lat, longitude: lng });
-
-  //     // Update or create the search marker
-  //     if (searchMarker) {
-  //       // Remove the previous marker before adding a new one
-  //       searchMarker.remove();
-  //     }
-
-  //     const newMarker = new mapboxgl.Marker({ color: "green" })
-  //       .setLngLat([lng, lat])
-  //       .addTo(mapRef.current);
-  //     setSearchMarker(newMarker); // Update state with the new marker
-  //   });
-
-  //   return () => {
-  //     if (mapRef.current) {
-  //       mapRef.current.off("click"); // Clean up event listener on component unmount
-  //       mapRef.current.remove();
-  //     }
-  //   };
-  // }, []);
+  
   useEffect(() => {
     mapboxgl.accessToken = TOKEN;
   
