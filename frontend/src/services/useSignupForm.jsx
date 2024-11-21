@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { signupUser } from "../services/authService"; // Import the signup service
 import { notify } from "./errorHandlerService";
+import { useNavigate } from "react-router-dom";
 
 export const useSignupForm = () => {
   const [userDetail, setUserDetail] = useState({
@@ -8,8 +9,7 @@ export const useSignupForm = () => {
     password: "",
     confirmPassword: "",
   });
-
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserDetail((prevState) => {
@@ -34,26 +34,26 @@ export const useSignupForm = () => {
 
       if (response.status === 201) {
         notify("success", "login successfully");
-        // navigate("/login");
-      }
-      else{
-        switch(response.status){
+        navigate("/login");
+      } else {
+        switch (response.status) {
           case 402:
-            notify("error","password not match")
+            notify("error", "password not match");
             break;
-            case 409:
-              notify("error","user already exist")
-              break;
+          case 409:
+            notify("error", "user already exist");
+            break;
         }
       }
     } catch (error) {
-      switch(error.response.status){
+      console.log(error);
+      switch (error.response.status) {
         case 422:
-          notify("error","password not match")
+          notify("error", "password not match");
           break;
-          case 409:
-            notify("error","user already exist")
-            break;
+        case 409:
+          notify("error", "user already exist");
+          break;
       }
     }
   };

@@ -3,6 +3,15 @@ const User = require("../models/User");
 const Payment = require("../models/Payment");
 const Space = require("../models/Space");
 const emitReservationMessage = require("../utils/emitReservationMessage");
+var braintree = require("braintree");
+// const order = require("../models/OrderModel");
+
+// var gateway = new braintree.BraintreeGateway({
+//   environment: braintree.Environment.Sandbox,
+//   merchantId: process.env.Merchant_ID,
+//   publicKey: process.env.Public_Key,
+//   privateKey: process.env.Private_Key,
+// });
 
 const withdrawRequest = async (req, res) => {
   try {
@@ -98,7 +107,7 @@ const withdrawRequest = async (req, res) => {
       "",
       `Payment request send successfully`
     );
-    
+
     // Return success response
     return res.status(200).json({
       message: "Withdraw request submitted successfully.",
@@ -143,4 +152,49 @@ const getWithdrawRequest = async (req, res) => {
   }
 };
 
-module.exports = { withdrawRequest, getWithdrawRequest };
+const braintreeTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        return res.status(500).send(err);
+      } else {
+        return res.status(200).send(response);
+      }
+    });
+  } catch (error) {}
+};
+const braintreePaymentController = async (req, res) => {
+  try {
+    const { spaceId, nonce } = req.body;
+    let totalPrice = 0;
+    let newTranction = gateway.transaction.sale(
+      {
+        amount: totalPrice,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (err, result) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          const orders = new order({
+            spaceId,
+            userId: req.user.id,
+            totalAmount: totalPrice,
+            status: "completed",
+          }).save();
+          res.status(200).send(result);
+        }
+      }
+    );
+  } catch (error) {}
+};
+
+module.exports = {
+  withdrawRequest,
+  getWithdrawRequest,
+  braintreeTokenController,
+  braintreePaymentController,
+};

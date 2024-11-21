@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { resetPass } from "./authService"; // Import the signin service
 import { notify } from "./errorHandlerService"; // Import notify function
 
@@ -32,7 +32,7 @@ export const useResetForm = () => {
       if (response.status === 200) {
         notify("success", "Login successful!");
         // Optionally, navigate to a different route
-        // navigate("/dashboard");
+        navigate("/profile");
       } else {
         // Handle different response status codes
         switch (response.status) {

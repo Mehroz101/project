@@ -58,16 +58,6 @@ const checkReservationStatus = async (req, res) => {
 
   try {
     const now = new Date();
-<<<<<<< HEAD
-    // const exists = await collectionExists(reservation);
-    // if(!exists){
-    //   return
-    // }
-
-    
-=======
-  
->>>>>>> 04d0138355e8e2d701bb15d06d952f3c03834e1f
     const reservationsConfirmed = await reservation.find({ state: "confirmed" });
     const reservationsReserved = await reservation.find({ state: "reserved" });
     reservationsConfirmed.forEach(async (reservation) => {

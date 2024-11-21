@@ -4,7 +4,55 @@ const review = require("../models/Review");
 const space = require("../models/Space");
 const emitReservationMessage = require("../utils/emitReservationMessage");
 const { ObjectId } = require("mongodb"); // or mongoose if you're using mongoose
+const order = require("../models/OrderModel");
+var braintree = require("braintree");
 
+var gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.Merchant_ID,
+  publicKey: process.env.Public_Key,
+  privateKey: process.env.Private_Key,
+});
+const braintreeTokenController = async (req, res) => {
+  try {
+    gateway.clientToken.generate({}, function (err, response) {
+      if (err) {
+        return res.status(500).send(err);
+      } else {
+        return res.status(200).send(response);
+      }
+    });
+  } catch (error) {}
+};
+const braintreePaymentController = async (req, res) => {
+  try {
+    const { reservartionId, totalPrice, nonce } = req.body;
+    let newTranction = gateway.transaction.sale(
+      {
+        amount: totalPrice,
+        paymentMethodNonce: nonce,
+        options: {
+          submitForSettlement: true,
+        },
+      },
+      function (err, result) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          const orders = new order({
+            reservartionId,
+            userId: req.user.id,
+            totalAmount: totalPrice,
+            status: "completed",
+          }).save();
+          res.status(200).send(result);
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 const createCustomReservation = async (req, res) => {
   //console.log(req.user.id);
   //console.log(req.body);
@@ -502,4 +550,6 @@ module.exports = {
   getSpaceSpecificReservations,
   postReview,
   getReservationReview,
+  braintreeTokenController,
+  braintreePaymentController,
 };

@@ -11,7 +11,9 @@ const {
   reservedReservation,
   getSpaceSpecificReservations,
   postReview,
-  getReservationReview
+  getReservationReview,
+  braintreeTokenController,
+  braintreePaymentController,
 } = require("../controllers/reservationController");
 const authenticateToken = require("../middleware/authMiddleware");
 
@@ -27,10 +29,18 @@ router.get("/get", authenticateToken, getReservation);
 router.get("/getallreservation", getAllReservation);
 router.get("/getuserreservation", authenticateToken, getUserReservation);
 router.get("/get/:reservationId", authenticateToken, getReservationData);
-router.get("/getspacespecificreservation/:spaceId", getSpaceSpecificReservations);
+router.get(
+  "/getspacespecificreservation/:spaceId",
+  getSpaceSpecificReservations
+);
 router.get("/getreservationreview/:reservationId", getReservationReview);
 router.patch("/cancel", authenticateToken, cancelReservation);
 router.patch("/confirm", authenticateToken, confirmReservation);
 router.patch("/reserved", authenticateToken, reservedReservation);
-
+router.get("/braintree/token", braintreeTokenController);
+router.post(
+  "/braintree/payment",
+  authenticateToken,
+  braintreePaymentController
+);
 module.exports = router;

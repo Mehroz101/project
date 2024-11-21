@@ -42,7 +42,7 @@ const Signup = () => {
                 <h1>
                   Create an <span className="brand_name">Account</span>
                 </h1>
-                <button className="google_btn">
+                {/* <button className="google_btn">
                   <i className="fa-brands fa-google"></i>
                   <span>Sign in with Google</span>
                 </button>
@@ -50,7 +50,7 @@ const Signup = () => {
                   <div className="line"></div>
                   <span>or</span>
                   <div className="line"></div>
-                </div>
+                </div> */}
                 <p className="short_text">
                   Enter email and password to create an account
                 </p>

@@ -15,10 +15,10 @@ export const useForgetForm = () => {
 
   const handleSubmit = async (e) => {
     const promise = forgetPass({
-        email: userDetail.email,
-      });
-    
-      return promise; 
+      email: userDetail.email,
+    });
+
+    return promise;
     // e.preventDefault();
 
     // const myPromise = forgetPass({ email: userDetail.email });
@@ -47,22 +47,42 @@ export const useForgetForm = () => {
   const handleResponseErrors = (response) => {
     switch (response.status) {
       case 400:
-        notify("error", `Bad Request: ${response.data.message || "Please check your input."}`);
+        notify(
+          "error",
+          `Bad Request: ${response.data.message || "Please check your input."}`
+        );
         break;
       case 401:
-        notify("error", `Unauthorized: ${response.data.message || "Please log in again."}`);
+        notify(
+          "error",
+          `Unauthorized: ${response.data.message || "Please log in again."}`
+        );
         break;
       case 404:
-        notify("error", `Not Found: ${response.data.message || "Resource not found."}`);
+        notify(
+          "error",
+          `Not Found: ${response.data.message || "Resource not found."}`
+        );
         break;
       case 409:
-        notify("error", `Conflict: ${response.data.message || "Email already exists."}`);
+        notify(
+          "error",
+          `Conflict: ${response.data.message || "Email already exists."}`
+        );
         break;
       case 422:
-        notify("error", `Unprocessable Entity: ${response.data.message || "Password does not match."}`);
+        notify(
+          "error",
+          `Unprocessable Entity: ${
+            response.data.message || "Password does not match."
+          }`
+        );
         break;
       default:
-        notify("error", `Error: ${response.data.message || "Something went wrong."}`);
+        notify(
+          "error",
+          `Error: ${response.data.message || "Something went wrong."}`
+        );
         break;
     }
   };
@@ -71,7 +91,10 @@ export const useForgetForm = () => {
     if (error.response) {
       handleResponseErrors(error.response);
     } else if (error.request) {
-      notify("error", "Network error: Please check your connection and try again.");
+      notify(
+        "error",
+        "Network error: Please check your connection and try again."
+      );
     } else {
       notify("error", `Error: ${error.message}`);
     }

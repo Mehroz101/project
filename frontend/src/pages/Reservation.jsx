@@ -14,25 +14,44 @@ import {
   calculatePrice,
   reviewDateCalculator,
 } from "../parkingOwner/components/Functions";
-import AmountForm from "../services/paymentService";
+import DropIn from "braintree-web-drop-in-react-updated";
+
+const API_URL = import.meta.env.REACT_APP_API_URL;
+
+import axios from "axios";
+import { notify } from "../services/errorHandlerService";
+
 const Reservation = () => {
   const [space, setSpace] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [reservations, setReservations] = useState([]);
   const [price, setPrice] = useState(0);
+  const [clientToken, setClientToken] = useState("");
+  const [instance, setInstance] = useState("");
+  const [loading, setLoading] = useState(false);
   const { spaceId } = useParams();
   const navigate = useNavigate();
   const { handleChange, reservation, setReservation, handleSubmit } =
     useReservationForm();
-  const { setFormData, handlePaymentSubmit } = AmountForm();
   const handleSubmitForm = async (e) => {
-    console.log(space);
     try {
       e.preventDefault();
-      const paymentResponse = await handlePaymentSubmit();
+      if (
+        reservation.name === "" ||
+        reservation.email === "" ||
+        reservation.phoneNo === "" ||
+        reservation.vehicleNo === "" ||
+        reservation.arrivalTime === "" ||
+        reservation.arrivalDate === "" ||
+        reservation.leaveTime === "" ||
+        reservation.leaveDate === ""
+      ) {
+        return notify("warning", "All fields are required");
+      }
+      await handlePaySubmit();
       const response = await handleSubmit();
       if (response === 201) {
-        // navigate("/profile/booking");
+        navigate("/profile/booking");
       }
     } catch (error) {}
   };
@@ -46,6 +65,49 @@ const Reservation = () => {
     setReservations(response2);
   };
 
+  const getToken = async () => {
+    try {
+      console.log("called");
+      const { data } = await axios.get(
+        `${API_URL}/api/reservation/braintree/token`
+      );
+      setClientToken(data?.clientToken);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const handlePaySubmit = async () => {
+    try {
+      console.log("called");
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      setLoading(true);
+      const { nonce } = await instance.requestPaymentMethod();
+      const { data } = await axios.post(
+        `${API_URL}/api/reservation/braintree/payment`,
+        {
+          reservartionId: spaceId,
+          totalPrice: price,
+          nonce,
+        },
+        config
+      );
+      setLoading(false);
+      console.log(data);
+    } catch (error) {
+      setLoading(false);
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
   useEffect(() => {
     getSpace();
     setReservation((prev) => ({
@@ -73,12 +135,6 @@ const Reservation = () => {
       );
       total = Math.round(parseFloat(total));
       setPrice(total);
-
-      setFormData((prevData) => ({
-        ...prevData,
-        pp_Amount: total,
-      }));
-      console.log(total);
     }
   }, [space]);
 
@@ -178,47 +234,31 @@ const Reservation = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="payment_information">
+            <div className="payment_information">
               <h2>Payment information</h2>
-              <p>All Payment are Secure and Encrypted</p>
-              <div className="payment_form">
-                <div className="input_box">
-                  <label htmlFor="name">Cardholder Name</label>
-                  <input type="text" placeholder="Enter Cardholder Name" />
-                </div>
-                <div className="input_box">
-                  <label htmlFor="card_number">Card Name</label>
-                  <input type="number" placeholder="4111 111 111 111" />
-                </div>
-                <div className="input_combo_box">
-                  <div className="input_box">
-                    <label htmlFor="expire">Expiry</label>
-                    <input type="string" placeholder="12/24" />
-                  </div>
-                  <div className="input_box">
-                    <label htmlFor="cvv">CVV</label>
-                    <input type="number" placeholder="123" />
-                  </div>
-                </div>
-                <div className="input_combo_box">
-                  <div className="input_box">
-                    <label htmlFor="zip_code">Billing Zip Code</label>
-                    <input type="text" placeholder="Enter Zip Code" />
-                  </div>
-                  <div className="input_select_box">
-                    <label htmlFor="country">Country</label>
-                    <select name="country" id="country">
-                      <option value="pakistan">Pakistan</option>
-                      <option value="india">India</option>
-                      <option value="united state">United State</option>
-                    </select>
-                  </div>
-                </div>
+              <div className="payment_card">
+                <p>All payments are secure and encrypted.</p>
+                {clientToken ? (
+                  <>
+                    <DropIn
+                      options={{ authorization: clientToken }}
+                      onInstance={(instance) => setInstance(instance)}
+                    />
+                  </>
+                ) : (
+                  <h3>Loading payment methods...</h3>
+                )}
               </div>
-            </div> */}
-            <button className="paynow_reserve">
-              Rs. {price ?? 0} - Pay now with Jazzcash and reserve
-            </button>
+              <button
+                className="paynow_reserve"
+                disabled={!clientToken || loading || !instance}
+                onClick={() => {
+                  handleSubmitForm();
+                }}
+              >
+                Pay now - Rs. {price ?? 0}
+              </button>
+            </div>
           </form>
         </div>
         <div className="reservation_detail_right">
@@ -229,23 +269,25 @@ const Reservation = () => {
               reservation={reservations}
             />
           </div>
-          <div className="reservation_detail_right_reviews">
-            {reviews?.map((review, index) => {
-              return (
-                <>
-                  <div className="review-item" key={index}>
-                    <h4>{review?.userId?.fName}</h4>
-                    <div className="review-meta">
-                      <span>{review?.rating}</span>
-                      <i className="fa-solid fa-star"></i>
-                      <span>{reviewDateCalculator(review)}</span>
+          {reviews?.length > 0 && (
+            <div className="reservation_detail_right_reviews">
+              {reviews?.map((review, index) => {
+                return (
+                  <>
+                    <div className="review-item" key={index}>
+                      <h4>{review?.userId?.fName}</h4>
+                      <div className="review-meta">
+                        <span>{review?.rating}</span>
+                        <i className="fa-solid fa-star"></i>
+                        <span>{reviewDateCalculator(review)}</span>
+                      </div>
+                      <p>"{review?.reviewMsg}"</p>
                     </div>
-                    <p>"{review?.reviewMsg}"</p>
-                  </div>
-                </>
-              );
-            })}
-          </div>
+                  </>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </>

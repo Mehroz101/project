@@ -28,15 +28,15 @@ const Login = () => {
                 <h1>
                   Login to <span className="brand_name">Parkify</span>
                 </h1>
-                <button className="google_btn">
+                {/* <button className="google_btn">
                   <i className="fa-brands fa-google"></i>
                   <span>Signin with Google</span>
-                </button>
-                <div className="bottom_line">
+                </button> */}
+                {/* <div className="bottom_line">
                   <div className="line"></div>
                   <span>or</span>
                   <div className="line"></div>
-                </div>
+                </div> */}
                 <p className="short_text">
                   Enter email and password to logged in
                 </p>
