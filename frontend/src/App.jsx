@@ -25,7 +25,7 @@ import ResetPass from "./pages/ResetPass";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import UpdateSpace from "./parkingOwner/components/UpdateSpace";
 import ViewSpace from "./parkingOwner/components/ViewSpace";
-import ViewRequest from "./parkingOwner/components/viewRequest";
+import ViewRequest from "./parkingOwner/components/ViewRequest";
 import { ParkingOwnerProvider } from "./context/ReservationContext";
 import { MainAppProvider } from "./context/MainAppContext";
 const AppRoutes = () => {
