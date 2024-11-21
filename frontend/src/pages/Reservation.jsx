@@ -3,31 +3,38 @@ import "../styles/Reservation.css";
 import Navbar from "../components/Navbar";
 import { Link, useParams } from "react-router-dom";
 import {
-  getSpaceForReservation, getSpaceReviews,
-
+  getSpaceForReservation,
+  getSpaceReviews,
 } from "../services/spaceService";
 import { useNavigate } from "react-router-dom";
 import { useReservationForm } from "../services/useReservationForm";
 import SelectedListingDetail from "../components/SelectedListingDetail";
 import { getSpaceSpecificReservation } from "../services/reservationService";
-import { reviewDateCalculator } from "../parkingOwner/components/Functions";
+import {
+  calculatePrice,
+  reviewDateCalculator,
+} from "../parkingOwner/components/Functions";
+import AmountForm from "../services/paymentService";
 const Reservation = () => {
   const [space, setSpace] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [reservations, setReservations] = useState([]);
+  const [price, setPrice] = useState(0);
   const { spaceId } = useParams();
   const navigate = useNavigate();
   const { handleChange, reservation, setReservation, handleSubmit } =
     useReservationForm();
+  const { setFormData, handlePaymentSubmit } = AmountForm();
   const handleSubmitForm = async (e) => {
     console.log(space);
-
-    e.preventDefault();
-
-    const response = await handleSubmit();
-    if (response === 201) {
-      navigate("/profile/booking");
-    }
+    try {
+      e.preventDefault();
+      const paymentResponse = await handlePaymentSubmit();
+      const response = await handleSubmit();
+      if (response === 201) {
+        // navigate("/profile/booking");
+      }
+    } catch (error) {}
   };
 
   const getSpace = async () => {
@@ -38,7 +45,7 @@ const Reservation = () => {
     setReviews(response1);
     setReservations(response2);
   };
-  
+
   useEffect(() => {
     getSpace();
     setReservation((prev) => ({
@@ -59,6 +66,19 @@ const Reservation = () => {
         per_hour: space?.per_hour,
         per_day: space?.per_day,
       }));
+      var total = calculatePrice(
+        reservation.totalHours,
+        space?.per_hour,
+        space.per_day
+      );
+      total = Math.round(parseFloat(total));
+      setPrice(total);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        pp_Amount: total,
+      }));
+      console.log(total);
     }
   }, [space]);
 
@@ -196,7 +216,9 @@ const Reservation = () => {
                 </div>
               </div>
             </div> */}
-            <button className="paynow_reserve">$7 - Pay now and reserve</button>
+            <button className="paynow_reserve">
+              Rs. {price ?? 0} - Pay now with Jazzcash and reserve
+            </button>
           </form>
         </div>
         <div className="reservation_detail_right">
@@ -223,7 +245,6 @@ const Reservation = () => {
                 </>
               );
             })}
-            
           </div>
         </div>
       </div>
