@@ -213,8 +213,8 @@ const Earning = () => {
               </button>
             </div>
             <p className="note">
-              Please note withdraw minimum amount Rs. 25 per withdraw and cannot
-              be undone after withraw. it may take 7 business days to process
+              Please note withdraw minimum amount $ 25 per withdraw and cannot
+              be undone after withraw. 10% dedection on every withdraw and it may take 7 business days to process
               payment.
             </p>
           </div>
