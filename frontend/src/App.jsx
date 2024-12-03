@@ -37,14 +37,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgetpassword" element={<ForgetPass />} />
       <Route path="/resetpassword/:token" element={<ResetPass />} />
-      {/* <Route
-        path="/searchResult"
-        element={
-          <MainAppProvider>
-            <MainApp />
-          </MainAppProvider>
-        }
-      /> */}
+    
       <Route
         path="/searchResult/:searchInput/:arrivalDate/:arrivalTime/:leaveDate/:leaveTime/:totalHours"
         element={
